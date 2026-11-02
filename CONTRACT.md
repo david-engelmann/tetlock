@@ -12,10 +12,11 @@ on it lands.
 
 ## Round 1. Confessions, outcomes, and the wall as a view (WW-5 to WW-12)
 
-Contract preparation only in this pass. The build opens
-when this repo's turn in the line's build order arrives,
-after onrecord, whose record format this round consumes
-at the version the onrecord contract states.
+Built in Round 1, after onrecord, whose record format
+this round consumes at its pinned discipline. The
+round also added the amendments below (WW-5a to WW-9a
+before code, WW-5b, WW-7b, WW-8b, and WW-9b after the
+reviews, before the repair code).
 
 - WW-5. A confession is an onrecord claim in the OR-5
   shape: the claim text is the confession sentence, the
