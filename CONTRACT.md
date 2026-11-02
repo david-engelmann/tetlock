@@ -136,3 +136,54 @@ reviews, before the repair code).
   is written. The wall's broke entries also carry the
   outcome's claim id under outcome, naming the
   receipt. Test, tests/test_wall.py.
+
+## Round 2. The tally (WW-13 to WW-16)
+
+- WW-13. A third view, the tally: over the whole
+  record at a caller-supplied now, an ISO timestamp
+  read in UTC as the ledger reads it, the counts of
+  the well-formed confessions by state (graded,
+  awaiting, overdue, superseded) and, among the
+  graded, by grade (held, broke, unverifiable).
+  Counts ride with their denominators in the document
+  itself, never as a bare rate: the state counts
+  under the confessions total, the grade counts
+  under the graded count. Every named count is
+  always present, zero included, so the table can
+  be checked by addition. Test, tests/test_wall.py.
+- WW-14. The arithmetic closes. The state counts sum
+  to the confessions total; the grade counts sum to
+  the graded count. Malformed confessions (WW-8b)
+  are excluded from every count above and reported
+  as their own single count. Test,
+  tests/test_wall.py.
+- WW-15. Per action: one row for each action holding
+  at least one graded well-formed confession, naming
+  the action, its graded count, and its counts by
+  grade, rows ordered by action name, and the rows'
+  grade counts sum to the document's. An action with
+  no graded confession earns no row; its confessions
+  still count in the state totals. Test,
+  tests/test_wall.py.
+- WW-16. The tally stands on the ledger's own
+  classification: the same states, the same outcome
+  index, the same refusals, a missing record refused
+  by name. The ledger and wall documents do not
+  change. The command is tally, with the record, a
+  required now, and the views' output discipline
+  (WW-12). Test, tests/test_wall.py.
+
+## Round 2 post-review amendments, recorded before the repairs
+
+- WW-8c. The malformed test of WW-8b is the whole of
+  WW-5. A confession claim whose text breaks the
+  sentence rule is malformed, and a subject that is
+  empty or all whitespace names no action and is
+  malformed. Round 1 checked only approval, subject
+  presence, and due date, so a forged confession with
+  a two-sentence text stood as well-formed in every
+  view and could be graded; the reviews drove it
+  through the tally and the ledger alike. Every view
+  and the grading path read the one definition, so
+  the repair lands in the definition. Test,
+  tests/test_wall.py.

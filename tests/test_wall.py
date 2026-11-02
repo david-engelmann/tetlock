@@ -1,4 +1,4 @@
-"""WW-5 to WW-12. Confessions, outcomes, and the views."""
+"""WW-5 to WW-16. Confessions, outcomes, and the views."""
 import json
 import shutil
 from pathlib import Path
@@ -8,7 +8,8 @@ import pytest
 from wallofwrong.cli import main
 from wallofwrong.digest import digest_of
 from wallofwrong.record import Store, StoreError
-from wallofwrong.wall import confess, grade, ledger, wall
+from wallofwrong.wall import (confess, grade, ledger,
+                              tally, wall)
 
 FIX = Path(__file__).parent / "fixtures"
 GOLDEN = "cc9c4e01fca418dcc33114caf75fae1f6bf0d401f297b5d61f6776903fa955a3"
@@ -270,3 +271,228 @@ def test_the_cli_round_trip(tmp_path, capsys):
                  "--due", "2026-02-01", "--at", "2026-01-05T09:00:00Z",
                  "--asserter", "agent", "--approval", "op-1"]) == 1
     assert "internal sentence break" in capsys.readouterr().err
+
+
+NOW = "2026-03-01T00:00:00Z"
+EVIDENCE = [{"source": "trace", "reference": "run-9"}]
+
+
+def _confess(store, action, sentence, due):
+    return confess(store, action=action, sentence=sentence,
+                   due=due, at="2026-01-05T09:00:00Z",
+                   asserter="agent", approval="op-1")
+
+
+def _grade(store, confession_id, grade_value):
+    return grade(store, confession_id=confession_id,
+                 grade_value=grade_value,
+                 happened="What happened, stated plainly.",
+                 at="2026-02-20T09:00:00Z", asserter="grader",
+                 evidence=EVIDENCE)
+
+
+def _population(tmp_path):
+    store = Store(tmp_path / "r.jsonl")
+    held = _confess(store, "deploy", "The deploy holds.",
+                    "2026-02-01")
+    _grade(store, held, "held")
+    broke = _confess(store, "deploy", "The deploy is quick.",
+                     "2026-02-01")
+    _grade(store, broke, "broke")
+    _confess(store, "deploy", "The deploy waits.",
+             "2026-04-01")
+    changed = _confess(store, "deploy", "The plan ships.",
+                       "2026-02-01")
+    store.add(text="The plan changed and is off.",
+              asserter="operator",
+              asserted_at="2026-01-06T10:00:00Z",
+              evidence=[{"source": "note", "reference": "n-1"}],
+              supersedes=changed)
+    unv = _confess(store, "drop-table",
+                   "The table drops in one pass.",
+                   "2026-02-01")
+    _grade(store, unv, "unverifiable")
+    _confess(store, "drop-table", "The index rebuilds.",
+             "2026-01-10")
+    store.add(text="No approval stands behind this.",
+              asserter="agent",
+              asserted_at="2026-01-05T09:00:00Z",
+              evidence=EVIDENCE, subject="deploy",
+              due="2026-02-01", extra={"kind": "confession"})
+    return store
+
+
+def test_the_tally_counts_states_grades_and_actions(tmp_path):
+    document = tally(_population(tmp_path), now=NOW)
+    assert document["total"] == 6
+    assert document["by_state"] == {
+        "graded": 3, "awaiting": 1, "overdue": 1,
+        "superseded": 1}
+    assert document["graded"] == 3
+    assert document["by_grade"] == {
+        "held": 1, "broke": 1, "unverifiable": 1}
+    assert document["actions"] == [
+        {"action": "deploy", "graded": 2, "held": 1,
+         "broke": 1, "unverifiable": 0},
+        {"action": "drop-table", "graded": 1, "held": 0,
+         "broke": 0, "unverifiable": 1}]
+    assert document["malformed"] == 1
+
+
+def test_the_tallys_arithmetic_closes(tmp_path):
+    document = tally(_population(tmp_path), now=NOW)
+    assert sum(document["by_state"].values()) == \
+        document["total"]
+    assert sum(document["by_grade"].values()) == \
+        document["graded"]
+    for grade in ("held", "broke", "unverifiable"):
+        assert sum(row[grade]
+                   for row in document["actions"]) == \
+            document["by_grade"][grade]
+
+
+def test_the_tally_of_an_empty_record_is_all_zeroes(tmp_path):
+    path = tmp_path / "empty.jsonl"
+    path.write_text("")
+    document = tally(Store(path), now=NOW)
+    assert document == {
+        "total": 0,
+        "by_state": {"graded": 0, "awaiting": 0,
+                     "overdue": 0, "superseded": 0},
+        "graded": 0,
+        "by_grade": {"held": 0, "broke": 0,
+                     "unverifiable": 0},
+        "actions": [], "malformed": 0}
+
+
+def test_the_tally_command_and_its_refusals(
+        tmp_path, capsys):
+    store = _population(tmp_path)
+    out = tmp_path / "tally.json"
+    assert main(["tally", str(store.path), "--now", NOW,
+                 "-o", str(out)]) == 0
+    document = json.loads(out.read_text())
+    assert document["total"] == 6
+    assert main(["tally", str(tmp_path / "missing.jsonl"),
+                 "--now", NOW]) == 1
+    assert "no such record" in capsys.readouterr().err
+    assert main(["tally", str(store.path),
+                 "--now", "next week"]) == 1
+    assert "not an ISO timestamp" in capsys.readouterr().err
+
+
+def test_action_rows_order_by_name_not_appearance(tmp_path):
+    store = Store(tmp_path / "r.jsonl")
+    zebra = _confess(store, "zebra", "The zebra ships.",
+                     "2026-02-01")
+    _grade(store, zebra, "broke")
+    apple = _confess(store, "apple", "The apple ships.",
+                     "2026-02-01")
+    _grade(store, apple, "held")
+    _confess(store, "someday", "The someday ships.",
+             "2026-04-01")
+    document = tally(store, now=NOW)
+    assert [row["action"] for row in document["actions"]] == [
+        "apple", "zebra"]
+    assert document["by_state"]["awaiting"] == 1
+    assert sum(row["graded"]
+               for row in document["actions"]) == \
+        document["graded"]
+
+
+def test_now_is_read_in_utc_at_the_boundary(tmp_path):
+    store = Store(tmp_path / "r.jsonl")
+    _confess(store, "deploy", "The deploy holds.",
+             "2026-02-28")
+    # 2026-02-28T23:30 at -02:00 is 2026-03-01 in UTC, so
+    # the confession due 2026-02-28 is overdue; read
+    # naively at face value it would still be awaiting.
+    document = tally(store, now="2026-02-28T23:30:00-02:00")
+    assert document["by_state"]["overdue"] == 1
+    assert document["by_state"]["awaiting"] == 0
+
+
+def test_the_tally_is_deterministic_and_refuses_bad_outcomes(
+        tmp_path):
+    store = _population(tmp_path)
+    assert tally(store, now=NOW) == tally(store, now=NOW)
+    claims = store.claims()
+    target = next(c for c in claims
+                  if c.get("kind") == "confession"
+                  and c.get("subject") == "deploy")
+    store.add(text="A second live outcome lands.",
+              asserter="grader",
+              asserted_at="2026-02-21T09:00:00Z",
+              evidence=EVIDENCE, subject=f"confession:{target['id']}",
+              extra={"kind": "outcome", "grade": "held"})
+    with pytest.raises(StoreError):
+        tally(store, now=NOW)
+
+
+def test_a_graded_confession_stays_graded_when_superseded(
+        tmp_path):
+    store = Store(tmp_path / "r.jsonl")
+    cid = _confess(store, "deploy", "The deploy holds.",
+                   "2026-02-01")
+    _grade(store, cid, "broke")
+    store.add(text="The plan was replaced wholesale.",
+              asserter="operator",
+              asserted_at="2026-02-22T10:00:00Z",
+              evidence=[{"source": "note", "reference": "n-2"}],
+              supersedes=cid)
+    document = tally(store, now=NOW)
+    assert document["by_state"]["graded"] == 1
+    assert document["by_state"]["superseded"] == 0
+    assert document["by_grade"]["broke"] == 1
+
+
+def test_a_sentence_breaking_confession_is_malformed(
+        tmp_path):
+    store = Store(tmp_path / "r.jsonl")
+    forged = store.add(
+        text="Two. Sentences.", asserter="agent",
+        asserted_at="2026-01-05T09:00:00Z",
+        evidence=[{"source": "approval", "reference": "op-1"}],
+        subject="deploy", due="2026-02-01",
+        extra={"kind": "confession"})
+    blank = store.add(
+        text="A fine sentence.", asserter="agent",
+        asserted_at="2026-01-05T09:00:00Z",
+        evidence=[{"source": "approval", "reference": "op-1"}],
+        subject=" ", due="2026-02-01",
+        extra={"kind": "confession"})
+    document = tally(store, now=NOW)
+    assert document["total"] == 0
+    assert document["malformed"] == 2
+    with pytest.raises(StoreError):
+        grade(store, confession_id=forged, grade_value="held",
+              happened="It held.",
+              at="2026-02-20T09:00:00Z", asserter="grader",
+              evidence=EVIDENCE)
+    led = ledger(store, now=NOW)
+    reasons = {m["id"]: m["reasons"]
+               for m in led["malformed"]}
+    assert any("internal sentence break" in r
+               for r in reasons[forged])
+    assert any("no subject" in r for r in reasons[blank])
+
+
+def test_blank_names_are_refused_at_write_and_read(tmp_path):
+    store = Store(tmp_path / "r.jsonl")
+    base = {"sentence": "The deploy holds.",
+            "due": "2026-02-01", "at": "2026-01-05T09:00:00Z",
+            "asserter": "agent"}
+    with pytest.raises(StoreError, match="action names"):
+        confess(store, action=" ", approval="op-1", **base)
+    with pytest.raises(StoreError, match="approval names"):
+        confess(store, action="deploy", approval="  ", **base)
+    assert not (tmp_path / "r.jsonl").exists()
+    store.add(text="A fine sentence.", asserter="agent",
+              asserted_at="2026-01-05T09:00:00Z",
+              evidence=[{"source": "approval",
+                         "reference": " "}],
+              subject="deploy", due="2026-02-01",
+              extra={"kind": "confession"})
+    document = tally(store, now=NOW)
+    assert document["total"] == 0
+    assert document["malformed"] == 1
