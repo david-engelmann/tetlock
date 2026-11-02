@@ -9,3 +9,61 @@ on it lands.
 - WW-2. Confessions are onrecord claims with due dates. The wall is a view over the record, never a second store.
 - WW-3. Every confession is graded against what actually happened, and false confessions stay on the wall.
 - WW-4. Wallofwrong grades predictions, onrecord keeps memories.
+
+## Round 1. Confessions, outcomes, and the wall as a view (WW-5 to WW-12)
+
+Contract preparation only in this pass. The build opens
+when this repo's turn in the line's build order arrives,
+after onrecord, whose record format this round consumes
+at the version the onrecord contract states.
+
+- WW-5. A confession is an onrecord claim in the OR-5
+  shape: the claim text is the confession sentence, the
+  subject key names the action it predicts, a due date
+  states when the outcome should be known, and the
+  evidence names the approval the stub's WW-1 requires.
+  The sentence rule is mechanical: one line, ending in a
+  period, with no internal sentence break. A text that
+  breaks the rule is refused by name. Test,
+  tests/test_wall.py.
+- WW-6. Confessions and outcomes live only in the
+  onrecord record file, appended under its rules. This
+  repo keeps no store of its own; the ledger and the wall
+  are views computed from the record on every run.
+  Test, tests/test_wall.py.
+- WW-7. An outcome is a claim whose subject names the
+  confession it grades, carrying a grade from a fixed set
+  (held, broke, unverifiable) and the evidence of what
+  actually happened. An outcome naming an unknown
+  confession is refused by name. A confession is graded
+  once; a correction arrives as a superseding outcome
+  claim, never an edit. In Round 1 the grade is supplied
+  by the grader, human or operator tooling; classifying
+  what kind of wrong a broke confession was is the
+  decision-model work of a later round, and nothing here
+  guesses at it. Test, tests/test_wall.py.
+- WW-8. The ledger view lists every confession with its
+  state: graded with its grade, awaiting outcome, or
+  overdue when its due date has passed ungraded, with the
+  current time supplied by the caller so the view is
+  reproducible. Nothing is dropped from the ledger.
+  Test, tests/test_wall.py.
+- WW-9. The wall view renders one ISO week: the broke
+  confessions whose outcomes landed that week, each with
+  its sentence and what actually happened, then the
+  overdue ungraded confessions of the week as their own
+  list, named ungraded. Held and unverifiable
+  confessions do not appear on the wall. Test,
+  tests/test_wall.py.
+- WW-10. A confession whose chain was superseded before
+  its outcome (the plan changed) is shown in the ledger
+  as superseded and never reaches the wall; grading a
+  superseded confession is refused by name. Test,
+  tests/test_wall.py.
+- WW-11. Both views are deterministic: the same record
+  and the same stated time produce byte-identical
+  output. Test, tests/test_wall.py.
+- WW-12. Appends follow the record's atomic append rule;
+  rendered views go to stdout or a named path, written
+  atomically, and every failure is a named error with
+  exit 1. Test, tests/test_wall.py.
