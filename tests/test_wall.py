@@ -1,4 +1,4 @@
-"""WW-5 to WW-12. Confessions, outcomes, and the views."""
+"""WW-5 to WW-16. Confessions, outcomes, and the views."""
 import json
 import shutil
 from pathlib import Path
@@ -8,7 +8,8 @@ import pytest
 from wallofwrong.cli import main
 from wallofwrong.digest import digest_of
 from wallofwrong.record import Store, StoreError
-from wallofwrong.wall import confess, grade, ledger, wall
+from wallofwrong.wall import (confess, grade, ledger,
+                              tally, wall)
 
 FIX = Path(__file__).parent / "fixtures"
 GOLDEN = "cc9c4e01fca418dcc33114caf75fae1f6bf0d401f297b5d61f6776903fa955a3"
@@ -270,3 +271,111 @@ def test_the_cli_round_trip(tmp_path, capsys):
                  "--due", "2026-02-01", "--at", "2026-01-05T09:00:00Z",
                  "--asserter", "agent", "--approval", "op-1"]) == 1
     assert "internal sentence break" in capsys.readouterr().err
+
+
+NOW = "2026-03-01T00:00:00Z"
+EVIDENCE = [{"source": "trace", "reference": "run-9"}]
+
+
+def _confess(store, action, sentence, due):
+    return confess(store, action=action, sentence=sentence,
+                   due=due, at="2026-01-05T09:00:00Z",
+                   asserter="agent", approval="op-1")
+
+
+def _grade(store, confession_id, grade_value):
+    return grade(store, confession_id=confession_id,
+                 grade_value=grade_value,
+                 happened="What happened, stated plainly.",
+                 at="2026-02-20T09:00:00Z", asserter="grader",
+                 evidence=EVIDENCE)
+
+
+def _population(tmp_path):
+    store = Store(tmp_path / "r.jsonl")
+    held = _confess(store, "deploy", "The deploy holds.",
+                    "2026-02-01")
+    _grade(store, held, "held")
+    broke = _confess(store, "deploy", "The deploy is quick.",
+                     "2026-02-01")
+    _grade(store, broke, "broke")
+    _confess(store, "deploy", "The deploy waits.",
+             "2026-04-01")
+    changed = _confess(store, "deploy", "The plan ships.",
+                       "2026-02-01")
+    store.add(text="The plan changed and is off.",
+              asserter="operator",
+              asserted_at="2026-01-06T10:00:00Z",
+              evidence=[{"source": "note", "reference": "n-1"}],
+              supersedes=changed)
+    unv = _confess(store, "drop-table",
+                   "The table drops in one pass.",
+                   "2026-02-01")
+    _grade(store, unv, "unverifiable")
+    _confess(store, "drop-table", "The index rebuilds.",
+             "2026-01-10")
+    store.add(text="No approval stands behind this.",
+              asserter="agent",
+              asserted_at="2026-01-05T09:00:00Z",
+              evidence=EVIDENCE, subject="deploy",
+              due="2026-02-01", extra={"kind": "confession"})
+    return store
+
+
+def test_the_tally_counts_states_grades_and_actions(tmp_path):
+    document = tally(_population(tmp_path), now=NOW)
+    assert document["total"] == 6
+    assert document["by_state"] == {
+        "graded": 3, "awaiting": 1, "overdue": 1,
+        "superseded": 1}
+    assert document["graded"] == 3
+    assert document["by_grade"] == {
+        "held": 1, "broke": 1, "unverifiable": 1}
+    assert document["actions"] == [
+        {"action": "deploy", "graded": 2, "held": 1,
+         "broke": 1, "unverifiable": 0},
+        {"action": "drop-table", "graded": 1, "held": 0,
+         "broke": 0, "unverifiable": 1}]
+    assert document["malformed"] == 1
+
+
+def test_the_tallys_arithmetic_closes(tmp_path):
+    document = tally(_population(tmp_path), now=NOW)
+    assert sum(document["by_state"].values()) == \
+        document["total"]
+    assert sum(document["by_grade"].values()) == \
+        document["graded"]
+    for grade in ("held", "broke", "unverifiable"):
+        assert sum(row[grade]
+                   for row in document["actions"]) == \
+            document["by_grade"][grade]
+
+
+def test_the_tally_of_an_empty_record_is_all_zeroes(tmp_path):
+    path = tmp_path / "empty.jsonl"
+    path.write_text("")
+    document = tally(Store(path), now=NOW)
+    assert document == {
+        "total": 0,
+        "by_state": {"graded": 0, "awaiting": 0,
+                     "overdue": 0, "superseded": 0},
+        "graded": 0,
+        "by_grade": {"held": 0, "broke": 0,
+                     "unverifiable": 0},
+        "actions": [], "malformed": 0}
+
+
+def test_the_tally_command_and_its_refusals(
+        tmp_path, capsys):
+    store = _population(tmp_path)
+    out = tmp_path / "tally.json"
+    assert main(["tally", str(store.path), "--now", NOW,
+                 "-o", str(out)]) == 0
+    document = json.loads(out.read_text())
+    assert document["total"] == 6
+    assert main(["tally", str(tmp_path / "missing.jsonl"),
+                 "--now", NOW]) == 1
+    assert "no such record" in capsys.readouterr().err
+    assert main(["tally", str(store.path),
+                 "--now", "next week"]) == 1
+    assert "not an ISO timestamp" in capsys.readouterr().err

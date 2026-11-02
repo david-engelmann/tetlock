@@ -10,7 +10,7 @@ import tempfile
 from pathlib import Path
 
 from .record import Store, StoreError
-from .wall import confess, grade, ledger, wall
+from .wall import confess, grade, ledger, tally, wall
 
 
 def _parse_evidence(items) -> list[dict]:
@@ -104,6 +104,10 @@ def main(argv: list[str] | None = None) -> int:
     wal.add_argument("record")
     wal.add_argument("--date", required=True)
     wal.add_argument("-o", "--output")
+    tal = sub.add_parser("tally", help="the tally view")
+    tal.add_argument("record")
+    tal.add_argument("--now", required=True)
+    tal.add_argument("-o", "--output")
     args = parser.parse_args(argv)
     store = Store(Path(args.record))
     out = getattr(args, "output", None)
@@ -128,6 +132,8 @@ def main(argv: list[str] | None = None) -> int:
             return _emit(ledger(store, now=args.now), args.output)
         if args.command == "wall":
             return _emit(wall(store, on=args.date), args.output)
+        if args.command == "tally":
+            return _emit(tally(store, now=args.now), args.output)
     except StoreError as exc:
         print(f"error, {exc}", file=sys.stderr)
         return 1

@@ -196,6 +196,51 @@ def ledger(store: Store, *, now: str) -> dict:
     return document
 
 
+STATES = ("graded", "awaiting", "overdue", "superseded")
+GRADES = ("held", "broke", "unverifiable")
+
+
+def tally(store: Store, *, now: str) -> dict:
+    """WW-13 to WW-16: the counts of the record, by
+    state and by grade, per action, arithmetic closed."""
+    if not store.path.exists():
+        raise StoreError(f"no such record, {store.path}")
+    claims = store.claims()
+    try:
+        now_date = _utc_date(now)
+    except ValueError:
+        raise StoreError(
+            f"now is not an ISO timestamp, {now}") from None
+    index = OutcomeIndex(claims)
+    by_state = {state: 0 for state in STATES}
+    by_grade = {grade: 0 for grade in GRADES}
+    actions: dict[str, dict] = {}
+    malformed = 0
+    total = 0
+    for confession in confessions(claims):
+        if confession_defects(confession):
+            malformed += 1
+            continue
+        total += 1
+        entry = _confession_state(claims, index, confession,
+                                  now_date)
+        by_state[entry["state"]] += 1
+        if entry["state"] == "graded":
+            by_grade[entry["grade"]] += 1
+            row = actions.setdefault(
+                entry["action"],
+                {"action": entry["action"], "graded": 0,
+                 "held": 0, "broke": 0, "unverifiable": 0})
+            row["graded"] += 1
+            row[entry["grade"]] += 1
+    return {"total": total, "by_state": by_state,
+            "graded": by_state["graded"],
+            "by_grade": by_grade,
+            "actions": [actions[name]
+                        for name in sorted(actions)],
+            "malformed": malformed}
+
+
 def wall(store: Store, *, on: str) -> dict:
     if not store.path.exists():
         raise StoreError(f"no such record, {store.path}")
