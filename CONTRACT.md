@@ -172,3 +172,18 @@ reviews, before the repair code).
   change. The command is tally, with the record, a
   required now, and the views' output discipline
   (WW-12). Test, tests/test_wall.py.
+
+## Round 2 post-review amendments, recorded before the repairs
+
+- WW-8c. The malformed test of WW-8b is the whole of
+  WW-5. A confession claim whose text breaks the
+  sentence rule is malformed, and a subject that is
+  empty or all whitespace names no action and is
+  malformed. Round 1 checked only approval, subject
+  presence, and due date, so a forged confession with
+  a two-sentence text stood as well-formed in every
+  view and could be graded; the reviews drove it
+  through the tally and the ledger alike. Every view
+  and the grading path read the one definition, so
+  the repair lands in the definition. Test,
+  tests/test_wall.py.
