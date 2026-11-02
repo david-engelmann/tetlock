@@ -216,6 +216,11 @@ class Store:
     def __init__(self, path):
         self.path = Path(path)
 
+    def claims(self):
+        """The record's claims, sound or refused (public
+        read surface for the views)."""
+        return self._load()
+
     def _load(self):
         claims, defects = load_record(self.path) \
             if self.path.exists() else ([], [])

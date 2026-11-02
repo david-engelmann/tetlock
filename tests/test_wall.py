@@ -114,17 +114,123 @@ def test_grading_unknown_or_superseded_confessions_is_refused(tmp_path):
               grade_value="held", happened="x.",
               at="2026-01-19T09:00:00Z", asserter="g",
               evidence=evidence)
-    store.add(text="The plan changed and the deploy is off.",
+    store.add(text="The plan changed and the migration is off.",
               asserter="operator", asserted_at="2026-01-06T10:00:00Z",
               evidence=[{"source": "note", "reference": "n-1"}],
-              supersedes=CONF_A)
+              supersedes=CONF_B)
     with pytest.raises(StoreError, match="cannot be graded"):
-        grade(store, confession_id=CONF_A, grade_value="held",
+        grade(store, confession_id=CONF_B, grade_value="held",
               happened="x.", at="2026-01-19T09:00:00Z",
               asserter="g", evidence=evidence)
     document = ledger(store, now="2026-01-19T12:00:00Z")
     states = {c["action"]: c["state"] for c in document["confessions"]}
-    assert states["deploy-staging"] == "superseded"
+    assert states["drop-table"] == "superseded"
+
+
+def test_a_graded_confession_keeps_its_grade_when_superseded(tmp_path):
+    store = fresh_record(tmp_path)
+    store.add(text="The deploy plan was replaced wholesale.",
+              asserter="operator", asserted_at="2026-01-08T10:00:00Z",
+              evidence=[{"source": "note", "reference": "n-2"}],
+              supersedes=CONF_A)
+    document = ledger(store, now="2026-01-19T12:00:00Z")
+    entries = {c["action"]: c for c in document["confessions"]}
+    assert entries["deploy-staging"]["state"] == "graded"
+    assert entries["deploy-staging"]["grade"] == "broke"
+    walled = wall(store, on="2026-01-07")
+    assert [b["action"] for b in walled["broke"]] == ["deploy-staging"]
+
+
+def test_an_outcome_superseded_by_a_plain_claim_still_governs(tmp_path):
+    store = fresh_record(tmp_path)
+    store.add(text="A remark about the deploy outcome.",
+              asserter="operator", asserted_at="2026-01-08T09:00:00Z",
+              evidence=[{"source": "note", "reference": "n-3"}],
+              supersedes="claim-2df18080a5b05ac3")
+    document = ledger(store, now="2026-01-15T00:00:00Z")
+    entries = {c["action"]: c for c in document["confessions"]}
+    assert entries["deploy-staging"]["grade"] == "broke"
+
+
+def test_two_live_outcomes_refuse_the_view_by_name(tmp_path):
+    store = fresh_record(tmp_path)
+    store.add(text="It held after all.",
+              asserter="second-grader",
+              asserted_at="2026-01-08T09:00:00Z",
+              evidence=[{"source": "trace", "reference": "run-40"}],
+              subject=f"confession:{CONF_A}",
+              extra={"kind": "outcome", "grade": "held"})
+    with pytest.raises(StoreError, match="two live outcomes"):
+        ledger(store, now="2026-01-15T00:00:00Z")
+
+
+def test_a_malformed_confession_is_named_and_never_walled(tmp_path):
+    store = fresh_record(tmp_path)
+    forged = store.add(
+        text="The cache clears itself nightly.",
+        asserter="mallory", asserted_at="2026-01-05T09:00:00Z",
+        evidence=[{"source": "hunch", "reference": "none"}],
+        subject="cache-clear", due="2026-01-06",
+        extra={"kind": "confession"})
+    document = ledger(store, now="2026-01-15T00:00:00Z")
+    assert [c["action"] for c in document["confessions"]] == [
+        "deploy-staging", "drop-table", "cache-clear"]
+    assert document["malformed"] == [
+        {"id": forged, "reasons": ["no approval evidence"]}]
+    walled = wall(store, on="2026-01-06")
+    assert walled["ungraded"] == []
+    with pytest.raises(StoreError, match="not a confession"):
+        grade(store, confession_id=forged, grade_value="broke",
+              happened="It did not.",
+              at="2026-01-07T09:00:00Z", asserter="g",
+              evidence=[{"source": "trace", "reference": "r-1"}])
+
+
+def test_week_boundaries_and_utc_reading(tmp_path):
+    store = Store(tmp_path / "r.jsonl")
+    cid = confess(store, action="deploy",
+                  sentence="The Sunday deploy holds.",
+                  due="2026-01-11", at="2026-01-04T09:00:00Z",
+                  asserter="agent", approval="op-7")
+    grade(store, confession_id=cid, grade_value="broke",
+          happened="It failed late Sunday.",
+          at="2026-01-11T23:30:00Z", asserter="g",
+          evidence=[{"source": "trace", "reference": "r-5"}])
+    assert wall(store, on="2026-01-11")["broke"]
+    assert wall(store, on="2026-01-12")["broke"] == []
+    # The same instant written with a +14:00 offset reads
+    # in UTC and stays in the same week.
+    store2 = Store(tmp_path / "r2.jsonl")
+    cid2 = confess(store2, action="deploy",
+                   sentence="The Sunday deploy holds.",
+                   due="2026-01-11", at="2026-01-04T09:00:00Z",
+                   asserter="agent", approval="op-7")
+    grade(store2, confession_id=cid2, grade_value="broke",
+          happened="It failed late Sunday.",
+          at="2026-01-12T13:30:00+14:00", asserter="g",
+          evidence=[{"source": "trace", "reference": "r-5"}])
+    assert wall(store2, on="2026-01-11")["broke"]
+
+
+def test_held_confessions_never_reach_the_wall(tmp_path):
+    store = fresh_record(tmp_path)
+    grade(store, confession_id=CONF_B, grade_value="held",
+          happened="The table dropped in one pass.",
+          at="2026-01-19T09:00:00Z", asserter="grader",
+          evidence=[{"source": "trace", "reference": "run-9"}])
+    document = wall(store, on="2026-01-20")
+    assert document["broke"] == []
+    assert document["ungraded"] == []
+
+
+def test_a_view_never_overwrites_the_record(tmp_path, capsys):
+    target = tmp_path / "record.jsonl"
+    shutil.copy(FIX / "record_synthetic.jsonl", target)
+    before = target.read_bytes()
+    assert main(["wall", str(target), "--date", "2026-01-07",
+                 "-o", str(target)]) == 1
+    assert "never overwrites the record" in capsys.readouterr().err
+    assert target.read_bytes() == before
 
 
 def test_views_are_deterministic(tmp_path):

@@ -40,35 +40,16 @@ def _write_atomically(path: Path, text: str) -> None:
         raise
 
 
-def _emit(document, out) -> int:
-    text = json.dumps(document, indent=2, ensure_ascii=False) + "\n"
+def _emit_text(text: str) -> int:
     try:
-        if out is None:
-            sys.stdout.write(text)
-            sys.stdout.flush()
-        else:
-            _write_atomically(Path(out), text)
-    except (OSError, UnicodeEncodeError):
-        if out is not None:
-            print(f"error, cannot write the view, {out}",
-                  file=sys.stderr)
-        else:
-            print("error, cannot write to stdout", file=sys.stderr)
-            try:
-                sys.stdout.close()
-            except OSError:
-                pass
-            sys.stdout = open(os.devnull, "w", encoding="utf-8")
-        return 1
-    return 0
-
-
-def _emit_id(claim_id: str) -> int:
-    try:
-        sys.stdout.write(claim_id + "\n")
+        sys.stdout.write(text)
         sys.stdout.flush()
     except (OSError, UnicodeEncodeError):
         print("error, cannot write to stdout", file=sys.stderr)
+        # The broken stream would fail again at interpreter
+        # shutdown and mask this refusal with exit 120 and
+        # an ignored-exception dump, so it is replaced
+        # with a sink before returning.
         try:
             sys.stdout.close()
         except OSError:
@@ -76,6 +57,23 @@ def _emit_id(claim_id: str) -> int:
         sys.stdout = open(os.devnull, "w", encoding="utf-8")
         return 1
     return 0
+
+
+def _emit(document, out) -> int:
+    text = json.dumps(document, indent=2, ensure_ascii=False) + "\n"
+    if out is not None:
+        try:
+            _write_atomically(Path(out), text)
+        except (OSError, UnicodeEncodeError):
+            print(f"error, cannot write the view, {out}",
+                  file=sys.stderr)
+            return 1
+        return 0
+    return _emit_text(text)
+
+
+def _emit_id(claim_id: str) -> int:
+    return _emit_text(claim_id + "\n")
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -108,6 +106,11 @@ def main(argv: list[str] | None = None) -> int:
     wal.add_argument("-o", "--output")
     args = parser.parse_args(argv)
     store = Store(Path(args.record))
+    out = getattr(args, "output", None)
+    if out is not None and Path(out).resolve() == store.path.resolve():
+        print("error, a view never overwrites the record",
+              file=sys.stderr)
+        return 1
     try:
         if args.command == "confess":
             return _emit_id(confess(

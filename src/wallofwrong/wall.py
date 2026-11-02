@@ -1,7 +1,7 @@
 """WW-5 to WW-10. Confessions, outcomes, and the views."""
 from __future__ import annotations
 
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 from .record import Store, StoreError
 
@@ -10,13 +10,15 @@ TERMINATORS = (".", "?", "!")
 
 
 def sentence_defect(text: str) -> str | None:
-    """The mechanical sentence rule (WW-5, WW-5a)."""
+    """The mechanical sentence rule (WW-5, WW-5a, WW-5b)."""
     if "\n" in text:
         return "the sentence is not one line"
     if not text.endswith("."):
         return "the sentence does not end in a period"
     if any(mark in text[:-1] for mark in TERMINATORS):
         return "the sentence holds an internal sentence break"
+    if not any(ch.isalnum() for ch in text[:-1]):
+        return "the sentence is empty"
     return None
 
 
@@ -24,21 +26,67 @@ def confessions(claims: list[dict]) -> list[dict]:
     return [c for c in claims if c.get("kind") == "confession"]
 
 
-def outcomes(claims: list[dict]) -> list[dict]:
-    return [c for c in claims if c.get("kind") == "outcome"]
+def confession_defects(claim: dict) -> list[str]:
+    """What WW-5 requires of a confession, checked on
+    claims the write path did not mint (WW-8b)."""
+    defects = []
+    evidence = claim.get("evidence") or []
+    if not any(isinstance(e, dict)
+               and e.get("source") == "approval"
+               for e in evidence):
+        defects.append("no approval evidence")
+    if not claim.get("subject"):
+        defects.append("no subject naming the action")
+    if not claim.get("due"):
+        defects.append("no due date")
+    return defects
 
 
 def _superseded_ids(claims) -> set:
     return {c["supersedes"] for c in claims if c.get("supersedes")}
 
 
+class OutcomeIndex:
+    """Live outcomes resolved once per view (WW-7b).
+
+    Only an outcome claim supersedes an outcome. More
+    than one live outcome on a confession, or a grade
+    outside the fixed set, refuses by name."""
+
+    def __init__(self, claims: list[dict]):
+        outcomes = [c for c in claims
+                    if c.get("kind") == "outcome"]
+        outcome_ids = {c["id"] for c in outcomes}
+        superseded_by_outcome = {
+            c["supersedes"] for c in outcomes
+            if c.get("supersedes")}
+        self._live: dict[str, dict] = {}
+        for outcome in outcomes:
+            if outcome["id"] in superseded_by_outcome:
+                continue
+            subject = outcome.get("subject") or ""
+            if not subject.startswith("confession:"):
+                continue
+            confession_id = subject.split(":", 1)[1]
+            if confession_id in self._live:
+                raise StoreError(
+                    f"confession {confession_id} holds two live "
+                    f"outcomes, {self._live[confession_id]['id']} "
+                    f"and {outcome['id']}; graded once is the "
+                    f"model and the record stands outside it")
+            grade = outcome.get("grade")
+            if grade not in GRADES:
+                raise StoreError(
+                    f"outcome {outcome['id']} carries a grade "
+                    f"outside the fixed set, {grade}")
+            self._live[confession_id] = outcome
+
+    def get(self, confession_id: str) -> dict | None:
+        return self._live.get(confession_id)
+
+
 def live_outcome(claims, confession_id: str) -> dict | None:
-    superseded = _superseded_ids(claims)
-    subject = f"confession:{confession_id}"
-    live = [c for c in outcomes(claims)
-            if c.get("subject") == subject
-            and c["id"] not in superseded]
-    return live[-1] if live else None
+    return OutcomeIndex(claims).get(confession_id)
 
 
 def confess(store: Store, *, action, sentence, due, at, asserter,
@@ -58,17 +106,23 @@ def grade(store: Store, *, confession_id, grade_value, happened,
         raise StoreError(
             f"grade must be one of held, broke, unverifiable, "
             f"{grade_value}")
-    claims = store._load()
+    claims = store.claims()
     by_id = {c["id"]: c for c in claims}
     target = by_id.get(confession_id)
     if target is None or target.get("kind") != "confession":
         raise StoreError(
             f"no confession with id {confession_id}")
-    if confession_id in _superseded_ids(claims):
+    defects = confession_defects(target)
+    if defects:
+        raise StoreError(
+            f"confession {confession_id} is not a confession "
+            f"under WW-5: {defects[0]}")
+    index = OutcomeIndex(claims)
+    current = index.get(confession_id)
+    if current is None and confession_id in _superseded_ids(claims):
         raise StoreError(
             f"confession {confession_id} has been superseded "
             f"and cannot be graded")
-    current = live_outcome(claims, confession_id)
     if current is not None and supersedes != current["id"]:
         raise StoreError(
             f"confession {confession_id} is already graded; a "
@@ -85,20 +139,29 @@ def grade(store: Store, *, confession_id, grade_value, happened,
         extra={"kind": "outcome", "grade": grade_value})
 
 
-def _confession_state(claims, confession, now_date: date) -> dict:
+def _utc_date(timestamp: str) -> date:
+    parsed = datetime.fromisoformat(
+        timestamp.replace("Z", "+00:00"))
+    if parsed.tzinfo is not None:
+        parsed = parsed.astimezone(timezone.utc)
+    return parsed.date()
+
+
+def _confession_state(claims, index, confession,
+                      now_date: date) -> dict:
     superseded = _superseded_ids(claims)
     entry = {"id": confession["id"],
              "action": confession.get("subject"),
              "sentence": confession["text"],
              "due": confession.get("due"),
              "grade": None}
-    if confession["id"] in superseded:
-        entry["state"] = "superseded"
-        return entry
-    outcome = live_outcome(claims, confession["id"])
+    outcome = index.get(confession["id"])
     if outcome is not None:
         entry["state"] = "graded"
         entry["grade"] = outcome.get("grade")
+        return entry
+    if confession["id"] in superseded:
+        entry["state"] = "superseded"
         return entry
     due = confession.get("due")
     if due and date.fromisoformat(due) < now_date:
@@ -109,41 +172,50 @@ def _confession_state(claims, confession, now_date: date) -> dict:
 
 
 def ledger(store: Store, *, now: str) -> dict:
-    claims = store._load()
+    if not store.path.exists():
+        raise StoreError(f"no such record, {store.path}")
+    claims = store.claims()
     try:
-        now_date = datetime.fromisoformat(
-            now.replace("Z", "+00:00")).date()
+        now_date = _utc_date(now)
     except ValueError:
         raise StoreError(
             f"now is not an ISO timestamp, {now}") from None
-    return {"confessions": [
-        _confession_state(claims, c, now_date)
-        for c in confessions(claims)]}
-
-
-def _iso_week(day: date):
-    iso = day.isocalendar()
-    monday = day - timedelta(days=day.weekday())
-    return iso, monday, monday + timedelta(days=6)
+    index = OutcomeIndex(claims)
+    entries = []
+    malformed = []
+    for confession in confessions(claims):
+        entries.append(
+            _confession_state(claims, index, confession, now_date))
+        defects = confession_defects(confession)
+        if defects:
+            malformed.append({"id": confession["id"],
+                              "reasons": defects})
+    document = {"confessions": entries}
+    if malformed:
+        document["malformed"] = malformed
+    return document
 
 
 def wall(store: Store, *, on: str) -> dict:
-    claims = store._load()
+    if not store.path.exists():
+        raise StoreError(f"no such record, {store.path}")
+    claims = store.claims()
     try:
         day = date.fromisoformat(on)
     except ValueError:
         raise StoreError(f"not an ISO date, {on}") from None
-    iso, monday, sunday = _iso_week(day)
-    superseded = _superseded_ids(claims)
+    iso = day.isocalendar()
+    monday = day - timedelta(days=day.weekday())
+    sunday = monday + timedelta(days=6)
+    index = OutcomeIndex(claims)
+    well_formed = [c for c in confessions(claims)
+                   if not confession_defects(c)]
     broke = []
-    for confession in confessions(claims):
-        if confession["id"] in superseded:
-            continue
-        outcome = live_outcome(claims, confession["id"])
+    for confession in well_formed:
+        outcome = index.get(confession["id"])
         if outcome is None or outcome.get("grade") != "broke":
             continue
-        landed = datetime.fromisoformat(
-            outcome["asserted_at"].replace("Z", "+00:00")).date()
+        landed = _utc_date(outcome["asserted_at"])
         if monday <= landed <= sunday:
             broke.append({
                 "action": confession.get("subject"),
@@ -151,10 +223,10 @@ def wall(store: Store, *, on: str) -> dict:
                 "happened": outcome["text"],
                 "outcome": outcome["id"]})
     ungraded = []
-    for confession in confessions(claims):
-        if confession["id"] in superseded:
+    for confession in well_formed:
+        if index.get(confession["id"]) is not None:
             continue
-        if live_outcome(claims, confession["id"]) is not None:
+        if confession["id"] in _superseded_ids(claims):
             continue
         due = confession.get("due")
         if due and monday <= date.fromisoformat(due) <= sunday:
