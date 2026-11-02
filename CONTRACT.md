@@ -67,3 +67,42 @@ at the version the onrecord contract states.
   rendered views go to stdout or a named path, written
   atomically, and every failure is a named error with
   exit 1. Test, tests/test_wall.py.
+
+## Round 1 amendments, the pinned shapes (recorded before code)
+
+- WW-5a. A confession claim carries the extra field
+  kind with the value confession. Its evidence holds
+  at least one entry whose source is approval, naming
+  the WW-1 approval in its reference. The sentence
+  rule, mechanical: the text is one line, ends in a
+  period, and holds no other sentence terminator
+  (period, question mark, exclamation mark) anywhere
+  before that final period. Test, tests/test_wall.py.
+- WW-6a. The record is consumed at onrecord's pinned
+  discipline: the same shape checks, the same id
+  derivation under canonical form 1, the same append
+  rule. A defective record is refused with its defects
+  named. A fixture record minted by onrecord's own
+  store pins the agreement. Test, tests/test_wall.py.
+- WW-7a. An outcome claim carries kind with the value
+  outcome, the field grade with a value from the set,
+  and a subject of the word confession, a colon, and
+  the confession's claim id. Its text states what
+  actually happened. Grading a confession with a live
+  outcome is refused; a correction supersedes that
+  outcome claim. Test, tests/test_wall.py.
+- WW-8a. The ledger document lists confessions in
+  record order, each with id, action, sentence, due,
+  state (graded, awaiting, overdue, superseded), and
+  its grade or null. Overdue is judged against the
+  caller-supplied current time: an ungraded,
+  unsuperseded confession whose due date is before
+  the current date. Test, tests/test_wall.py.
+- WW-9a. The wall is selected by a caller-supplied
+  date; its week is that date's ISO week. The broke
+  list holds confessions whose live outcome grades
+  broke and whose outcome was asserted in the week,
+  each with action, sentence, and the outcome's text
+  as what happened. The ungraded list holds
+  confessions due in the week with no live outcome
+  and no supersession. Test, tests/test_wall.py.
