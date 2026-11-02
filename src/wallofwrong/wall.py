@@ -34,6 +34,8 @@ def confession_defects(claim: dict) -> list[str]:
     evidence = claim.get("evidence") or []
     if not any(isinstance(e, dict)
                and e.get("source") == "approval"
+               and isinstance(e.get("reference"), str)
+               and e.get("reference").strip()
                for e in evidence):
         defects.append("no approval evidence")
     subject = claim.get("subject")
@@ -99,6 +101,10 @@ def confess(store: Store, *, action, sentence, due, at, asserter,
     defect = sentence_defect(sentence)
     if defect:
         raise StoreError(defect)
+    if not isinstance(action, str) or not action.strip():
+        raise StoreError("the action names nothing")
+    if not isinstance(approval, str) or not approval.strip():
+        raise StoreError("the approval names nothing")
     return store.add(
         text=sentence, asserter=asserter, asserted_at=at,
         evidence=[{"source": "approval", "reference": approval}],

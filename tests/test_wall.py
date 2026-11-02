@@ -475,3 +475,24 @@ def test_a_sentence_breaking_confession_is_malformed(
     assert any("internal sentence break" in r
                for r in reasons[forged])
     assert any("no subject" in r for r in reasons[blank])
+
+
+def test_blank_names_are_refused_at_write_and_read(tmp_path):
+    store = Store(tmp_path / "r.jsonl")
+    base = {"sentence": "The deploy holds.",
+            "due": "2026-02-01", "at": "2026-01-05T09:00:00Z",
+            "asserter": "agent"}
+    with pytest.raises(StoreError, match="action names"):
+        confess(store, action=" ", approval="op-1", **base)
+    with pytest.raises(StoreError, match="approval names"):
+        confess(store, action="deploy", approval="  ", **base)
+    assert not (tmp_path / "r.jsonl").exists()
+    store.add(text="A fine sentence.", asserter="agent",
+              asserted_at="2026-01-05T09:00:00Z",
+              evidence=[{"source": "approval",
+                         "reference": " "}],
+              subject="deploy", due="2026-02-01",
+              extra={"kind": "confession"})
+    document = tally(store, now=NOW)
+    assert document["total"] == 0
+    assert document["malformed"] == 1
