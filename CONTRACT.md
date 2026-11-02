@@ -106,3 +106,32 @@ at the version the onrecord contract states.
   as what happened. The ungraded list holds
   confessions due in the week with no live outcome
   and no supersession. Test, tests/test_wall.py.
+
+## Round 1 amendments, after the reviews (recorded before the repair code)
+
+- WW-5b. A sentence must hold content: the text
+  before the final period contains at least one letter
+  or digit. A bare period is refused as empty.
+  Test, tests/test_wall.py.
+- WW-7b. Only outcome claims advance an outcome
+  chain. An outcome superseded by a plain claim still
+  governs. When more than one live outcome stands on
+  a confession, or a live outcome carries a grade
+  outside the fixed set, the views refuse, naming the
+  confession and the outcomes: graded once is the
+  model, and a record outside it is not silently
+  resolved. Test, tests/test_wall.py.
+- WW-8b. A confession graded before it was superseded
+  keeps its graded state and its grade; superseded is
+  the state only of a confession superseded while
+  ungraded. A confession claim failing WW-5 (no
+  approval evidence, no subject, no due date) is
+  named in the ledger document's malformed list with
+  its reasons and never reaches the wall; grading one
+  is refused by name. Test, tests/test_wall.py.
+- WW-9b. Dates are read in UTC: a timestamp carrying
+  an offset is converted before its date is taken, so
+  the same instant lands in the same week however it
+  is written. The wall's broke entries also carry the
+  outcome's claim id under outcome, naming the
+  receipt. Test, tests/test_wall.py.
