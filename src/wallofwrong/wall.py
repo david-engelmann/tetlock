@@ -1,4 +1,4 @@
-"""WW-5 to WW-10. Confessions, outcomes, and the views."""
+"""WW-5 to WW-16. Confessions, outcomes, and the views."""
 from __future__ import annotations
 
 from datetime import date, datetime, timedelta, timezone
@@ -6,6 +6,7 @@ from datetime import date, datetime, timedelta, timezone
 from .record import Store, StoreError
 
 GRADES = ("held", "broke", "unverifiable")
+STATES = ("graded", "awaiting", "overdue", "superseded")
 TERMINATORS = (".", "?", "!")
 
 
@@ -35,10 +36,14 @@ def confession_defects(claim: dict) -> list[str]:
                and e.get("source") == "approval"
                for e in evidence):
         defects.append("no approval evidence")
-    if not claim.get("subject"):
+    subject = claim.get("subject")
+    if not isinstance(subject, str) or not subject.strip():
         defects.append("no subject naming the action")
     if not claim.get("due"):
         defects.append("no due date")
+    defect = sentence_defect(claim.get("text") or "")
+    if defect:
+        defects.append(defect)
     return defects
 
 
@@ -140,6 +145,8 @@ def grade(store: Store, *, confession_id, grade_value, happened,
 
 
 def _utc_date(timestamp: str) -> date:
+    if not isinstance(timestamp, str):
+        raise ValueError("not an ISO timestamp")
     parsed = datetime.fromisoformat(
         timestamp.replace("Z", "+00:00"))
     if parsed.tzinfo is not None:
@@ -171,7 +178,10 @@ def _confession_state(claims, index, confession,
     return entry
 
 
-def ledger(store: Store, *, now: str) -> dict:
+def _now_view(store: Store, now: str):
+    """The shared preamble of the views judged at a
+    caller-supplied now: the record must exist, the
+    time must parse, the outcomes must resolve."""
     if not store.path.exists():
         raise StoreError(f"no such record, {store.path}")
     claims = store.claims()
@@ -180,7 +190,11 @@ def ledger(store: Store, *, now: str) -> dict:
     except ValueError:
         raise StoreError(
             f"now is not an ISO timestamp, {now}") from None
-    index = OutcomeIndex(claims)
+    return claims, now_date, OutcomeIndex(claims)
+
+
+def ledger(store: Store, *, now: str) -> dict:
+    claims, now_date, index = _now_view(store, now)
     entries = []
     malformed = []
     for confession in confessions(claims):
@@ -196,22 +210,10 @@ def ledger(store: Store, *, now: str) -> dict:
     return document
 
 
-STATES = ("graded", "awaiting", "overdue", "superseded")
-GRADES = ("held", "broke", "unverifiable")
-
-
 def tally(store: Store, *, now: str) -> dict:
     """WW-13 to WW-16: the counts of the record, by
     state and by grade, per action, arithmetic closed."""
-    if not store.path.exists():
-        raise StoreError(f"no such record, {store.path}")
-    claims = store.claims()
-    try:
-        now_date = _utc_date(now)
-    except ValueError:
-        raise StoreError(
-            f"now is not an ISO timestamp, {now}") from None
-    index = OutcomeIndex(claims)
+    claims, now_date, index = _now_view(store, now)
     by_state = {state: 0 for state in STATES}
     by_grade = {grade: 0 for grade in GRADES}
     actions: dict[str, dict] = {}
@@ -227,10 +229,11 @@ def tally(store: Store, *, now: str) -> dict:
         by_state[entry["state"]] += 1
         if entry["state"] == "graded":
             by_grade[entry["grade"]] += 1
-            row = actions.setdefault(
-                entry["action"],
-                {"action": entry["action"], "graded": 0,
-                 "held": 0, "broke": 0, "unverifiable": 0})
+            row = actions.get(entry["action"])
+            if row is None:
+                row = actions[entry["action"]] = {
+                    "action": entry["action"], "graded": 0,
+                    **{grade: 0 for grade in GRADES}}
             row["graded"] += 1
             row[entry["grade"]] += 1
     return {"total": total, "by_state": by_state,
