@@ -841,19 +841,35 @@ fn resolve_units(units: &[u16]) -> Vec<u16> {
                 }
                 return units_of_path(&resolved);
             }
-            Err(_) => match prefix.file_name() {
-                Some(name) => {
-                    tail.push(name.to_os_string());
-                    prefix = prefix
-                        .parent()
-                        .map(|parent| parent.to_path_buf())
-                        .unwrap_or_default();
-                    if prefix.as_os_str().is_empty() {
-                        prefix = std::path::PathBuf::from("/");
+            Err(_) => {
+                // Peel one component at a time, any kind
+                // (WW-25): a ".." or "." component peels
+                // like a name, so a tail carrying one
+                // still gets its existing prefix resolved,
+                // and the lexical finish then pops the
+                // resolved prefix exactly as realpath does.
+                use std::path::Component;
+                let last = prefix.components().next_back();
+                let peeled = match last {
+                    Some(Component::Normal(name)) => Some(name.to_os_string()),
+                    Some(Component::ParentDir) => Some(std::ffi::OsString::from("..")),
+                    Some(Component::CurDir) => Some(std::ffi::OsString::from(".")),
+                    _ => None,
+                };
+                match peeled {
+                    Some(name) => {
+                        tail.push(name);
+                        prefix = prefix
+                            .parent()
+                            .map(|parent| parent.to_path_buf())
+                            .unwrap_or_default();
+                        if prefix.as_os_str().is_empty() {
+                            prefix = std::path::PathBuf::from("/");
+                        }
                     }
+                    None => return units_of_path(&prefix),
                 }
-                None => return units_of_path(&prefix),
-            },
+            }
         }
     }
 }
