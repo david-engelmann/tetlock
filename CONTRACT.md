@@ -261,3 +261,38 @@ reviews, before the repair code).
   versus Python line share on the landing tree,
   the bindings determination, and every non-Rust
   remainder with its justification.
+- WW-24. Round 4 re-pins both crates: flighttape
+  from ba8d4b550850179722f48b8f9c909e199efe3548 to
+  eebce0be75a9c2ffa534635e37160c7cbef5d96e (its
+  Round 12 merge) and onrecord from
+  3df5c1fbcc027d9df71e4b65f6b1c51b63680815 to
+  c6516073a190623c1109268c7505340405e72c0f (its
+  Round 4 merge, which pins the same flighttape
+  rev). The named deviation 2 of the Round 3
+  dossier (the crate-owned timestamp stray digit)
+  retires as it did in onrecord Round 4: the
+  harness's deviation cells flip to agreement,
+  and FT-60a's shapes are asserted through the
+  surfaces that read timestamps. No other named
+  deviation moves.
+- WW-25. The output guard's resolver peels the
+  last component of any kind, not only a file
+  name: a path whose nonexistent tail ends in a
+  ".." component behind a symlinked prefix
+  resolves against the resolved prefix, as
+  pathlib's realpath order does (the shape
+  secondbill Round 3's spec probe proved
+  divergent). The differential harness gains the
+  interleave cells (a symlinked escape component,
+  a nonexistent deep component, then "..", then
+  the target name), on both the guard-refuses
+  and guard-allows sides.
+- WW-26. The round's verification is the full
+  local gate plus the differential harness
+  re-run over its standing corpus at zero
+  failures, WW-24 and WW-25 cells included.
+- WW-27. CodeRabbit's advisory pass on Round 3's
+  PR 4 posted no findings (zero entries on the
+  review endpoints; its summary shell and an
+  action-not-completed notice stand on the PR),
+  so no disposition is owed from it.
