@@ -460,7 +460,7 @@ fn now_view(store: &Store, now: &Text) -> Result<(Vec<Value>, i64), StoreError> 
         message.push_msg(&crate::record::display_msg(&store.path));
         return Err(StoreError::Named(message));
     }
-    let claims = store.claims_with(crate::record::BUDGET_LOAD_DEEP)?;
+    let claims = store.claims_at(crate::record::THRESHOLD_NOW_VIEW)?;
     let now_day = match utc_date(now) {
         Some(day) => day,
         None => {
