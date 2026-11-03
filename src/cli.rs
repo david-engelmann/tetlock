@@ -32,21 +32,7 @@ struct Token {
 
 impl Token {
     fn from_units(units: Vec<u16>) -> Token {
-        let mut scalars = Vec::new();
-        let mut index = 0;
-        while index < units.len() {
-            let unit = units[index];
-            if (0xD800..=0xDBFF).contains(&unit)
-                && index + 1 < units.len()
-                && (0xDC00..=0xDFFF).contains(&units[index + 1])
-            {
-                scalars.push(crate::util::decode_pair(unit, units[index + 1]));
-                index += 2;
-            } else {
-                scalars.push(unit as u32);
-                index += 1;
-            }
-        }
+        let scalars = crate::util::scalars_of(&units);
         Token {
             text: Text::from_units(units),
             scalars,
@@ -100,19 +86,7 @@ fn split_long(token: &Token) -> (&[u32], Option<Text>) {
     match token.scalars.iter().position(|c| *c == '=' as u32) {
         Some(at) => {
             let units = token.text.units();
-            let mut unit_at = 0usize;
-            let mut scalar_at = 0usize;
-            while scalar_at < at {
-                if (0xD800..=0xDBFF).contains(&units[unit_at])
-                    && unit_at + 1 < units.len()
-                    && (0xDC00..=0xDFFF).contains(&units[unit_at + 1])
-                {
-                    unit_at += 2;
-                } else {
-                    unit_at += 1;
-                }
-                scalar_at += 1;
-            }
+            let unit_at = crate::util::unit_offset(units, at);
             (
                 &token.scalars[..at],
                 Some(Text::from_units(units[unit_at + 1..].to_vec())),
@@ -127,20 +101,8 @@ fn split_long(token: &Token) -> (&[u32], Option<Text>) {
 /// an '=' in a short cluster.
 fn text_from_scalar(token: &Token, scalar_index: usize) -> Text {
     let units = token.text.units();
-    let mut unit_at = 0usize;
-    let mut scalar_at = 0usize;
-    while scalar_at < scalar_index && unit_at < units.len() {
-        if (0xD800..=0xDBFF).contains(&units[unit_at])
-            && unit_at + 1 < units.len()
-            && (0xDC00..=0xDFFF).contains(&units[unit_at + 1])
-        {
-            unit_at += 2;
-        } else {
-            unit_at += 1;
-        }
-        scalar_at += 1;
-    }
-    Text::from_units(units[unit_at.min(units.len())..].to_vec())
+    let unit_at = crate::util::unit_offset(units, scalar_index);
+    Text::from_units(units[unit_at..].to_vec())
 }
 
 /// The outcome of matching a long-option name
@@ -175,25 +137,77 @@ enum ParseOutcome {
     Exit(i32),
 }
 
+/// Write bytes to stdout under its lock, reporting
+/// only whether the write and its flush landed.
+fn write_stdout(bytes: &[u8]) -> Result<(), std::io::Error> {
+    let stdout = std::io::stdout();
+    let mut handle = stdout.lock();
+    handle.write_all(bytes).and_then(|_| handle.flush())
+}
+
+/// Write bytes to stderr under its lock, reporting
+/// only whether the write and its flush landed.
+fn write_stderr(bytes: &[u8]) -> Result<(), std::io::Error> {
+    let stderr = std::io::stderr();
+    let mut handle = stderr.lock();
+    handle.write_all(bytes).and_then(|_| handle.flush())
+}
+
+/// The "error, ..." line's destination: stderr, or
+/// stdout when stderr was closed at launch (the
+/// Python backs a missing standard stream with the
+/// surviving one, so its reports migrate there). A
+/// failed write is dropped at this seam; the caller
+/// keeps the exit its own rule assigns.
+fn report_error(line: &str) {
+    let mut bytes = line.as_bytes().to_vec();
+    bytes.push(b'\n');
+    if crate::util::closed_at_launch(2) {
+        let _ = write_stdout(&bytes);
+    } else {
+        let _ = write_stderr(&bytes);
+    }
+}
+
 fn parse_error(usage: &str, prog: &str, message: &str) -> ParseOutcome {
-    eprintln!("{usage}{prog}: error: {message}");
-    ParseOutcome::Exit(2)
+    let text = format!("{usage}{prog}: error: {message}\n");
+    if crate::util::closed_at_launch(2) {
+        // With stderr closed at launch the Python's
+        // usage line migrates to stdout and its
+        // error line is lost in the fallback stream;
+        // the exit stays 2. The module's own error
+        // reports, written in one piece, migrate
+        // whole (see report_error).
+        let _ = write_stdout(usage.as_bytes());
+        return ParseOutcome::Exit(2);
+    }
+    match write_stderr(text.as_bytes()) {
+        Ok(()) => ParseOutcome::Exit(2),
+        // A usage that cannot be delivered collapses
+        // to 1 where the Python's shutdown flush
+        // failure gives 120 (the flush class, named
+        // in the dossier).
+        Err(_) => ParseOutcome::Exit(1),
+    }
 }
 
 /// Print a help text the guarded way: a broken
 /// stream is a caught write error with exit 1,
 /// never a panic (the shutdown flush class, named
-/// in the dossier).
+/// in the dossier). With stdout closed at launch
+/// the help migrates to stderr and still exits 0,
+/// as the Python's does.
 fn print_help(text: &str) -> ParseOutcome {
-    let stdout = std::io::stdout();
-    let mut handle = stdout.lock();
-    match handle
-        .write_all(text.as_bytes())
-        .and_then(|_| handle.flush())
-    {
+    if crate::util::closed_at_launch(1) {
+        return match write_stderr(text.as_bytes()) {
+            Ok(()) => ParseOutcome::Exit(0),
+            Err(_) => ParseOutcome::Exit(1),
+        };
+    }
+    match write_stdout(text.as_bytes()) {
         Ok(()) => ParseOutcome::Exit(0),
         Err(error) => {
-            eprintln!("error, {}", os_error_text(&error));
+            report_error(&format!("error, {}", os_error_text(&error)));
             ParseOutcome::Exit(1)
         }
     }
@@ -698,14 +712,20 @@ fn parse_top(tokens: &[Token]) -> ParseOutcome {
 
 /// Write text to stdout the way the Python's
 /// _emit_text does: a failure is the named refusal
-/// "error, cannot write to stdout" and exit 1.
+/// "error, cannot write to stdout" and exit 1. With
+/// stdout closed at launch the Python's write
+/// raises out of _emit_text entirely (its stdout
+/// is unusable), the crash class: the command's
+/// file effects have already happened and the exit
+/// is a bare 1 with nothing anywhere.
 fn emit_text(bytes: &[u8]) -> i32 {
-    let stdout = std::io::stdout();
-    let mut handle = stdout.lock();
-    match handle.write_all(bytes).and_then(|_| handle.flush()) {
+    if crate::util::closed_at_launch(1) {
+        return 1;
+    }
+    match write_stdout(bytes) {
         Ok(()) => 0,
         Err(_) => {
-            eprintln!("error, cannot write to stdout");
+            report_error("error, cannot write to stdout");
             1
         }
     }
@@ -719,20 +739,20 @@ fn emit_view(document: &Value, out: &Text) -> i32 {
     let bytes = match dumps_view(document, Mode::Strict) {
         Ok(bytes) => bytes,
         Err(_) => {
-            eprintln!(
+            report_error(&format!(
                 "error, cannot write the view, {}",
                 stderr_render(out.units())
-            );
+            ));
             return 1;
         }
     };
     match write_atomically(out, &bytes) {
         Ok(()) => 0,
         Err(()) => {
-            eprintln!(
+            report_error(&format!(
                 "error, cannot write the view, {}",
                 stderr_render(out.units())
-            );
+            ));
             1
         }
     }
@@ -874,7 +894,7 @@ fn report(result: Result<i32, StoreError>) -> i32 {
     match result {
         Ok(code) => code,
         Err(StoreError::Named(error)) => {
-            eprintln!("error, {}", error.render_stderr());
+            report_error(&format!("error, {}", error.render_stderr()));
             1
         }
         Err(StoreError::Crash) => 1,
@@ -909,7 +929,7 @@ fn execute(command: &str, parsed: &SubParsed) -> i32 {
     let store = Store::new(RecPath::from_units(parsed.positionals[0].units()));
     if let Some(out) = parsed.get_text("--output") {
         if resolve_units(out.units()) == resolve_units(parsed.positionals[0].units()) {
-            eprintln!("error, a view never overwrites the record");
+            report_error("error, a view never overwrites the record");
             return 1;
         }
     }
@@ -957,7 +977,7 @@ fn execute(command: &str, parsed: &SubParsed) -> i32 {
                     None => match dumps_view(&document, Mode::Stdout) {
                         Ok(bytes) => emit_text(&bytes),
                         Err(_) => {
-                            eprintln!("error, cannot write to stdout");
+                            report_error("error, cannot write to stdout");
                             1
                         }
                     },

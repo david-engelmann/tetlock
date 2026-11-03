@@ -33,23 +33,7 @@ fn is_printable(scalar: u32) -> bool {
 /// The decoded scalars of a text: surrogate pairs as
 /// their astral scalar, lone surrogates at face value.
 fn scalars(text: &Text) -> Vec<u32> {
-    let units = text.units();
-    let mut out = Vec::new();
-    let mut index = 0;
-    while index < units.len() {
-        let unit = units[index];
-        if (0xD800..=0xDBFF).contains(&unit)
-            && index + 1 < units.len()
-            && (0xDC00..=0xDFFF).contains(&units[index + 1])
-        {
-            out.push(crate::util::decode_pair(unit, units[index + 1]));
-            index += 2;
-        } else {
-            out.push(unit as u32);
-            index += 1;
-        }
-    }
-    out
+    crate::util::scalars_of(text.units())
 }
 
 /// CPython's repr of a string: single quotes unless

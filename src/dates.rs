@@ -100,12 +100,14 @@ fn digits(bytes: &[u8]) -> Option<i64> {
 /// acceptance and return its day count: calendar
 /// extended (YYYY-MM-DD) and basic (YYYYMMDD),
 /// ISO week extended (YYYY-Www-D) and basic
-/// (YYYYWwwD). Reduced and ordinal forms refuse,
+/// (YYYYWwwD), and the day-less week forms
+/// (YYYY-Www, YYYYWww), which name the week's
+/// Monday. Reduced and ordinal forms refuse,
 /// the year is exactly four digits, and the whole
 /// string is consumed.
 pub fn parse_date_wide(text: &str) -> Option<i64> {
     let b = text.as_bytes();
-    if b.len() < 8 {
+    if b.len() < 7 {
         return None;
     }
     let year = digits(&b[0..4])?;
@@ -114,15 +116,19 @@ pub fn parse_date_wide(text: &str) -> Option<i64> {
     }
     let rest = &b[4..];
     if rest[0] == b'-' {
-        if rest.len() != 6 {
-            return None;
-        }
-        if rest[1] == b'W' {
-            // Week extended: -Www-D.
-            if rest[4] != b'-' {
+        if rest.len() >= 2 && rest[1] == b'W' {
+            // Week extended: -Www-D, or -Www for
+            // the week's Monday.
+            if rest.len() == 4 {
+                return parse_week(year, &rest[2..4], b"1");
+            }
+            if rest.len() != 6 || rest[4] != b'-' {
                 return None;
             }
             return parse_week(year, &rest[2..4], &rest[5..6]);
+        }
+        if rest.len() != 6 {
+            return None;
         }
         // Calendar extended: -MM-DD.
         if rest[3] != b'-' {
@@ -139,7 +145,11 @@ pub fn parse_date_wide(text: &str) -> Option<i64> {
         return Some(days_from_civil(year, month as u32, day as u32));
     }
     if rest[0] == b'W' {
-        // Week basic: WwwD, four bytes after the year.
+        // Week basic: WwwD, or Www for the week's
+        // Monday.
+        if rest.len() == 3 {
+            return parse_week(year, &rest[1..3], b"1");
+        }
         if rest.len() != 4 {
             return None;
         }

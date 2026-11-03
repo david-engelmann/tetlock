@@ -43,9 +43,86 @@ pub fn fsdecode_units(bytes: &[u8]) -> Vec<u16> {
     }
 }
 
+/// Whether a standard stream was closed at launch.
+/// The Rust runtime repairs a missing standard
+/// descriptor before main runs by opening /dev/null
+/// over it read-write; that substitution is the
+/// only ordinary source of a read-write /dev/null
+/// on a standard descriptor, and /proc carries both
+/// the target and the access mode. A stream the
+/// caller aimed at /dev/null itself is opened
+/// read-only or write-only and reads as present, as
+/// does any file, pipe, or socket.
+pub fn closed_at_launch(fd: u32) -> bool {
+    let target = match std::fs::read_link(format!("/proc/self/fd/{fd}")) {
+        Ok(target) => target,
+        Err(_) => return false,
+    };
+    if target != std::path::Path::new("/dev/null") {
+        return false;
+    }
+    let info = match std::fs::read_to_string(format!("/proc/self/fdinfo/{fd}")) {
+        Ok(info) => info,
+        Err(_) => return false,
+    };
+    for line in info.lines() {
+        if let Some(flags) = line.strip_prefix("flags:") {
+            if let Ok(value) = i64::from_str_radix(flags.trim(), 8) {
+                return value & 0o3 == 2;
+            }
+        }
+    }
+    false
+}
+
 /// The scalar a surrogate pair encodes.
 pub fn decode_pair(high: u16, low: u16) -> u32 {
     0x10000 + (((high as u32) - 0xD800) << 10) + ((low as u32) - 0xDC00)
+}
+
+/// The decoded scalars of a unit string: surrogate
+/// pairs as their astral scalar, lone units at face
+/// value. The one decode walk every module shares.
+pub fn scalars_of(units: &[u16]) -> Vec<u32> {
+    let mut out = Vec::with_capacity(units.len());
+    let mut index = 0;
+    while index < units.len() {
+        let span = scalar_span(units, index);
+        if span == 2 {
+            out.push(decode_pair(units[index], units[index + 1]));
+        } else {
+            out.push(units[index] as u32);
+        }
+        index += span;
+    }
+    out
+}
+
+/// How many units the scalar starting at `index`
+/// spans: two for a surrogate pair, one otherwise.
+pub fn scalar_span(units: &[u16], index: usize) -> usize {
+    let unit = units[index];
+    if (0xD800..=0xDBFF).contains(&unit)
+        && index + 1 < units.len()
+        && (0xDC00..=0xDFFF).contains(&units[index + 1])
+    {
+        2
+    } else {
+        1
+    }
+}
+
+/// The unit index at which scalar number
+/// `scalar_index` begins (the unit length when the
+/// index runs past the last scalar).
+pub fn unit_offset(units: &[u16], scalar_index: usize) -> usize {
+    let mut unit_at = 0;
+    let mut seen = 0;
+    while seen < scalar_index && unit_at < units.len() {
+        unit_at += scalar_span(units, unit_at);
+        seen += 1;
+    }
+    unit_at
 }
 
 /// The inverse: encode text units back to OS bytes,
@@ -120,82 +197,6 @@ pub fn stderr_render(units: &[u16]) -> String {
     out
 }
 
-/// Render text the way CPython's stdout does (its
-/// error handler is surrogateescape): a lone
-/// surrogate in DC80 to DCFF writes as its raw byte,
-/// and any other lone surrogate fails the write.
-pub fn stdout_render(units: &[u16]) -> Option<Vec<u8>> {
-    let mut out = Vec::new();
-    let mut index = 0;
-    while index < units.len() {
-        let unit = units[index];
-        if (0xD800..=0xDBFF).contains(&unit)
-            && index + 1 < units.len()
-            && (0xDC00..=0xDFFF).contains(&units[index + 1])
-        {
-            let scalar = decode_pair(unit, units[index + 1]);
-            let mut buf = [0u8; 4];
-            out.extend_from_slice(
-                char::from_u32(scalar)
-                    .expect("a valid pair")
-                    .encode_utf8(&mut buf)
-                    .as_bytes(),
-            );
-            index += 2;
-        } else if (0xDC80..=0xDCFF).contains(&unit) {
-            out.push((unit - 0xDC00) as u8);
-            index += 1;
-        } else if (0xD800..=0xDFFF).contains(&unit) {
-            return None;
-        } else {
-            let mut buf = [0u8; 4];
-            out.extend_from_slice(
-                char::from_u32(unit as u32)
-                    .expect("a BMP scalar")
-                    .encode_utf8(&mut buf)
-                    .as_bytes(),
-            );
-            index += 1;
-        }
-    }
-    Some(out)
-}
-
-/// Normalize a path's display form the way pathlib
-/// does when a Path is printed: empty and dot
-/// components drop, duplicate slashes collapse (a
-/// leading pair of slashes is preserved), a trailing
-/// slash drops, and an empty result is a dot. Dot-dot
-/// components are kept; nothing is resolved.
-pub fn normalize_path_display(units: &[u16]) -> Vec<u16> {
-    let slash = '/' as u16;
-    let absolute = units.first() == Some(&slash);
-    let double = absolute && units.get(1) == Some(&slash) && units.get(2) != Some(&slash);
-    let mut parts: Vec<&[u16]> = Vec::new();
-    for part in units.split(|unit| *unit == slash) {
-        if part.is_empty() || part == ['.' as u16] {
-            continue;
-        }
-        parts.push(part);
-    }
-    let mut out: Vec<u16> = Vec::new();
-    if double {
-        out.extend_from_slice(&[slash, slash]);
-    } else if absolute {
-        out.push(slash);
-    }
-    for (index, part) in parts.iter().enumerate() {
-        if index > 0 {
-            out.push(slash);
-        }
-        out.extend_from_slice(part);
-    }
-    if out.is_empty() {
-        out.push('.' as u16);
-    }
-    out
-}
-
 /// A message under construction, held as text units
 /// so a name the Python inserts raw (a claim id, a
 /// path) keeps its exact units until the message is
@@ -204,12 +205,10 @@ pub fn normalize_path_display(units: &[u16]) -> Vec<u16> {
 #[derive(Clone, Debug, PartialEq)]
 pub struct Msg(pub Vec<u16>);
 
-impl Default for Msg {
-    fn default() -> Msg {
-        Msg::new()
-    }
-}
-
+// new is the constructor every caller uses; a
+// Default implementation stood here unused and
+// went in the Round 3 prune.
+#[allow(clippy::new_without_default)]
 impl Msg {
     pub fn new() -> Msg {
         Msg(Vec::new())
@@ -239,10 +238,6 @@ impl Msg {
 
     pub fn render_stderr(&self) -> String {
         stderr_render(&self.0)
-    }
-
-    pub fn render_stdout(&self) -> Option<Vec<u8>> {
-        stdout_render(&self.0)
     }
 }
 
@@ -369,26 +364,14 @@ fn py_is_space(scalar: u32) -> bool {
 /// Text units with the strip set removed from both
 /// ends, the way the Python's str.strip() reads.
 pub fn py_strip_units(units: &[u16]) -> &[u16] {
-    let points: Vec<(usize, u32)> = {
-        let mut out = Vec::new();
-        let mut index = 0;
-        while index < units.len() {
-            let unit = units[index];
-            if (0xD800..0xDC00).contains(&unit)
-                && index + 1 < units.len()
-                && (0xDC00..0xE000).contains(&units[index + 1])
-            {
-                out.push((index, decode_pair(unit, units[index + 1])));
-                index += 2;
-            } else {
-                out.push((index, unit as u32));
-                index += 1;
-            }
-        }
-        out
-    };
+    let scalars = scalars_of(units);
+    let mut points: Vec<(usize, u32)> = Vec::with_capacity(scalars.len());
+    let mut at = 0;
+    for scalar in &scalars {
+        points.push((at, *scalar));
+        at += scalar_span(units, at);
+    }
     let mut start = 0;
-    let mut end = units.len();
     while start < points.len() && py_is_space(points[start].1) {
         start += 1;
     }
@@ -405,9 +388,7 @@ pub fn py_strip_units(units: &[u16]) -> &[u16] {
     } else {
         units.len()
     };
-    let _ = end;
-    end = to;
-    &units[from..end]
+    &units[from..to]
 }
 
 /// CPython's str.isalnum() for one code point, the

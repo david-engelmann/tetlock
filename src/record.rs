@@ -26,10 +26,6 @@ impl StoreError {
     pub fn named(text: &str) -> StoreError {
         StoreError::Named(Msg::str(text))
     }
-
-    pub fn named_msg(message: Msg) -> StoreError {
-        StoreError::Named(message)
-    }
 }
 
 fn conv(message: &onrecord::util::Msg) -> Msg {
@@ -481,6 +477,34 @@ fn line_count(path: &RecPath) -> Option<usize> {
     }
 }
 
+/// The Python attempts the id derivation only
+/// under a gate: every required field present and
+/// the id a string (record.py claim_defects). With
+/// the gate closed there is no derivation and no
+/// failure to restore, however deep or strange the
+/// claim. The add path's stored claim is built
+/// whole, so its gate is always open; the loaded
+/// record's claims must be gated one by one.
+fn derivation_attempted(claim: &Value) -> bool {
+    let entries = match claim {
+        Value::Object(entries) => entries,
+        _ => return false,
+    };
+    let field = |name: &str| {
+        let wanted = Text::from_str(name);
+        entries
+            .iter()
+            .find(|(key, _)| key.units() == wanted.units())
+            .map(|(_, value)| value)
+    };
+    if !matches!(field("id"), Some(Value::Str(_))) {
+        return false;
+    }
+    ["text", "asserter", "asserted_at", "evidence", "supersedes"]
+        .iter()
+        .all(|name| field(name).is_some())
+}
+
 /// Restore, in one claim's own defect list (the add
 /// path), the cannot-be-rendered entry the Python
 /// raises where the crate's generous budget derived
@@ -551,7 +575,7 @@ fn fix_up_defects(
         }
     }
     for (claim, &line) in claims.iter().zip(&claim_lines) {
-        if !matches!(claim, Value::Object(_)) || !render_fails(claim, threshold) {
+        if !derivation_attempted(claim) || !render_fails(claim, threshold) {
             continue;
         }
         let cannot = Msg::str(&format!("line {line}: {CANNOT_RENDER}"));

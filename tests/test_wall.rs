@@ -7,7 +7,6 @@
 use flighttape::value::{Text, Value};
 use wallofwrong::emit::{dumps_view, Mode};
 use wallofwrong::record::{Store, StoreError};
-use wallofwrong::util::Msg;
 use wallofwrong::wall::{confess, grade, ledger, tally, wall};
 
 const CONF_A: &str = "claim-b0e7464b9254d2cb";
@@ -947,6 +946,29 @@ fn blank_names_are_refused_at_write_and_read() {
     assert_eq!(as_int(field(&document, "malformed")), 1);
 }
 
+#[test]
+fn closed_at_launch_reads_the_runtime_substitution() {
+    // The runtime repairs a closed standard stream
+    // with a read-write /dev/null; a /dev/null the
+    // caller opened for writing is a real stream.
+    // The detector must tell them apart, because a
+    // command's whole result rides on it.
+    use std::os::unix::io::AsRawFd;
+    let both = std::fs::OpenOptions::new()
+        .read(true)
+        .write(true)
+        .open("/dev/null")
+        .expect("dev null opens");
+    assert!(wallofwrong::util::closed_at_launch(both.as_raw_fd() as u32));
+    let write_only = std::fs::OpenOptions::new()
+        .write(true)
+        .open("/dev/null")
+        .expect("dev null opens");
+    assert!(!wallofwrong::util::closed_at_launch(
+        write_only.as_raw_fd() as u32
+    ));
+}
+
 fn tempfile_dir() -> std::path::PathBuf {
     let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("target/test-tmp")
@@ -960,10 +982,3 @@ fn tempfile_dir() -> std::path::PathBuf {
 }
 
 static TEMP_COUNTER: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
-
-// The Msg import is used by err_text's rendering
-// path through StoreError; keep it referenced.
-#[allow(dead_code)]
-fn _msg_marker(message: &Msg) -> usize {
-    message.0.len()
-}

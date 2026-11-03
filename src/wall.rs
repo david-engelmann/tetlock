@@ -61,23 +61,7 @@ fn py_str(value: &Value) -> Msg {
 /// Code points of a text, surrogate pairs combined
 /// and lone surrogates standing as their own values.
 fn code_points(text: &Text) -> Vec<u32> {
-    let units = text.units();
-    let mut points = Vec::with_capacity(units.len());
-    let mut index = 0;
-    while index < units.len() {
-        let unit = units[index];
-        if (0xD800..0xDC00).contains(&unit)
-            && index + 1 < units.len()
-            && (0xDC00..0xE000).contains(&units[index + 1])
-        {
-            points.push(util::decode_pair(unit, units[index + 1]));
-            index += 2;
-        } else {
-            points.push(unit as u32);
-            index += 1;
-        }
-    }
-    points
+    util::scalars_of(text.units())
 }
 
 /// The mechanical sentence rule (WW-5, WW-5a,
@@ -516,6 +500,16 @@ struct ActionTally {
     graded: i64,
 }
 
+/// Add one to the count held under a name, the
+/// tally's one counting motion.
+fn bump(counts: &mut [(Text, i64)], name: &Text) {
+    for (held, count) in counts.iter_mut() {
+        if held.units() == name.units() {
+            *count += 1;
+        }
+    }
+}
+
 pub fn tally(store: &Store, now: &Text) -> Result<Value, StoreError> {
     let (claims, now_day) = now_view(store, now)?;
     let index = OutcomeIndex::new(&claims)?;
@@ -541,22 +535,14 @@ pub fn tally(store: &Store, now: &Text) -> Result<Value, StoreError> {
             Some(state) => state.clone(),
             None => return Err(StoreError::Crash),
         };
-        for (name, count) in by_state.iter_mut() {
-            if name.units() == state.units() {
-                *count += 1;
-            }
-        }
+        bump(&mut by_state, &state);
         if state.units() == Text::from_str("graded").units() {
             let grade = match get(&entry, "grade") {
                 Some(value) => value.clone(),
                 None => Value::Null,
             };
-            for (name, count) in by_grade.iter_mut() {
-                if let Value::Str(grade_text) = &grade {
-                    if name.units() == grade_text.units() {
-                        *count += 1;
-                    }
-                }
+            if let Value::Str(grade_text) = &grade {
+                bump(&mut by_grade, grade_text);
             }
             let action_value = get(&entry, "action").cloned().unwrap_or(Value::Null);
             let action_units = match &action_value {
@@ -568,22 +554,14 @@ pub fn tally(store: &Store, now: &Text) -> Result<Value, StoreError> {
                 Some(row) => {
                     row.graded += 1;
                     if let Value::Str(grade_text) = &grade {
-                        for (name, count) in row.counts.iter_mut() {
-                            if name.units() == grade_text.units() {
-                                *count += 1;
-                            }
-                        }
+                        bump(&mut row.counts, grade_text);
                     }
                 }
                 None => {
                     let mut counts: Vec<(Text, i64)> =
                         GRADES.iter().map(|g| (Text::from_str(g), 0)).collect();
                     if let Value::Str(grade_text) = &grade {
-                        for (name, count) in counts.iter_mut() {
-                            if name.units() == grade_text.units() {
-                                *count += 1;
-                            }
-                        }
+                        bump(&mut counts, grade_text);
                     }
                     actions.push(ActionTally {
                         units: action_units,
@@ -595,7 +573,10 @@ pub fn tally(store: &Store, now: &Text) -> Result<Value, StoreError> {
             }
         }
     }
-    actions.sort_by(|a, b| a.units.cmp(&b.units));
+    // The Python sorts action names as strings, by
+    // code point; the digest's UTF-16 key order is a
+    // different law and does not apply to a view.
+    actions.sort_by_cached_key(|row| util::scalars_of(&row.units));
     let action_rows: Vec<Value> = actions
         .into_iter()
         .map(|row| {
@@ -653,15 +634,9 @@ pub fn wall(store: &Store, on: &Text) -> Result<Value, StoreError> {
         return Err(StoreError::Named(message));
     }
     let claims = store.claims()?;
-    let day = match on.as_str() {
-        Some(plain) => match dates::parse_date_wide(&plain) {
-            Some(day) => day,
-            None => {
-                let mut message = Msg::str("not an ISO date, ");
-                message.push_units(on.units());
-                return Err(StoreError::Named(message));
-            }
-        },
+    let parsed = on.as_str().and_then(|plain| dates::parse_date_wide(&plain));
+    let day = match parsed {
+        Some(day) => day,
         None => {
             let mut message = Msg::str("not an ISO date, ");
             message.push_units(on.units());
@@ -671,6 +646,13 @@ pub fn wall(store: &Store, on: &Text) -> Result<Value, StoreError> {
     let (iso_year, iso_week, _) = dates::iso_calendar(day);
     let monday = day - dates::weekday_from_days(day) as i64;
     let sunday = monday + 6;
+    if sunday > dates::days_from_civil(9999, 12, 31) {
+        // The Python adds the six days inside the
+        // date type and dies with an OverflowError
+        // where the week runs past the last day of
+        // 9999; the crash class answers for it.
+        return Err(StoreError::Crash);
+    }
     let index = OutcomeIndex::new(&claims)?;
     let mut well_formed = Vec::new();
     for confession in confessions(&claims) {
