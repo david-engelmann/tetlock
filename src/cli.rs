@@ -818,10 +818,24 @@ fn write_atomically(out: &Text, bytes: &[u8]) -> Result<(), ()> {
 
 static TEMP_COUNTER: std::sync::atomic::AtomicU32 = std::sync::atomic::AtomicU32::new(0);
 
+/// The kernel's symlink-loop errno on this
+/// platform family.
+const ELOOP: i32 = 40;
+
 /// A path resolved the way pathlib's resolve reads:
 /// absolute, symlinks in the existing prefix
 /// resolved, the rest normalized lexically.
-fn resolve_units(units: &[u16]) -> Vec<u16> {
+/// Resolution fails outright (None) where the
+/// finished path passes through a symlink loop:
+/// the oracle's resolve raises there, and the
+/// output guard counts an unresolvable output as
+/// naming the record (WW-25a). The loop is judged
+/// on the finished path, not on the spellings the
+/// peel tries along the way: a loop component a
+/// following ".." cancels never survives into the
+/// finished path, and the oracle resolves those
+/// spellings cleanly, so they resolve here too.
+fn resolve_units(units: &[u16]) -> Option<Vec<u16>> {
     let raw = crate::util::os_path_from_units(units);
     let absolute = if raw.is_absolute() {
         raw
@@ -833,13 +847,13 @@ fn resolve_units(units: &[u16]) -> Vec<u16> {
     // Canonicalize the longest existing prefix.
     let mut prefix = absolute.clone();
     let mut tail: Vec<std::ffi::OsString> = Vec::new();
-    loop {
+    let resolved = loop {
         match std::fs::canonicalize(&prefix) {
             Ok(mut resolved) => {
                 for part in tail.iter().rev() {
                     resolved.push(part);
                 }
-                return units_of_path(&resolved);
+                break resolved;
             }
             Err(_) => {
                 // Peel one component at a time, any kind
@@ -867,11 +881,41 @@ fn resolve_units(units: &[u16]) -> Vec<u16> {
                             prefix = std::path::PathBuf::from("/");
                         }
                     }
-                    None => return units_of_path(&prefix),
+                    None => break prefix,
                 }
             }
         }
+    };
+    let units = units_of_path(&resolved);
+    if path_loops(&units) {
+        return None;
     }
+    Some(units)
+}
+
+/// True where the finished path passes through a
+/// symlink loop: canonicalizing its own prefixes
+/// one component at a time meets ELOOP. A prefix
+/// that does not exist ends the walk, as the rest
+/// of the path is a lexical tail no loop can hide
+/// in; a prefix failing any other way (an
+/// unsearchable directory, say) ends it too, the
+/// peel above having treated it the same way.
+fn path_loops(units: &[u16]) -> bool {
+    let text = String::from_utf16_lossy(units);
+    let mut prefix = std::path::PathBuf::from("/");
+    for part in text.split('/') {
+        if part.is_empty() {
+            continue;
+        }
+        prefix.push(part);
+        match std::fs::canonicalize(&prefix) {
+            Ok(_) => {}
+            Err(error) if error.raw_os_error() == Some(ELOOP) => return true,
+            Err(_) => break,
+        }
+    }
+    false
 }
 
 fn units_of_path(path: &std::path::Path) -> Vec<u16> {
@@ -944,7 +988,22 @@ fn parse_evidence(items: &[Text]) -> Result<Vec<(Text, Text)>, StoreError> {
 fn execute(command: &str, parsed: &SubParsed) -> i32 {
     let store = Store::new(RecPath::from_units(parsed.positionals[0].units()));
     if let Some(out) = parsed.get_text("--output") {
-        if resolve_units(out.units()) == resolve_units(parsed.positionals[0].units()) {
+        // WW-25a: an output whose resolution hits a
+        // symlink loop counts as naming the record
+        // and is refused here, where the Python dies
+        // in the crash class before its guard. A
+        // record whose resolution hits a loop does
+        // not refuse at the guard: the load below
+        // refuses it by name, the crash class's
+        // named side.
+        let refused = match resolve_units(out.units()) {
+            None => true,
+            Some(resolved_out) => match resolve_units(parsed.positionals[0].units()) {
+                Some(resolved_record) => resolved_out == resolved_record,
+                None => false,
+            },
+        };
+        if refused {
             report_error("error, a view never overwrites the record");
             return 1;
         }
