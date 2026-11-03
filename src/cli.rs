@@ -1,0 +1,1007 @@
+//! WW-12. A thin command line: confess, grade,
+//! ledger, wall, tally. Failures are named errors
+//! with exit 1. The parse reproduces the Python's
+//! argparse behavior for this grammar byte for
+//! byte: its help texts, its error shapes, and the
+//! order they fire in. Help fires at the end of the
+//! token that carries it; a scan error fires when
+//! its token is processed and outranks a pending
+//! help; extras are only reported after the
+//! required check. Argument tokens are carried as
+//! text in the operating system's own decoding
+//! (fsdecode), so argument bytes survive as the
+//! Python's do.
+
+use std::io::Write;
+
+use flighttape::value::{Text, Value};
+
+use crate::emit::{dumps_view, Mode};
+use crate::helptext::*;
+use crate::pyrepr::repr_text;
+use crate::record::{Store, StoreError};
+use crate::util::{fsdecode_units, stderr_render, Msg};
+use onrecord::store::RecPath;
+
+/// One argument token: its text, and its decoded
+/// scalars for the parser's character work.
+struct Token {
+    text: Text,
+    scalars: Vec<u32>,
+}
+
+impl Token {
+    fn from_units(units: Vec<u16>) -> Token {
+        let mut scalars = Vec::new();
+        let mut index = 0;
+        while index < units.len() {
+            let unit = units[index];
+            if (0xD800..=0xDBFF).contains(&unit)
+                && index + 1 < units.len()
+                && (0xDC00..=0xDFFF).contains(&units[index + 1])
+            {
+                scalars.push(crate::util::decode_pair(unit, units[index + 1]));
+                index += 2;
+            } else {
+                scalars.push(unit as u32);
+                index += 1;
+            }
+        }
+        Token {
+            text: Text::from_units(units),
+            scalars,
+        }
+    }
+
+    fn rendered(&self) -> String {
+        stderr_render(self.text.units())
+    }
+}
+
+/// Whether a token is shaped like an option: it
+/// starts with a dash, is not a bare dash, and does
+/// not look like a negative number (no option in
+/// this grammar does, so argparse lets those
+/// through as values).
+fn option_shaped(token: &Token) -> bool {
+    let scalars = &token.scalars;
+    if scalars.len() < 2 || scalars[0] != '-' as u32 {
+        return false;
+    }
+    !is_negative_number(&scalars[1..])
+}
+
+/// argparse's negative number matcher, the full
+/// token pattern ^-\d+$|^-\d*\.\d+$ with \d a
+/// Unicode decimal digit: a token matching it
+/// whole is a value, never an option.
+fn is_negative_number(rest: &[u32]) -> bool {
+    let digit = |c: &u32| crate::util::decimal_digit(*c).is_some();
+    if !rest.is_empty() && rest.iter().all(digit) {
+        return true;
+    }
+    match rest.iter().position(|c| *c == '.' as u32) {
+        Some(dot) => {
+            let (before, after) = (&rest[..dot], &rest[dot + 1..]);
+            !after.is_empty() && before.iter().all(digit) && after.iter().all(digit)
+        }
+        None => false,
+    }
+}
+
+fn scalars_of(text: &str) -> Vec<u32> {
+    text.chars().map(|ch| ch as u32).collect()
+}
+
+/// Split a long-option token at its first '=': the
+/// name's scalars, and the glued value's text when
+/// an '=' is present.
+fn split_long(token: &Token) -> (&[u32], Option<Text>) {
+    match token.scalars.iter().position(|c| *c == '=' as u32) {
+        Some(at) => {
+            let units = token.text.units();
+            let mut unit_at = 0usize;
+            let mut scalar_at = 0usize;
+            while scalar_at < at {
+                if (0xD800..=0xDBFF).contains(&units[unit_at])
+                    && unit_at + 1 < units.len()
+                    && (0xDC00..=0xDFFF).contains(&units[unit_at + 1])
+                {
+                    unit_at += 2;
+                } else {
+                    unit_at += 1;
+                }
+                scalar_at += 1;
+            }
+            (
+                &token.scalars[..at],
+                Some(Text::from_units(units[unit_at + 1..].to_vec())),
+            )
+        }
+        None => (&token.scalars[..], None),
+    }
+}
+
+/// The text of a token from a scalar index on, for
+/// the value glued behind a short option letter or
+/// an '=' in a short cluster.
+fn text_from_scalar(token: &Token, scalar_index: usize) -> Text {
+    let units = token.text.units();
+    let mut unit_at = 0usize;
+    let mut scalar_at = 0usize;
+    while scalar_at < scalar_index && unit_at < units.len() {
+        if (0xD800..=0xDBFF).contains(&units[unit_at])
+            && unit_at + 1 < units.len()
+            && (0xDC00..=0xDFFF).contains(&units[unit_at + 1])
+        {
+            unit_at += 2;
+        } else {
+            unit_at += 1;
+        }
+        scalar_at += 1;
+    }
+    Text::from_units(units[unit_at.min(units.len())..].to_vec())
+}
+
+/// The outcome of matching a long-option name
+/// against a level's option set.
+enum LongMatch {
+    Exact(&'static str),
+    Unique(&'static str),
+    Ambiguous(Vec<&'static str>),
+    None,
+}
+
+fn match_long(name: &[u32], options: &[&'static str]) -> LongMatch {
+    let mut candidates: Vec<&'static str> = Vec::new();
+    for option in options {
+        let full = scalars_of(option);
+        if full == name {
+            return LongMatch::Exact(option);
+        }
+        if full.len() > name.len() && full[..name.len()] == *name {
+            candidates.push(option);
+        }
+    }
+    match candidates.len() {
+        0 => LongMatch::None,
+        1 => LongMatch::Unique(candidates[0]),
+        _ => LongMatch::Ambiguous(candidates),
+    }
+}
+
+enum ParseOutcome {
+    Run(&'static str, Box<SubParsed>),
+    Exit(i32),
+}
+
+fn parse_error(usage: &str, prog: &str, message: &str) -> ParseOutcome {
+    eprintln!("{usage}{prog}: error: {message}");
+    ParseOutcome::Exit(2)
+}
+
+/// Print a help text the guarded way: a broken
+/// stream is a caught write error with exit 1,
+/// never a panic (the shutdown flush class, named
+/// in the dossier).
+fn print_help(text: &str) -> ParseOutcome {
+    let stdout = std::io::stdout();
+    let mut handle = stdout.lock();
+    match handle
+        .write_all(text.as_bytes())
+        .and_then(|_| handle.flush())
+    {
+        Ok(()) => ParseOutcome::Exit(0),
+        Err(error) => {
+            eprintln!("error, {}", os_error_text(&error));
+            ParseOutcome::Exit(1)
+        }
+    }
+}
+
+struct SubParsed {
+    positionals: Vec<Text>,
+    values: Vec<(&'static str, Text)>,
+}
+
+impl SubParsed {
+    fn get_text(&self, canonical: &str) -> Option<Text> {
+        self.values
+            .iter()
+            .rev()
+            .find_map(|(name, value)| (*name == canonical).then(|| value.clone()))
+    }
+
+    fn get_all(&self, canonical: &str) -> Vec<Text> {
+        self.values
+            .iter()
+            .filter(|(name, _)| *name == canonical)
+            .map(|(_, value)| value.clone())
+            .collect()
+    }
+}
+
+#[derive(Clone, Copy, PartialEq)]
+enum OptKind {
+    Help,
+    Value,
+    Append,
+}
+
+struct OptSpec {
+    canonical: &'static str,
+    label: &'static str,
+    kind: OptKind,
+    short: Option<char>,
+}
+
+struct SubSpec {
+    usage: &'static str,
+    prog: &'static str,
+    help: &'static str,
+    positionals: &'static [&'static str],
+    options: &'static [OptSpec],
+    /// The required arguments in definition order:
+    /// (label, is_positional).
+    required: &'static [(&'static str, bool)],
+}
+
+const HELP_OPT: OptSpec = OptSpec {
+    canonical: "--help",
+    label: "-h/--help",
+    kind: OptKind::Help,
+    short: Some('h'),
+};
+
+const fn value_opt(canonical: &'static str) -> OptSpec {
+    OptSpec {
+        canonical,
+        label: canonical,
+        kind: OptKind::Value,
+        short: None,
+    }
+}
+
+const OUTPUT_OPT: OptSpec = OptSpec {
+    canonical: "--output",
+    label: "-o/--output",
+    kind: OptKind::Value,
+    short: Some('o'),
+};
+
+const CONFESS_SPEC: SubSpec = SubSpec {
+    usage: CONFESS_USAGE,
+    prog: "wallofwrong confess",
+    help: CONFESS_HELP,
+    positionals: &["record"],
+    options: &[
+        HELP_OPT,
+        value_opt("--action"),
+        value_opt("--sentence"),
+        value_opt("--due"),
+        value_opt("--at"),
+        value_opt("--asserter"),
+        value_opt("--approval"),
+    ],
+    required: &[
+        ("record", true),
+        ("--action", false),
+        ("--sentence", false),
+        ("--due", false),
+        ("--at", false),
+        ("--asserter", false),
+        ("--approval", false),
+    ],
+};
+
+const GRADE_SPEC: SubSpec = SubSpec {
+    usage: GRADE_USAGE,
+    prog: "wallofwrong grade",
+    help: GRADE_HELP,
+    positionals: &["record"],
+    options: &[
+        HELP_OPT,
+        value_opt("--confession"),
+        value_opt("--grade"),
+        value_opt("--happened"),
+        value_opt("--at"),
+        value_opt("--asserter"),
+        OptSpec {
+            canonical: "--evidence",
+            label: "--evidence",
+            kind: OptKind::Append,
+            short: None,
+        },
+        value_opt("--supersedes"),
+    ],
+    required: &[
+        ("record", true),
+        ("--confession", false),
+        ("--grade", false),
+        ("--happened", false),
+        ("--at", false),
+        ("--asserter", false),
+    ],
+};
+
+const LEDGER_SPEC: SubSpec = SubSpec {
+    usage: LEDGER_USAGE,
+    prog: "wallofwrong ledger",
+    help: LEDGER_HELP,
+    positionals: &["record"],
+    options: &[HELP_OPT, value_opt("--now"), OUTPUT_OPT],
+    required: &[("record", true), ("--now", false)],
+};
+
+const WALL_SPEC: SubSpec = SubSpec {
+    usage: WALL_USAGE,
+    prog: "wallofwrong wall",
+    help: WALL_HELP,
+    positionals: &["record"],
+    options: &[HELP_OPT, value_opt("--date"), OUTPUT_OPT],
+    required: &[("record", true), ("--date", false)],
+};
+
+const TALLY_SPEC: SubSpec = SubSpec {
+    usage: TALLY_USAGE,
+    prog: "wallofwrong tally",
+    help: TALLY_HELP,
+    positionals: &["record"],
+    options: &[HELP_OPT, value_opt("--now"), OUTPUT_OPT],
+    required: &[("record", true), ("--now", false)],
+};
+
+fn spec_for(command: &str) -> &'static SubSpec {
+    match command {
+        "confess" => &CONFESS_SPEC,
+        "grade" => &GRADE_SPEC,
+        "ledger" => &LEDGER_SPEC,
+        "wall" => &WALL_SPEC,
+        _ => &TALLY_SPEC,
+    }
+}
+
+/// Take the value for an option: a glued form wins,
+/// else the next token, which an option-shaped
+/// token can never be. On success `index` still
+/// points at the option token; the caller advances
+/// past both.
+fn take_value(
+    spec: &SubSpec,
+    tokens: &[Token],
+    index: &mut usize,
+    glued: Option<Text>,
+    opt: &OptSpec,
+) -> Result<Text, ParseOutcome> {
+    if let Some(value) = glued {
+        return Ok(value);
+    }
+    match tokens.get(*index + 1) {
+        Some(next) if !option_shaped(next) => {
+            *index += 1;
+            Ok(next.text.clone())
+        }
+        _ => Err(parse_error(
+            spec.usage,
+            spec.prog,
+            &format!("argument {}: expected one argument", opt.label),
+        )),
+    }
+}
+
+/// A short cluster token's outcome.
+enum ClusterFlow {
+    /// The token is an extra.
+    Extra,
+    /// The token was consumed with nothing recorded.
+    Skip,
+    /// Values were recorded from the cluster.
+    Recorded,
+    /// The parse ends here.
+    Exit(ParseOutcome),
+}
+
+/// Read a short cluster. A first letter the command
+/// does not know makes the whole token an extra.
+/// Help fires when the token ends, unless a scan
+/// error in it fired first; a value letter takes
+/// the rest of the cluster as its glued value, or
+/// the next token when the cluster ends there.
+fn short_cluster(
+    spec: &SubSpec,
+    tokens: &[Token],
+    index: &mut usize,
+    values: &mut Vec<(&'static str, Text)>,
+) -> ClusterFlow {
+    let token = &tokens[*index];
+    let cluster = &token.scalars[1..];
+    let first = cluster[0] as u8 as char;
+    let known = spec.options.iter().any(|opt| opt.short == Some(first));
+    if !known {
+        return ClusterFlow::Extra;
+    }
+    let mut help_pending = false;
+    let mut recorded = false;
+    let mut at = 0usize;
+    while at < cluster.len() {
+        let letter = cluster[at] as u8 as char;
+        if letter == 'h' {
+            if cluster.get(at + 1) == Some(&('=' as u32)) {
+                let value = text_from_scalar(token, at + 3);
+                return ClusterFlow::Exit(parse_error(
+                    spec.usage,
+                    spec.prog,
+                    &format!(
+                        "argument -h/--help: ignored explicit argument {}",
+                        repr_text(&value)
+                    ),
+                ));
+            }
+            help_pending = true;
+            at += 1;
+            continue;
+        }
+        let opt = spec
+            .options
+            .iter()
+            .find(|opt| opt.short == Some(letter) && opt.kind != OptKind::Help);
+        match opt {
+            Some(opt) => {
+                let rest = &cluster[at + 1..];
+                let glued = if rest.is_empty() {
+                    None
+                } else if rest[0] == '=' as u32 {
+                    Some(text_from_scalar(token, at + 3))
+                } else {
+                    Some(text_from_scalar(token, at + 2))
+                };
+                match take_value(spec, tokens, index, glued, opt) {
+                    Ok(value) => {
+                        values.push((opt.canonical, value));
+                        recorded = true;
+                    }
+                    Err(outcome) => return ClusterFlow::Exit(outcome),
+                }
+                // A value letter ends the cluster.
+                at = cluster.len();
+            }
+            None => {
+                // A letter the command does not know,
+                // after known letters: argparse reads
+                // the whole token as unrecognized.
+                return ClusterFlow::Extra;
+            }
+        }
+    }
+    if help_pending {
+        return ClusterFlow::Exit(print_help(spec.help));
+    }
+    if recorded {
+        return ClusterFlow::Recorded;
+    }
+    ClusterFlow::Skip
+}
+
+fn parse_sub(command: &'static str, tokens: &[Token], top_extras: &[Text]) -> ParseOutcome {
+    let spec = spec_for(command);
+    let candidates: Vec<&'static str> = spec.options.iter().map(|opt| opt.canonical).collect();
+    let mut positionals: Vec<Text> = Vec::new();
+    let mut extras: Vec<Text> = top_extras.to_vec();
+    let mut values: Vec<(&'static str, Text)> = Vec::new();
+    let mut separated = false;
+    let mut index = 0usize;
+
+    fn push_positional(
+        token: &Text,
+        spec: &SubSpec,
+        positionals: &mut Vec<Text>,
+        extras: &mut Vec<Text>,
+    ) {
+        if positionals.len() < spec.positionals.len() {
+            positionals.push(token.clone());
+        } else {
+            extras.push(token.clone());
+        }
+    }
+
+    while index < tokens.len() {
+        let token = &tokens[index];
+        if separated {
+            push_positional(&token.text, spec, &mut positionals, &mut extras);
+            index += 1;
+            continue;
+        }
+        if token.scalars == scalars_of("--") {
+            separated = true;
+            if positionals.len() == spec.positionals.len() {
+                extras.push(token.text.clone());
+            }
+            index += 1;
+            continue;
+        }
+        if token.scalars.len() >= 2
+            && token.scalars[0] == '-' as u32
+            && token.scalars[1] == '-' as u32
+        {
+            let (name, glued) = split_long(token);
+            let chosen = match match_long(name, &candidates) {
+                LongMatch::Exact(option) | LongMatch::Unique(option) => option,
+                LongMatch::Ambiguous(matches) => {
+                    return parse_error(
+                        spec.usage,
+                        spec.prog,
+                        &format!(
+                            "ambiguous option: {} could match {}",
+                            token.rendered(),
+                            matches.join(", ")
+                        ),
+                    );
+                }
+                LongMatch::None => {
+                    extras.push(token.text.clone());
+                    index += 1;
+                    continue;
+                }
+            };
+            let opt = spec
+                .options
+                .iter()
+                .find(|opt| opt.canonical == chosen)
+                .expect("a spec option");
+            if opt.kind == OptKind::Help {
+                if let Some(value) = glued {
+                    return parse_error(
+                        spec.usage,
+                        spec.prog,
+                        &format!(
+                            "argument -h/--help: ignored explicit argument {}",
+                            repr_text(&value)
+                        ),
+                    );
+                }
+                return print_help(spec.help);
+            }
+            match take_value(spec, tokens, &mut index, glued, opt) {
+                Ok(value) => values.push((opt.canonical, value)),
+                Err(outcome) => return outcome,
+            }
+            index += 1;
+            continue;
+        }
+        if option_shaped(token) {
+            match short_cluster(spec, tokens, &mut index, &mut values) {
+                ClusterFlow::Extra => {
+                    extras.push(token.text.clone());
+                    index += 1;
+                    continue;
+                }
+                ClusterFlow::Skip | ClusterFlow::Recorded => {
+                    index += 1;
+                    continue;
+                }
+                ClusterFlow::Exit(outcome) => return outcome,
+            }
+        }
+        push_positional(&token.text, spec, &mut positionals, &mut extras);
+        index += 1;
+    }
+
+    let mut missing: Vec<&str> = Vec::new();
+    for (label, is_positional) in spec.required {
+        if *is_positional {
+            let at = spec
+                .positionals
+                .iter()
+                .position(|name| name == label)
+                .expect("a spec positional");
+            if positionals.len() <= at {
+                missing.push(label);
+            }
+        } else if !values.iter().any(|(name, _)| name == label) {
+            missing.push(label);
+        }
+    }
+    if !missing.is_empty() {
+        return parse_error(
+            spec.usage,
+            spec.prog,
+            &format!(
+                "the following arguments are required: {}",
+                missing.join(", ")
+            ),
+        );
+    }
+    if !extras.is_empty() {
+        let rendered: Vec<String> = extras.iter().map(|t| stderr_render(t.units())).collect();
+        return parse_error(
+            TOP_USAGE,
+            "wallofwrong",
+            &format!("unrecognized arguments: {}", rendered.join(" ")),
+        );
+    }
+    ParseOutcome::Run(
+        command,
+        Box::new(SubParsed {
+            positionals,
+            values,
+        }),
+    )
+}
+
+const COMMANDS: [&str; 5] = ["confess", "grade", "ledger", "wall", "tally"];
+
+/// Parse the top level: help, the command word, and
+/// the held extras an unknown token becomes.
+fn parse_top(tokens: &[Token]) -> ParseOutcome {
+    let mut extras: Vec<Text> = Vec::new();
+    let mut index = 0usize;
+    while index < tokens.len() {
+        let token = &tokens[index];
+        if token.scalars.len() >= 2
+            && token.scalars[0] == '-' as u32
+            && token.scalars[1] == '-' as u32
+            && token.scalars != scalars_of("--")
+        {
+            let (name, glued) = split_long(token);
+            match match_long(name, &["--help"]) {
+                LongMatch::Exact("--help") | LongMatch::Unique("--help") => {
+                    if let Some(value) = glued {
+                        return parse_error(
+                            TOP_USAGE,
+                            "wallofwrong",
+                            &format!(
+                                "argument -h/--help: ignored explicit argument {}",
+                                repr_text(&value)
+                            ),
+                        );
+                    }
+                    return print_help(TOP_HELP);
+                }
+                _ => {
+                    extras.push(token.text.clone());
+                    index += 1;
+                    continue;
+                }
+            }
+        }
+        if token.scalars == scalars_of("--") || !option_shaped(token) {
+            if token.scalars == scalars_of("--") && index == tokens.len() - 1 {
+                break;
+            }
+            for command in COMMANDS {
+                if token.text.units() == Text::from_str(command).units() {
+                    let command: &'static str = command;
+                    return parse_sub(command, &tokens[index + 1..], &extras);
+                }
+            }
+            return parse_error(
+                TOP_USAGE,
+                "wallofwrong",
+                &format!(
+                    "argument command: invalid choice: {} (choose from 'confess', 'grade', 'ledger', 'wall', 'tally')",
+                    repr_text(&token.text)
+                ),
+            );
+        }
+        if token.scalars[1] == 'h' as u32 {
+            return print_help(TOP_HELP);
+        }
+        extras.push(token.text.clone());
+        index += 1;
+    }
+    parse_error(
+        TOP_USAGE,
+        "wallofwrong",
+        "the following arguments are required: command",
+    )
+}
+
+/// Write text to stdout the way the Python's
+/// _emit_text does: a failure is the named refusal
+/// "error, cannot write to stdout" and exit 1.
+fn emit_text(bytes: &[u8]) -> i32 {
+    let stdout = std::io::stdout();
+    let mut handle = stdout.lock();
+    match handle.write_all(bytes).and_then(|_| handle.flush()) {
+        Ok(()) => 0,
+        Err(_) => {
+            eprintln!("error, cannot write to stdout");
+            1
+        }
+    }
+}
+
+/// The view write: the document rendered strict to
+/// a temp file in the target's directory, then
+/// replaced onto the target (WW-12). Any failure
+/// is the named refusal with the target as typed.
+fn emit_view(document: &Value, out: &Text) -> i32 {
+    let bytes = match dumps_view(document, Mode::Strict) {
+        Ok(bytes) => bytes,
+        Err(_) => {
+            eprintln!(
+                "error, cannot write the view, {}",
+                stderr_render(out.units())
+            );
+            return 1;
+        }
+    };
+    match write_atomically(out, &bytes) {
+        Ok(()) => 0,
+        Err(()) => {
+            eprintln!(
+                "error, cannot write the view, {}",
+                stderr_render(out.units())
+            );
+            1
+        }
+    }
+}
+
+fn write_atomically(out: &Text, bytes: &[u8]) -> Result<(), ()> {
+    let path = crate::util::os_path_from_units(out.units());
+    let dir = match path.parent() {
+        Some(parent) if !parent.as_os_str().is_empty() => parent.to_path_buf(),
+        _ => std::path::PathBuf::from("."),
+    };
+    let name = path
+        .file_name()
+        .map(|name| name.to_string_lossy().into_owned())
+        .unwrap_or_default();
+    let mut attempt = 0u32;
+    let tmp = loop {
+        let candidate = dir.join(format!(
+            "{}.{}{}{}",
+            name,
+            std::process::id(),
+            TEMP_COUNTER.fetch_add(1, std::sync::atomic::Ordering::SeqCst),
+            attempt
+        ));
+        #[cfg(unix)]
+        let opener = {
+            use std::os::unix::fs::OpenOptionsExt;
+            let mut options = std::fs::OpenOptions::new();
+            options.write(true).create_new(true).mode(0o600);
+            options
+        };
+        #[cfg(not(unix))]
+        let opener = {
+            let mut options = std::fs::OpenOptions::new();
+            options.write(true).create_new(true);
+            options
+        };
+        match opener.open(&candidate) {
+            Ok(mut file) => {
+                match file.write_all(bytes).and_then(|_| file.flush()) {
+                    Ok(()) => break candidate,
+                    Err(_) => {
+                        let _ = std::fs::remove_file(&candidate);
+                        return Err(());
+                    }
+                }
+            }
+            Err(error) if error.kind() == std::io::ErrorKind::AlreadyExists => {
+                attempt += 1;
+                if attempt > 64 {
+                    return Err(());
+                }
+            }
+            Err(_) => return Err(()),
+        }
+    };
+    match std::fs::rename(&tmp, &path) {
+        Ok(()) => Ok(()),
+        Err(_) => {
+            let _ = std::fs::remove_file(&tmp);
+            Err(())
+        }
+    }
+}
+
+static TEMP_COUNTER: std::sync::atomic::AtomicU32 = std::sync::atomic::AtomicU32::new(0);
+
+/// A path resolved the way pathlib's resolve reads:
+/// absolute, symlinks in the existing prefix
+/// resolved, the rest normalized lexically.
+fn resolve_units(units: &[u16]) -> Vec<u16> {
+    let raw = crate::util::os_path_from_units(units);
+    let absolute = if raw.is_absolute() {
+        raw
+    } else {
+        std::env::current_dir()
+            .unwrap_or_else(|_| std::path::PathBuf::from("/"))
+            .join(raw)
+    };
+    // Canonicalize the longest existing prefix.
+    let mut prefix = absolute.clone();
+    let mut tail: Vec<std::ffi::OsString> = Vec::new();
+    loop {
+        match std::fs::canonicalize(&prefix) {
+            Ok(mut resolved) => {
+                for part in tail.iter().rev() {
+                    resolved.push(part);
+                }
+                return units_of_path(&resolved);
+            }
+            Err(_) => match prefix.file_name() {
+                Some(name) => {
+                    tail.push(name.to_os_string());
+                    prefix = prefix
+                        .parent()
+                        .map(|parent| parent.to_path_buf())
+                        .unwrap_or_default();
+                    if prefix.as_os_str().is_empty() {
+                        prefix = std::path::PathBuf::from("/");
+                    }
+                }
+                None => return units_of_path(&prefix),
+            },
+        }
+    }
+}
+
+fn units_of_path(path: &std::path::Path) -> Vec<u16> {
+    #[cfg(unix)]
+    let bytes = {
+        use std::os::unix::ffi::OsStrExt;
+        path.as_os_str().as_bytes().to_vec()
+    };
+    #[cfg(not(unix))]
+    let bytes = path.to_string_lossy().into_owned().into_bytes();
+    let mut units = fsdecode_units(&bytes);
+    // Lexical normalization of the resolved tail:
+    // "." components drop and ".." pops, the way
+    // pathlib finishes a resolve.
+    let text = String::from_utf16_lossy(&units);
+    let mut parts: Vec<&str> = Vec::new();
+    for part in text.split('/') {
+        match part {
+            "" | "." => {}
+            ".." => {
+                parts.pop();
+            }
+            other => parts.push(other),
+        }
+    }
+    let joined = format!("/{}", parts.join("/"));
+    units.clear();
+    units.extend(joined.encode_utf16());
+    units
+}
+
+/// Report a store failure the way the Python's
+/// main does: a named refusal after "error, ", and
+/// the crash class as a bare exit 1.
+fn report(result: Result<i32, StoreError>) -> i32 {
+    match result {
+        Ok(code) => code,
+        Err(StoreError::Named(error)) => {
+            eprintln!("error, {}", error.render_stderr());
+            1
+        }
+        Err(StoreError::Crash) => 1,
+    }
+}
+
+fn text_arg(parsed: &SubParsed, canonical: &str) -> Text {
+    parsed.get_text(canonical).expect("a required argument")
+}
+
+fn parse_evidence(items: &[Text]) -> Result<Vec<(Text, Text)>, StoreError> {
+    let mut evidence = Vec::new();
+    for item in items {
+        let units = item.units();
+        let colon = units.iter().position(|unit| *unit == b':' as u16);
+        match colon {
+            Some(at) if at > 0 && at + 1 < units.len() => evidence.push((
+                Text::from_units(units[..at].to_vec()),
+                Text::from_units(units[at + 1..].to_vec()),
+            )),
+            _ => {
+                let mut message = Msg::str("evidence must name a source and a reference, ");
+                message.push_text(item);
+                return Err(StoreError::Named(message));
+            }
+        }
+    }
+    Ok(evidence)
+}
+
+fn execute(command: &str, parsed: &SubParsed) -> i32 {
+    let store = Store::new(RecPath::from_units(parsed.positionals[0].units()));
+    if let Some(out) = parsed.get_text("--output") {
+        if resolve_units(out.units()) == resolve_units(parsed.positionals[0].units()) {
+            eprintln!("error, a view never overwrites the record");
+            return 1;
+        }
+    }
+    match command {
+        "confess" => report((|| {
+            let id = crate::wall::confess(
+                &store,
+                &text_arg(parsed, "--action"),
+                &text_arg(parsed, "--sentence"),
+                &text_arg(parsed, "--due"),
+                &text_arg(parsed, "--at"),
+                &text_arg(parsed, "--asserter"),
+                &text_arg(parsed, "--approval"),
+            )?;
+            let mut bytes = id.into_bytes();
+            bytes.push(b'\n');
+            Ok(emit_text(&bytes))
+        })()),
+        "grade" => report((|| {
+            let evidence = parse_evidence(&parsed.get_all("--evidence"))?;
+            let id = crate::wall::grade(
+                &store,
+                &text_arg(parsed, "--confession"),
+                &text_arg(parsed, "--grade"),
+                &text_arg(parsed, "--happened"),
+                &text_arg(parsed, "--at"),
+                &text_arg(parsed, "--asserter"),
+                &evidence,
+                parsed.get_text("--supersedes").as_ref(),
+            )?;
+            let mut bytes = id.into_bytes();
+            bytes.push(b'\n');
+            Ok(emit_text(&bytes))
+        })()),
+        "ledger" | "wall" | "tally" => {
+            let document = match command {
+                "ledger" => crate::wall::ledger(&store, &text_arg(parsed, "--now")),
+                "wall" => crate::wall::wall(&store, &text_arg(parsed, "--date")),
+                _ => crate::wall::tally(&store, &text_arg(parsed, "--now")),
+            };
+            report((|| {
+                let document = document?;
+                Ok(match parsed.get_text("--output") {
+                    Some(out) => emit_view(&document, &out),
+                    None => match dumps_view(&document, Mode::Stdout) {
+                        Ok(bytes) => emit_text(&bytes),
+                        Err(_) => {
+                            eprintln!("error, cannot write to stdout");
+                            1
+                        }
+                    },
+                })
+            })())
+        }
+        _ => 1,
+    }
+}
+
+/// An operating system error's CPython rendering,
+/// "[Errno N] message", for the CLI's stream
+/// failures; the strerror table itself lives in
+/// util, shared with the record's phrases.
+fn os_error_text(err: &std::io::Error) -> String {
+    match err.raw_os_error() {
+        Some(errno) => {
+            let bare = err.to_string();
+            let text = crate::util::strerror_text(err);
+            if text == bare {
+                bare
+            } else {
+                format!("[Errno {errno}] {text}")
+            }
+        }
+        None => err.to_string(),
+    }
+}
+
+pub fn run_cli() -> i32 {
+    let tokens: Vec<Token> = std::env::args_os()
+        .skip(1)
+        .map(|arg| {
+            #[cfg(unix)]
+            let bytes = arg.as_encoded_bytes().to_vec();
+            #[cfg(not(unix))]
+            let bytes = arg.to_string_lossy().into_owned().into_bytes();
+            Token::from_units(fsdecode_units(&bytes))
+        })
+        .collect();
+    match parse_top(&tokens) {
+        ParseOutcome::Run(command, parsed) => execute(command, &parsed),
+        ParseOutcome::Exit(code) => code,
+    }
+}
