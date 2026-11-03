@@ -187,3 +187,77 @@ reviews, before the repair code).
   and the grading path read the one definition, so
   the repair lands in the definition. Test,
   tests/test_wall.py.
+
+## Round 3. The Rust port (WW-17 to WW-23)
+
+- WW-17. The port reproduces the behavior of the
+  Python of Rounds 1 and 2 exactly: every command's
+  exit code, stdout, stderr, and file effects byte
+  for byte, including the refusal and defect phrases
+  in their order. Where exact reproduction is
+  impossible or would import a defect of the
+  interpreter rather than of this program, the
+  deviation is named in the round's dossier, never
+  silently absorbed.
+- WW-18. A library crate with a thin binary. The
+  record layer is consumed from the onrecord crate
+  at a pinned revision (the Round 3 merge of that
+  repo): the claim shape and defect discipline, the
+  id derivation, the digest, and the record loader
+  are the crate's functions, not copies. This
+  repo's own Store surface (claims, add with the
+  extra field rule, check) stands as an adapter
+  over those primitives with its own append, and
+  every place the adapter's behavior is this repo's
+  rather than the crate's is named in the dossier.
+  Test, tests/test_wall.rs.
+- WW-18a, recorded before the port code. The
+  record's due check follows the crate: this repo's
+  Python copy carried an unpinned date rule (plain
+  date.fromisoformat) where onrecord's OR-13a pins
+  the extended calendar form, so the two shipped
+  readers already disagree on a record holding a
+  basic-form or week-form due. The module's own
+  header claims the record is consumed exactly as
+  OR-5 as amended states it, and WW-6a pins the
+  consumption to onrecord's discipline, so the
+  crate's rule governs and the drift retires with
+  the copy; the dossier names the behavior change
+  as a deviation (a record the Python here blessed
+  can be refused by the port, in agreement with
+  onrecord). The wall command's own date argument
+  has no onrecord counterpart: it keeps the wide
+  date.fromisoformat acceptance, the calendar and
+  ISO week forms, extended and basic, implemented
+  in this crate.
+- WW-19. The loader budgets are this repo's own,
+  probed per command at the shipped CLI before
+  they are coded: the crate loader is called with
+  the budget each entry point's Python frame chain
+  earns, and the harness pins the boundary per
+  command rather than inheriting onrecord's
+  numbers.
+- WW-20. Rendering reproduces the Python's JSON
+  byte for byte: appended claim lines in compact
+  separators with insertion key order, the views
+  at indent two, non-ASCII unescaped. Test,
+  tests/test_wall.rs.
+- WW-21. The Python tests port to cargo tests file
+  for file and remain the primary suite. The
+  onrecord-minted fixture record stays the fixture,
+  so drift between the two readers still fails
+  here, and the family golden digest test still
+  pins the derivation. Test, tests/test_wall.rs.
+- WW-22. A differential harness twins the Rust
+  binary against the Python over the whole command
+  surface (confess, grade, ledger, wall, tally),
+  comparing exit codes, streams, and files after
+  every step, including the defect catalogue
+  translated to confessions and the views' output
+  discipline. Run at the round's checkpoint and
+  reported in the dossier.
+- WW-23. The round's dossier carries the port
+  report: port or rewrite with reasons, the Rust
+  versus Python line share on the landing tree,
+  the bindings determination, and every non-Rust
+  remainder with its justification.

@@ -18,16 +18,27 @@ test made whole: a confession claim is now checked
 against all of WW-5, sentence rule included, in every
 view. Setup landed earlier in October 2026.
 
+Round 3 is closed. The tool is a Rust library crate
+with a thin binary now, reproducing Rounds 1 and 2
+behavior exactly. The record layer is consumed from
+the onrecord crate at a pinned revision, the line's
+first cross-repo crate consumption, instead of a
+local copy, and the date drift the copy had kept
+against the record's own contract is retired with
+it. The Python leaves the tree in this round.
+
 ## Programme status
 
-- Closed perfection rounds, 2 of 100. A round counts only when a
+- Closed perfection rounds, 3 of 100. A round counts only when a
   full cycle of work, audit, review, red team, and approval has
   closed.
 - Contract, WW-1 to WW-12 as amended, met for the Round 1 scope.
   WW-13 to WW-16 with amendment WW-8c, written ahead of
-  the code and met in Round 2.
+  the code and met in Round 2. WW-17 to WW-23, written
+  ahead of the code and met in Round 3.
 - Local gate, python3 scripts/codepoint_scan.py and
-  python3 -m pytest tests -q. CI runs the same commands.
+  cargo test, with cargo clippy --all-targets -- -D warnings
+  and cargo fmt --check. CI runs the same commands.
 
 ## Licence
 
