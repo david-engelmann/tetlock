@@ -84,7 +84,12 @@ fn run_cli(args: &[&str]) -> (i32, String, String) {
     )
 }
 
-fn confess_base<'a>(store: &'a Store, action: &'a str, sentence: &'a str, due: &'a str) -> Result<String, StoreError> {
+fn confess_base<'a>(
+    store: &'a Store,
+    action: &'a str,
+    sentence: &'a str,
+    due: &'a str,
+) -> Result<String, StoreError> {
     confess(
         store,
         &t(action),
@@ -111,8 +116,8 @@ fn grade_base(store: &Store, confession_id: &str, grade_value: &str) -> Result<S
 
 #[test]
 fn the_digest_is_pinned_to_the_family_golden() {
-    let fixture = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
-        .join("tests/fixtures/tape_synthetic.json");
+    let fixture =
+        std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/tape_synthetic.json");
     let text = std::fs::read_to_string(&fixture).expect("the fixture reads");
     let tape = flighttape::json::parse(&text).expect("the tape parses");
     let hex = onrecord::digest::digest_of(&tape, (990, 988)).expect("the digest renders");
@@ -577,25 +582,58 @@ fn the_cli_round_trip() {
     let path = dir.join("r.jsonl");
     let path = path.to_str().expect("utf8");
     let (code, out, _err) = run_cli(&[
-        "confess", path, "--action", "deploy", "--sentence",
-        "The deploy finishes cleanly.", "--due", "2026-02-01", "--at",
-        "2026-01-05T09:00:00Z", "--asserter", "agent", "--approval", "op-1",
+        "confess",
+        path,
+        "--action",
+        "deploy",
+        "--sentence",
+        "The deploy finishes cleanly.",
+        "--due",
+        "2026-02-01",
+        "--at",
+        "2026-01-05T09:00:00Z",
+        "--asserter",
+        "agent",
+        "--approval",
+        "op-1",
     ]);
     assert_eq!(code, 0);
     let cid = out.trim().to_string();
     let (code, _out, _err) = run_cli(&[
-        "grade", path, "--confession", &cid, "--grade", "broke",
-        "--happened", "It rolled back.", "--at", "2026-01-30T09:00:00Z",
-        "--asserter", "g", "--evidence", "trace:run-2",
+        "grade",
+        path,
+        "--confession",
+        &cid,
+        "--grade",
+        "broke",
+        "--happened",
+        "It rolled back.",
+        "--at",
+        "2026-01-30T09:00:00Z",
+        "--asserter",
+        "g",
+        "--evidence",
+        "trace:run-2",
     ]);
     assert_eq!(code, 0);
     let (code, out, _err) = run_cli(&["wall", path, "--date", "2026-01-30"]);
     assert_eq!(code, 0);
     assert!(out.contains("\"action\": \"deploy\""));
     let (code, _out, err) = run_cli(&[
-        "confess", path, "--action", "x", "--sentence", "Two. Sentences.",
-        "--due", "2026-02-01", "--at", "2026-01-05T09:00:00Z",
-        "--asserter", "agent", "--approval", "op-1",
+        "confess",
+        path,
+        "--action",
+        "x",
+        "--sentence",
+        "Two. Sentences.",
+        "--due",
+        "2026-02-01",
+        "--at",
+        "2026-01-05T09:00:00Z",
+        "--asserter",
+        "agent",
+        "--approval",
+        "op-1",
     ]);
     assert_eq!(code, 1);
     assert!(err.contains("internal sentence break"));
@@ -603,15 +641,13 @@ fn the_cli_round_trip() {
 
 fn population(dir: &std::path::Path) -> Store {
     let store = store_at(dir, "r.jsonl");
-    let held = confess_base(&store, "deploy", "The deploy holds.", "2026-02-01")
-        .expect("confess");
+    let held = confess_base(&store, "deploy", "The deploy holds.", "2026-02-01").expect("confess");
     grade_base(&store, &held, "held").expect("grade");
-    let broke = confess_base(&store, "deploy", "The deploy is quick.", "2026-02-01")
-        .expect("confess");
+    let broke =
+        confess_base(&store, "deploy", "The deploy is quick.", "2026-02-01").expect("confess");
     grade_base(&store, &broke, "broke").expect("grade");
     confess_base(&store, "deploy", "The deploy waits.", "2026-04-01").expect("confess");
-    let changed = confess_base(&store, "deploy", "The plan ships.", "2026-02-01")
-        .expect("confess");
+    let changed = confess_base(&store, "deploy", "The plan ships.", "2026-02-01").expect("confess");
     store
         .add(
             &t("The plan changed and is off."),
@@ -624,11 +660,15 @@ fn population(dir: &std::path::Path) -> Store {
             &[],
         )
         .expect("the change");
-    let unv = confess_base(&store, "drop-table", "The table drops in one pass.", "2026-02-01")
-        .expect("confess");
+    let unv = confess_base(
+        &store,
+        "drop-table",
+        "The table drops in one pass.",
+        "2026-02-01",
+    )
+    .expect("confess");
     grade_base(&store, &unv, "unverifiable").expect("grade");
-    confess_base(&store, "drop-table", "The index rebuilds.", "2026-01-10")
-        .expect("confess");
+    confess_base(&store, "drop-table", "The index rebuilds.", "2026-01-10").expect("confess");
     store
         .add(
             &t("No approval stands behind this."),
@@ -698,9 +738,7 @@ fn the_tally_of_an_empty_record_is_all_zeroes() {
     let dir = tempfile_dir();
     let path = dir.join("empty.jsonl");
     std::fs::write(&path, "").expect("the empty record");
-    let store = Store::new(onrecord::store::RecPath::new(
-        path.to_str().expect("utf8"),
-    ));
+    let store = Store::new(onrecord::store::RecPath::new(path.to_str().expect("utf8")));
     let document = tally(&store, &t(NOW)).expect("the tally");
     assert_eq!(
         render(&document),
@@ -720,12 +758,7 @@ fn the_tally_command_and_its_refusals() {
     let text = std::fs::read_to_string(out).expect("the tally file");
     assert!(text.contains("\"total\": 6"));
     let missing = dir.join("missing.jsonl");
-    let (code, _o, err) = run_cli(&[
-        "tally",
-        missing.to_str().expect("utf8"),
-        "--now",
-        NOW,
-    ]);
+    let (code, _o, err) = run_cli(&["tally", missing.to_str().expect("utf8"), "--now", NOW]);
     assert_eq!(code, 1);
     assert!(err.contains("no such record"));
     let (code, _o, err) = run_cli(&["tally", &path, "--now", "next week"]);
@@ -737,11 +770,9 @@ fn the_tally_command_and_its_refusals() {
 fn action_rows_order_by_name_not_appearance() {
     let dir = tempfile_dir();
     let store = store_at(&dir, "r.jsonl");
-    let zebra = confess_base(&store, "zebra", "The zebra ships.", "2026-02-01")
-        .expect("confess");
+    let zebra = confess_base(&store, "zebra", "The zebra ships.", "2026-02-01").expect("confess");
     grade_base(&store, &zebra, "broke").expect("grade");
-    let apple = confess_base(&store, "apple", "The apple ships.", "2026-02-01")
-        .expect("confess");
+    let apple = confess_base(&store, "apple", "The apple ships.", "2026-02-01").expect("confess");
     grade_base(&store, &apple, "held").expect("grade");
     confess_base(&store, "someday", "The someday ships.", "2026-04-01").expect("confess");
     let document = tally(&store, &t(NOW)).expect("the tally");
@@ -807,8 +838,7 @@ fn the_tally_is_deterministic_and_refuses_bad_outcomes() {
 fn a_graded_confession_stays_graded_when_superseded() {
     let dir = tempfile_dir();
     let store = store_at(&dir, "r.jsonl");
-    let cid = confess_base(&store, "deploy", "The deploy holds.", "2026-02-01")
-        .expect("confess");
+    let cid = confess_base(&store, "deploy", "The deploy holds.", "2026-02-01").expect("confess");
     grade_base(&store, &cid, "broke").expect("grade");
     store
         .add(
@@ -872,9 +902,7 @@ fn a_sentence_breaking_confession_is_malformed() {
             .find(|entry| as_text(field(entry, "id")) == id)
             .expect("the malformed entry");
         match field(entry, "reasons") {
-            Value::Array(items) => {
-                items.iter().map(|r| as_text(r).to_string()).collect()
-            }
+            Value::Array(items) => items.iter().map(|r| as_text(r).to_string()).collect(),
             _ => panic!("an array"),
         }
     };
@@ -931,8 +959,7 @@ fn tempfile_dir() -> std::path::PathBuf {
     dir
 }
 
-static TEMP_COUNTER: std::sync::atomic::AtomicUsize =
-    std::sync::atomic::AtomicUsize::new(0);
+static TEMP_COUNTER: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
 
 // The Msg import is used by err_text's rendering
 // path through StoreError; keep it referenced.

@@ -771,15 +771,13 @@ fn write_atomically(out: &Text, bytes: &[u8]) -> Result<(), ()> {
             options
         };
         match opener.open(&candidate) {
-            Ok(mut file) => {
-                match file.write_all(bytes).and_then(|_| file.flush()) {
-                    Ok(()) => break candidate,
-                    Err(_) => {
-                        let _ = std::fs::remove_file(&candidate);
-                        return Err(());
-                    }
+            Ok(mut file) => match file.write_all(bytes).and_then(|_| file.flush()) {
+                Ok(()) => break candidate,
+                Err(_) => {
+                    let _ = std::fs::remove_file(&candidate);
+                    return Err(());
                 }
-            }
+            },
             Err(error) if error.kind() == std::io::ErrorKind::AlreadyExists => {
                 attempt += 1;
                 if attempt > 64 {

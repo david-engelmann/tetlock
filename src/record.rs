@@ -125,10 +125,7 @@ impl Store {
     /// (WW-19): the ledger and the tally reach the
     /// loader one frame deeper than the other
     /// commands.
-    pub fn claims_with(
-        &self,
-        budget: (usize, usize),
-    ) -> Result<Vec<Value>, StoreError> {
+    pub fn claims_with(&self, budget: (usize, usize)) -> Result<Vec<Value>, StoreError> {
         self.load_with(budget)
     }
 
@@ -191,10 +188,7 @@ impl Store {
                         .map(|(source, reference)| {
                             Value::Object(vec![
                                 (Text::from_str("source"), Value::Str(source.clone())),
-                                (
-                                    Text::from_str("reference"),
-                                    Value::Str(reference.clone()),
-                                ),
+                                (Text::from_str("reference"), Value::Str(reference.clone())),
                             ])
                         })
                         .collect(),
@@ -235,7 +229,8 @@ impl Store {
                 ))
             }
         };
-        let mut stored_entries = vec![(Text::from_str("id"), Value::Str(Text::from_str(&claim_id)))];
+        let mut stored_entries =
+            vec![(Text::from_str("id"), Value::Str(Text::from_str(&claim_id)))];
         if let Value::Object(entries) = &claim {
             stored_entries.extend(entries.iter().cloned());
         }

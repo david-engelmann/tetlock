@@ -231,9 +231,7 @@ impl<'a> OutcomeIndex<'a> {
                 message.push_units(held_id.units());
                 message.push_str(" and ");
                 message.push_units(&id);
-                message.push_str(
-                    "; graded once is the model and the record stands outside it",
-                );
+                message.push_str("; graded once is the model and the record stands outside it");
                 return Err(StoreError::Named(message));
             }
             let grade = get(outcome, "grade");
@@ -288,7 +286,10 @@ pub fn confess(
         None,
         Some(action),
         Some(due),
-        &[(Text::from_str("kind"), Value::Str(Text::from_str("confession")))],
+        &[(
+            Text::from_str("kind"),
+            Value::Str(Text::from_str("confession")),
+        )],
     )
 }
 
@@ -303,7 +304,10 @@ pub fn grade(
     evidence: &[(Text, Text)],
     supersedes: Option<&Text>,
 ) -> Result<String, StoreError> {
-    if !GRADES.iter().any(|g| grade_value.units() == Text::from_str(g).units()) {
+    if !GRADES
+        .iter()
+        .any(|g| grade_value.units() == Text::from_str(g).units())
+    {
         let mut message = Msg::str("grade must be one of held, broke, unverifiable, ");
         message.push_units(grade_value.units());
         return Err(StoreError::Named(message));
@@ -336,9 +340,7 @@ pub fn grade(
     }
     let index = OutcomeIndex::new(&claims)?;
     let current = index.get(confession_id.units());
-    if current.is_none()
-        && superseded_ids(&claims).contains(&confession_id.units().to_vec())
-    {
+    if current.is_none() && superseded_ids(&claims).contains(&confession_id.units().to_vec()) {
         let mut message = Msg::str("confession ");
         message.push_units(confession_id.units());
         message.push_str(" has been superseded and cannot be graded");
@@ -382,7 +384,10 @@ pub fn grade(
         Some(&Text::from_units(subject_units)),
         None,
         &[
-            (Text::from_str("kind"), Value::Str(Text::from_str("outcome"))),
+            (
+                Text::from_str("kind"),
+                Value::Str(Text::from_str("outcome")),
+            ),
             (Text::from_str("grade"), Value::Str(grade_value.clone())),
         ],
     )
@@ -501,6 +506,16 @@ pub fn ledger(store: &Store, now: &Text) -> Result<Value, StoreError> {
     Ok(Value::Object(document))
 }
 
+/// One tally action row under construction: the
+/// action's units (its sort key), the action value,
+/// its per-grade counts, and its graded total.
+struct ActionTally {
+    units: Vec<u16>,
+    action: Value,
+    counts: Vec<(Text, i64)>,
+    graded: i64,
+}
+
 pub fn tally(store: &Store, now: &Text) -> Result<Value, StoreError> {
     let (claims, now_day) = now_view(store, now)?;
     let index = OutcomeIndex::new(&claims)?;
@@ -512,7 +527,7 @@ pub fn tally(store: &Store, now: &Text) -> Result<Value, StoreError> {
         .iter()
         .map(|grade| (Text::from_str(grade), 0))
         .collect();
-    let mut actions: Vec<(Vec<u16>, Value, Vec<(Text, i64)>, i64)> = Vec::new();
+    let mut actions: Vec<ActionTally> = Vec::new();
     let mut malformed: i64 = 0;
     let mut total: i64 = 0;
     for confession in confessions(&claims) {
@@ -548,14 +563,12 @@ pub fn tally(store: &Store, now: &Text) -> Result<Value, StoreError> {
                 Value::Str(text) => text.units().to_vec(),
                 _ => Vec::new(),
             };
-            let held = actions
-                .iter_mut()
-                .find(|(units, _, _, _)| *units == action_units);
+            let held = actions.iter_mut().find(|row| row.units == action_units);
             match held {
-                Some((_, _, counts, graded)) => {
-                    *graded += 1;
+                Some(row) => {
+                    row.graded += 1;
                     if let Value::Str(grade_text) = &grade {
-                        for (name, count) in counts.iter_mut() {
+                        for (name, count) in row.counts.iter_mut() {
                             if name.units() == grade_text.units() {
                                 *count += 1;
                             }
@@ -563,10 +576,8 @@ pub fn tally(store: &Store, now: &Text) -> Result<Value, StoreError> {
                     }
                 }
                 None => {
-                    let mut counts: Vec<(Text, i64)> = GRADES
-                        .iter()
-                        .map(|g| (Text::from_str(g), 0))
-                        .collect();
+                    let mut counts: Vec<(Text, i64)> =
+                        GRADES.iter().map(|g| (Text::from_str(g), 0)).collect();
                     if let Value::Str(grade_text) = &grade {
                         for (name, count) in counts.iter_mut() {
                             if name.units() == grade_text.units() {
@@ -574,26 +585,28 @@ pub fn tally(store: &Store, now: &Text) -> Result<Value, StoreError> {
                             }
                         }
                     }
-                    actions.push((action_units, action_value, counts, 1));
+                    actions.push(ActionTally {
+                        units: action_units,
+                        action: action_value,
+                        counts,
+                        graded: 1,
+                    });
                 }
             }
         }
     }
-    actions.sort_by(|a, b| a.0.cmp(&b.0));
+    actions.sort_by(|a, b| a.units.cmp(&b.units));
     let action_rows: Vec<Value> = actions
         .into_iter()
-        .map(|(_, action, counts, graded)| {
-            let mut row = vec![
-                (Text::from_str("action"), action),
-                (
-                    Text::from_str("graded"),
-                    Value::Int(graded.to_string()),
-                ),
+        .map(|row| {
+            let mut out = vec![
+                (Text::from_str("action"), row.action),
+                (Text::from_str("graded"), Value::Int(row.graded.to_string())),
             ];
-            for (name, count) in counts {
-                row.push((name, Value::Int(count.to_string())));
+            for (name, count) in row.counts {
+                out.push((name, Value::Int(count.to_string())));
             }
-            Value::Object(row)
+            Value::Object(out)
         })
         .collect();
     let graded_total = by_state
