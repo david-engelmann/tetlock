@@ -570,9 +570,7 @@ fn fix_up_defects(
             segment_end -= 1;
         }
         let at = (0..segment_end)
-            .find(|&index| {
-                matches!(defect_line(&defects[index].0), Some((held, _)) if held > line)
-            })
+            .find(|&index| matches!(defect_line(&defects[index].0), Some((held, _)) if held > line))
             .unwrap_or(segment_end);
         defects.insert(at, cannot);
         segment_end += 1;
