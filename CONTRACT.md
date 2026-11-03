@@ -296,3 +296,20 @@ reviews, before the repair code).
   review endpoints; its summary shell and an
   action-not-completed notice stand on the PR),
   so no disposition is owed from it.
+- WW-25a. Amendment, on the red team's Round 4
+  Major: the resolver reports failure. When
+  resolving the output path hits a symlink loop
+  (ELOOP), the output counts as naming an input
+  and the guard refuses it, as bluepencil's
+  BP-16a counts an unresolvable path. The port
+  never writes through a loop: a loop named as
+  the output is refused at the guard, where the
+  Python crashes uncaught (deviation 3's crash
+  class). A record behind a loop stays in the
+  crash class: the port's named load refusal
+  against the oracle's traceback, exit 1 on both
+  sides, nothing written. The harness gains the
+  loop cells on both shapes plus the agreeing
+  boundary (a loop component cancelled by a
+  following ".." refuses at the guard on both
+  sides, as before).
