@@ -916,9 +916,11 @@ fn spells_link(units: &[u16]) -> bool {
 /// without being read. The seen map carries
 /// each path's finished resolution, or None
 /// while that resolution is still open: a name
-/// met again under its own open resolution, and
-/// not cancelled by a following "..", is the
-/// loop the walk convicts. Depth is nesting (a
+/// met again under its own open resolution
+/// stops the walk there, the part resolved so
+/// far returning with the rest of the spelling
+/// standing, for the closing stat to judge
+/// (WW-38). Depth is nesting (a
 /// splice inside another splice's resolution),
 /// never a count of splices in the spelling,
 /// and a call entered past MAX_WALK_DEPTH fails
@@ -994,6 +996,38 @@ fn joinrealpath(
     Ok((path, true))
 }
 
+/// The kernel's symlink-loop errno on this
+/// platform family.
+const ELOOP: i32 = 40;
+
+/// posixpath.normpath over a finished absolute
+/// path: empty and "." components drop, ".."
+/// pops lexically, the root holds. The walk's
+/// own result is already nearly this; the
+/// partial path a stopped walk returns (WW-38)
+/// is not, and the interpreter normalizes both.
+fn normalize_lexically(units: &[u16]) -> Vec<u16> {
+    let mut parts: Vec<&[u16]> = Vec::new();
+    for part in units.split(|unit| *unit == SEP) {
+        if part.is_empty() || part == DOT {
+            continue;
+        }
+        if part == DOTDOT {
+            parts.pop();
+            continue;
+        }
+        parts.push(part);
+    }
+    let mut out = vec![SEP];
+    for (index, part) in parts.iter().enumerate() {
+        if index > 0 {
+            out.push(SEP);
+        }
+        out.extend_from_slice(part);
+    }
+    out
+}
+
 /// A path resolved the way pathlib's resolve
 /// reads, through the splice walk (WW-33): the
 /// record and the output compare as finished
@@ -1003,7 +1037,15 @@ fn joinrealpath(
 /// resolution outright (WW-35): no fallback
 /// prefix is ever substituted, since a
 /// substituted prefix compares a fiction and
-/// can pass a guard the real one fails.
+/// can pass a guard the real one fails. Where
+/// the walk stops at a loop the resolution is
+/// the normalization of the part it resolved
+/// with the rest standing, and the loop is
+/// convicted only by the closing stat: a stat
+/// of the finished path failing with ELOOP is
+/// the loop failure, and every other stat
+/// outcome (a sound file, a dangling end) lets
+/// the resolution stand (WW-38).
 fn resolve_path(units: &[u16]) -> Result<Vec<u16>, ResolveFail> {
     let absolute: Vec<u16> = if units.first() == Some(&SEP) {
         units.to_vec()
@@ -1012,11 +1054,15 @@ fn resolve_path(units: &[u16]) -> Result<Vec<u16>, ResolveFail> {
         join_frag(&raw_units_of_path(&cwd), units)
     };
     let mut seen = std::collections::HashMap::new();
-    let (resolved, ok) = joinrealpath(&[], &absolute, &mut seen, 0)?;
-    if !ok {
-        return Err(ResolveFail::Loop);
+    let (resolved, _) = joinrealpath(&[], &absolute, &mut seen, 0)?;
+    let finished = normalize_lexically(&resolved);
+    let os = crate::util::os_path_from_units(&finished);
+    if let Err(error) = std::fs::metadata(os) {
+        if error.raw_os_error() == Some(ELOOP) {
+            return Err(ResolveFail::Loop);
+        }
     }
-    Ok(resolved)
+    Ok(finished)
 }
 
 /// The spelling pathlib's construction hands to
