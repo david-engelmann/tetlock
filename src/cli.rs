@@ -761,11 +761,42 @@ fn emit_view(document: &Value, out: &Text) -> i32 {
     }
 }
 
+/// The temp's directory as mkstemp reads the
+/// parent (WW-42): the parent absolutized
+/// lexically, joined to the working directory
+/// when relative and then normalized over its
+/// components with no link resolution anywhere
+/// in the step. An absolute parent never
+/// consults the working directory; a failed
+/// working-directory read on a relative parent
+/// fails the step (WW-43).
+fn lexical_abspath(units: &[u16]) -> Option<Vec<u16>> {
+    let joined: Vec<u16> = if units.first() == Some(&SEP) {
+        units.to_vec()
+    } else {
+        let cwd = std::env::current_dir().ok()?;
+        join_frag(&raw_units_of_path(&cwd), units)
+    };
+    Some(normalize_lexically(&joined))
+}
+
 fn write_atomically(out: &[u16], bytes: &[u8]) -> Result<(), ()> {
     let path = crate::util::os_path_from_units(out);
     let dir = match path.parent() {
         Some(parent) if !parent.as_os_str().is_empty() => parent.to_path_buf(),
         _ => std::path::PathBuf::from("."),
+    };
+    // The temp is created under the parent as
+    // mkstemp absolutizes it (WW-42), not under
+    // the parent as spelled: a symlink component
+    // the spelling pops with a following ".."
+    // must not carry the temp to the physical
+    // directory the interpreter never names. The
+    // rename below still targets the constructed
+    // path itself.
+    let tmp_dir = match lexical_abspath(&raw_units_of_path(&dir)) {
+        Some(units) => crate::util::os_path_from_units(&units),
+        None => return Err(()),
     };
     let name = path
         .file_name()
@@ -773,7 +804,7 @@ fn write_atomically(out: &[u16], bytes: &[u8]) -> Result<(), ()> {
         .unwrap_or_default();
     let mut attempt = 0u32;
     let tmp = loop {
-        let candidate = dir.join(format!(
+        let candidate = tmp_dir.join(format!(
             "{}.{}{}{}",
             name,
             std::process::id(),
@@ -1153,17 +1184,24 @@ fn execute(command: &str, parsed: &SubParsed) -> i32 {
         // WW-25a: an output whose resolution fails
         // counts as naming the record and is refused
         // here, where the Python dies in the crash
-        // class before its guard. A record whose
-        // resolution fails in the walk does not
-        // refuse at the guard: the load below
+        // class before its guard. Two failures take
+        // the bare crash class instead, one on each
+        // side, and nothing is printed or written
+        // for either. An output whose resolution
+        // fails on the current-directory read
+        // (WW-45): the Python's guard evaluates the
+        // output's resolve first and dies there,
+        // before any comparison can name the
+        // record. A record whose resolution fails
+        // on the current-directory read (WW-35):
+        // the Python dies inside the guard
+        // expression, before any load. A record
+        // whose resolution fails in the walk does
+        // not refuse at the guard: the load below
         // refuses it by name, the crash class's
-        // named side. A record whose resolution
-        // fails on the current-directory read is
-        // the one exception (WW-35): the Python
-        // dies inside the guard expression, before
-        // any load, so the bare crash class fires
-        // here and nothing is printed or written.
+        // named side.
         let refused = match resolve_path(out.units()) {
+            Err(ResolveFail::Cwd) => return 1,
             Err(_) => true,
             Ok(resolved_out) => match resolve_path(parsed.positionals[0].units()) {
                 Ok(resolved_record) => resolved_out == resolved_record,

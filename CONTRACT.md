@@ -478,3 +478,150 @@ reviews, before the repair code).
   failure postures of WW-34 and WW-25a, and a
   resolution the walk completes is statted
   too, its dangling end no failure at all.
+- WW-39. Round 6 probes the temp placement law
+  at this crate's view write seam, the family
+  measured in secondbill's Round 5 and
+  retroforge's Round 6 and which this crate's
+  seam predates. The oracle's view write
+  creates its temp through tempfile.mkstemp,
+  which absolutizes the parent lexically (cwd
+  join, then normpath, no link resolution);
+  this crate's write creates its temp under
+  the constructed parent as spelled (WW-36).
+  The probe set is the popped-link family at
+  every command that writes a view (ledger,
+  wall, tally): an output whose parent
+  contains a symlink component that a
+  following dotdot pops, across the existence
+  boundary (the lexical parent exists as a
+  directory, neither parent exists, the
+  popped component is a real directory), in
+  plain, tailed, absolute, deep, and
+  escape-link spellings, each measured
+  against the oracle before any repair is
+  written. Repairs follow the measurements
+  under new clauses; the harness gains the
+  proven cells with controls against the
+  pre-repair binary failing exactly the
+  convicted cells, boundary pins ordered
+  before convicted cells where a one-sided
+  write could echo through later snapshots.
+- WW-40. The CodeRabbit disposition owed from
+  Round 5 discharges here on evidence: the
+  Round 5 pull request carries zero inline
+  findings on read-back (checked 2026-11-04 in
+  the rotation-wide late sweep), so there is
+  nothing to fix and the absence is the
+  disposition.
+- WW-41. README records 6 of 100 only in the
+  closure commit written after this round's
+  three reviews, fixes, and owner
+  verification.
+- WW-42. The view write's temp placement, the
+  Round 6 repair. The temp is created under the
+  lexically absolutized parent of the
+  constructed path: a relative parent is
+  joined to the working directory, then the
+  components are normalized lexically (empty
+  and "." components drop, ".." pops the
+  spelled component before it, a leading
+  separator pair stands as the anchor), with
+  no link resolution anywhere in that step.
+  The rename target remains the constructed
+  path itself, and the cannot-write message
+  keeps the raw output spelling. This governs
+  every view command (ledger, wall, tally),
+  whose writes share the one seam. The
+  convicted family is the popped link: an
+  output whose parent contains a symlink
+  component that a following ".." pops, where
+  the lexical parent differs in existence
+  from the physically resolved parent; the
+  pre-repair write landed the view at the
+  physical target where the oracle's mkstemp
+  refuses on the lexical parent. WW-42
+  supersedes WW-36's silence on the temp's
+  placement; the construction WW-36 states
+  for the target stands unchanged.
+- WW-43. The boundary agreements and the
+  scope of WW-42. The pop family agrees where
+  the lexical parent exists as a directory
+  and the physical does not (the oracle's
+  temp is created and its replace then
+  fails; the write refuses on both sides),
+  where neither parent exists, where both
+  exist (the view lands at the physical
+  target on both sides), and where the
+  popped component is a real directory (the
+  two parents are one). A target carrying
+  its own ".." is convicted or agrees by the
+  same existence test on the parents it
+  produces. The append seam is outside the
+  law: confess and grade open the record
+  path directly, the kernel resolves the
+  spelling physically on both sides, and the
+  family is measured absent there. Inside
+  the temp step, an absolute parent never
+  consults the working directory; a failed
+  working-directory read on a relative
+  spelling fails the write with the
+  cannot-write refusal, a posture that
+  stands behind the guard's own deleted-cwd
+  postures (WW-35), which decide every
+  reachable deleted-cwd cell first.
+- WW-44. The harness gains the temp
+  placement cells: a poptree step that
+  rebuilds the popped-link tree fresh in
+  both case dirs before each action step,
+  and one case per command family (ledger,
+  wall and tally at the plain pop; ledger
+  across the tailed, deep, sequence,
+  dotdot-target, absolute, lexical-file, and
+  overwrite shapes), each case ordering its
+  boundary pins before its convicted cells
+  so a one-sided write cannot echo through
+  later snapshots. The true root-escape
+  shape (a link target leaving the case
+  tree) is probe-pinned in the lane record,
+  not harness-celled, because a snapshot
+  cannot carry a write outside its tree;
+  its in-tree form (a link in a subdirectory
+  whose target climbs out of the
+  subdirectory) is celled as the deep pop.
+  Control runs against the pre-repair binary
+  fail exactly the convicted steps, and the
+  boundary pins and every standing case pass
+  the control.
+- WW-45. Amendment, on the Round 6 red team's
+  deleted-working-directory battery: WW-35's
+  output-side arm corrected. A view output
+  whose guard resolution fails on the failed
+  current-directory read (a relative spelling
+  from a deleted working directory) takes the
+  bare crash class at the guard, exit 1 with
+  nothing printed and nothing written: the
+  interpreter's guard evaluates the output's
+  resolve first and dies there, before any
+  comparison can name the record, so the
+  refusal phrase never fires for this failure.
+  The boundary stands everywhere else: loop
+  and budget failures on the output side keep
+  WW-34's posture (counted as naming the
+  record, refused with the guard phrase), a
+  resolution that completes compares as
+  before, and the record side is untouched
+  (its failed-cwd arm already takes the crash
+  class under WW-35, and its walk failures
+  still fall through to the load). Absolute
+  output spellings never consult the working
+  directory and are unchanged. The harness's
+  deleted-cwd case states the arm: relative
+  outputs, plain and popped spellings, on
+  ledger and tally against absolute and
+  relative records take the crash-class
+  expectation on this side against the
+  oracle's traceback, and the absolute
+  spellings from a deleted working directory
+  stand as twinned pins; control runs against
+  the pre-WW-45 binary fail exactly those
+  steps.
