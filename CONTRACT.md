@@ -313,3 +313,48 @@ reviews, before the repair code).
   boundary (a loop component cancelled by a
   following ".." refuses at the guard on both
   sides, as before).
+- WW-28. Round 5 discharges the two probes filed
+  in this line's Round 5 owed file, and adds a
+  third the sibling line just proved live. The
+  recursion band: unheard's Round 4 measured
+  pathlib's recursive walk crashing with
+  RecursionError at 991 nested splices (990
+  resolve); this crate's oracle crashes uncaught
+  out of resolve while its port answers a splice
+  failure as naming the record with a refusal
+  phrase, so an output spelled through a chain
+  near the band likely diverges in streams even
+  where exit and effects agree. The probe pass
+  measures the band at this crate's guard (chain
+  lengths bracketing both siblings' constants,
+  onto the record and away) on the oracle and
+  the port and fixes the divergence set before
+  any repair is written.
+- WW-29. The deleted working directory: from a
+  deleted cwd, relative and absolute output
+  spellings onto and away, measured cell by cell
+  against this crate's guard structure (its
+  resolver is fallible per WW-25a and counts an
+  unresolvable output as naming the record),
+  before any repair is written.
+- WW-30. The tailed output spelling: retroforge's
+  Round 5 red team proved a pre-existing write-
+  seam class in that crate (spellings ending in
+  a separator or dot component write on the
+  oracle and refuse on the port, because the
+  port hands the raw spelling to rename while
+  pathlib's construction drops the tail). This
+  crate's write seam is probed for the same
+  class in the same pass, on every command that
+  writes (ledger, wall, tally, confess, grade as
+  the surface allows), and the class boundary is
+  measured before any repair is written.
+- WW-31. Repairs follow the measurements under
+  new clauses if a probe set expands; the
+  differential harness gains the proven cells
+  with control runs against the pre-repair
+  binary failing exactly the new cells, and the
+  standing harness stays clean.
+- WW-32. README records 5 of 100 only in the
+  closure commit written after this round's
+  three reviews, fixes, and owner verification.
