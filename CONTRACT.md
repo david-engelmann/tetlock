@@ -313,3 +313,168 @@ reviews, before the repair code).
   boundary (a loop component cancelled by a
   following ".." refuses at the guard on both
   sides, as before).
+- WW-28. Round 5 discharges the two probes filed
+  in this line's Round 5 owed file, and adds a
+  third the sibling line just proved live. The
+  recursion band: unheard's Round 4 measured
+  pathlib's recursive walk crashing with
+  RecursionError at 991 nested splices (990
+  resolve); this crate's oracle crashes uncaught
+  out of resolve while its port answers a splice
+  failure as naming the record with a refusal
+  phrase, so an output spelled through a chain
+  near the band likely diverges in streams even
+  where exit and effects agree. The probe pass
+  measures the band at this crate's guard (chain
+  lengths bracketing both siblings' constants,
+  onto the record and away) on the oracle and
+  the port and fixes the divergence set before
+  any repair is written.
+- WW-29. The deleted working directory: from a
+  deleted cwd, relative and absolute output
+  spellings onto and away, measured cell by cell
+  against this crate's guard structure (its
+  resolver is fallible per WW-25a and counts an
+  unresolvable output as naming the record),
+  before any repair is written.
+- WW-30. The tailed output spelling: retroforge's
+  Round 5 red team proved a pre-existing write-
+  seam class in that crate (spellings ending in
+  a separator or dot component write on the
+  oracle and refuse on the port, because the
+  port hands the raw spelling to rename while
+  pathlib's construction drops the tail). This
+  crate's write seam is probed for the same
+  class in the same pass, on every command that
+  writes (ledger, wall, tally, confess, grade as
+  the surface allows), and the class boundary is
+  measured before any repair is written.
+- WW-31. Repairs follow the measurements under
+  new clauses if a probe set expands; the
+  differential harness gains the proven cells
+  with control runs against the pre-repair
+  binary failing exactly the new cells, and the
+  standing harness stays clean.
+- WW-32. README records 5 of 100 only in the
+  closure commit written after this round's
+  three reviews, fixes, and owner verification.
+- WW-33. Amendment, on the WW-28 probe pass: the
+  chain law at the guard. Resolution follows
+  splices the way the interpreter's walk does,
+  component by component in userspace, never by
+  a whole-path canonicalize: a chain longer than
+  the kernel's whole-path link cap is not a
+  loop. Each splice recurses into the component
+  that carries it, so depth is nesting (a splice
+  inside another splice's resolution), not a
+  count of splices in the spelling; 991 nested
+  splices resolve and the 992nd fails the
+  resolution, the constant of this CLI measured
+  at its guard on head chains and prefix chains
+  alike, never inherited from a sibling. A link
+  target splices as the interpreter's does:
+  absolute targets restart at the root, relative
+  targets join the accumulated prefix, and a
+  ".." in the spelling or in a target pops the
+  accumulated resolved prefix lexically, without
+  being read. A loop is what the walk's seen
+  map convicts (a path revisited while its own
+  resolution is still open and not cancelled
+  by a following ".." in the finished path).
+- WW-34. Amendment, failure postures under the
+  walk. An output whose resolution fails for
+  any reason (a loop, the depth budget) counts
+  as naming the record under WW-25a and is
+  refused at the guard, where the interpreter
+  crashes uncaught: the refusal phrase against
+  the traceback is the standing named deviation,
+  exit and effects agreeing. Where the guard
+  resolves a long prefix chain faithfully, the
+  write then fails in the spelled parent past
+  the kernel cap on both sides and the answer
+  is the cannot-write phrase, not the guard's.
+- WW-35. Amendment, on the WW-29 probe pass: the
+  deleted working directory. A failed current-
+  directory read fails the resolution of a
+  relative spelling outright; an absolute
+  spelling never consults it. On the output
+  side the failure counts as naming the record
+  (WW-25a's refusal). On the record side, in
+  the guard, the failure takes the bare crash
+  class at the guard itself, exit 1 with
+  nothing printed and nothing written: the
+  interpreter dies inside the guard expression,
+  before any load, and its load would otherwise
+  succeed through a ".." spelling and write.
+  Where no output is named, no resolution is
+  evaluated on either side and nothing changes:
+  views to stdout and the confess and grade
+  appends keep their measured agreement.
+- WW-36. Amendment, on the WW-30 probe pass:
+  the write consumes the constructed spelling.
+  As pathlib's construction hands the path to
+  _write_atomically, so here: construction
+  drops every empty component and every "."
+  component wherever it stands in the spelling;
+  a ".." component and every other component
+  stand whole; a leading pair of separators
+  stands as the anchor and a longer leading run
+  collapses to one separator; a spelling with
+  no component left stands as "." (or as its
+  anchor). The temp file is created in the
+  constructed path's parent, its prefix is the
+  constructed path's name and a dot, and the
+  replace target is the constructed path
+  itself. The guard's resolution and the
+  cannot-write message keep the raw argv
+  spelling, as the Python's do. The record
+  seam already follows the same construction
+  discipline and is measured agreeing; it does
+  not change.
+- WW-37. Amendment, the harness cells. The
+  harness gains: head chains onto at 41 and
+  991 (plain twins) and at 992 (a dev cell,
+  the refusal phrase against the traceback),
+  head chains away at 41 and 991 (plain twins,
+  the view replacing the chain head) and at
+  992 (dev), prefix chains away at 41 and 991
+  (plain twins failing at the write on both
+  sides) and at 992 (dev), the dotdot-target
+  chain (a plain twin writing through the
+  chain head), deleted-cwd cells through a
+  launcher step (relative output away and
+  onto as dev cells, a relative record with
+  an absolute output as a crash-class dev
+  cell, absolute onto and away as plain
+  twins, a no-output view over a relative
+  record as a plain twin), and the tailed
+  outputs (trailing separator, trailing dot,
+  trailing separator-and-dot mixtures, a
+  nested path's tailed name, on ledger, wall,
+  and tally) as plain twins, with tailed onto
+  spellings and the boundary spellings
+  (trailing "..", a mid-spelling "..", ".",
+  the empty spelling) pinned as agreeing.
+  Control runs against the pre-repair binary
+  fail exactly the new cells.
+- WW-38. Amendment, on a Round 4 harness cell
+  the first repair failed (an output spelled
+  through a loop component and a following
+  ".."): the loop conviction is not the walk's
+  seen map alone. Where the walk meets a path
+  under its own open resolution it stops and
+  returns the part resolved so far with the
+  rest of the spelling standing; the resolution
+  is the lexical normalization of that finished
+  spelling, and the loop is convicted only by
+  the interpreter's closing stat of the
+  finished path, which raises on ELOOP and
+  swallows every other failure. So a loop
+  component a following ".." cancels out of
+  the finished path resolves clean (the
+  spelling writes or fails at the write, as
+  its resolved self dictates), a loop left
+  standing in the finished path takes the
+  failure postures of WW-34 and WW-25a, and a
+  resolution the walk completes is statted
+  too, its dangling end no failure at all.
