@@ -517,3 +517,78 @@ reviews, before the repair code).
   closure commit written after this round's
   three reviews, fixes, and owner
   verification.
+- WW-42. The view write's temp placement, the
+  Round 6 repair. The temp is created under the
+  lexically absolutized parent of the
+  constructed path: a relative parent is
+  joined to the working directory, then the
+  components are normalized lexically (empty
+  and "." components drop, ".." pops the
+  spelled component before it, a leading
+  separator pair stands as the anchor), with
+  no link resolution anywhere in that step.
+  The rename target remains the constructed
+  path itself, and the cannot-write message
+  keeps the raw output spelling. This governs
+  every view command (ledger, wall, tally),
+  whose writes share the one seam. The
+  convicted family is the popped link: an
+  output whose parent contains a symlink
+  component that a following ".." pops, where
+  the lexical parent differs in existence
+  from the physically resolved parent; the
+  pre-repair write landed the view at the
+  physical target where the oracle's mkstemp
+  refuses on the lexical parent. WW-42
+  supersedes WW-36's silence on the temp's
+  placement; the construction WW-36 states
+  for the target stands unchanged.
+- WW-43. The boundary agreements and the
+  scope of WW-42. The pop family agrees where
+  the lexical parent exists as a directory
+  and the physical does not (the oracle's
+  temp is created and its replace then
+  fails; the write refuses on both sides),
+  where neither parent exists, where both
+  exist (the view lands at the physical
+  target on both sides), and where the
+  popped component is a real directory (the
+  two parents are one). A target carrying
+  its own ".." is convicted or agrees by the
+  same existence test on the parents it
+  produces. The append seam is outside the
+  law: confess and grade open the record
+  path directly, the kernel resolves the
+  spelling physically on both sides, and the
+  family is measured absent there. Inside
+  the temp step, an absolute parent never
+  consults the working directory; a failed
+  working-directory read on a relative
+  spelling fails the write with the
+  cannot-write refusal, a posture that
+  stands behind the guard's own deleted-cwd
+  postures (WW-35), which decide every
+  reachable deleted-cwd cell first.
+- WW-44. The harness gains the temp
+  placement cells: a poptree step that
+  rebuilds the popped-link tree fresh in
+  both case dirs before each action step,
+  and one case per command family (ledger,
+  wall and tally at the plain pop; ledger
+  across the tailed, deep, sequence,
+  dotdot-target, absolute, lexical-file, and
+  overwrite shapes), each case ordering its
+  boundary pins before its convicted cells
+  so a one-sided write cannot echo through
+  later snapshots. The true root-escape
+  shape (a link target leaving the case
+  tree) is probe-pinned in the lane record,
+  not harness-celled, because a snapshot
+  cannot carry a write outside its tree;
+  its in-tree form (a link in a subdirectory
+  whose target climbs out of the
+  subdirectory) is celled as the deep pop.
+  Control runs against the pre-repair binary
+  fail exactly the convicted steps, and the
+  boundary pins and every standing case pass
+  the control.
