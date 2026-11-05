@@ -592,3 +592,36 @@ reviews, before the repair code).
   fail exactly the convicted steps, and the
   boundary pins and every standing case pass
   the control.
+- WW-45. Amendment, on the Round 6 red team's
+  deleted-working-directory battery: WW-35's
+  output-side arm corrected. A view output
+  whose guard resolution fails on the failed
+  current-directory read (a relative spelling
+  from a deleted working directory) takes the
+  bare crash class at the guard, exit 1 with
+  nothing printed and nothing written: the
+  interpreter's guard evaluates the output's
+  resolve first and dies there, before any
+  comparison can name the record, so the
+  refusal phrase never fires for this failure.
+  The boundary stands everywhere else: loop
+  and budget failures on the output side keep
+  WW-34's posture (counted as naming the
+  record, refused with the guard phrase), a
+  resolution that completes compares as
+  before, and the record side is untouched
+  (its failed-cwd arm already takes the crash
+  class under WW-35, and its walk failures
+  still fall through to the load). Absolute
+  output spellings never consult the working
+  directory and are unchanged. The harness's
+  deleted-cwd case states the arm: relative
+  outputs, plain and popped spellings, on
+  ledger and tally against absolute and
+  relative records take the crash-class
+  expectation on this side against the
+  oracle's traceback, and the absolute
+  spellings from a deleted working directory
+  stand as twinned pins; control runs against
+  the pre-WW-45 binary fail exactly those
+  steps.
