@@ -1184,17 +1184,24 @@ fn execute(command: &str, parsed: &SubParsed) -> i32 {
         // WW-25a: an output whose resolution fails
         // counts as naming the record and is refused
         // here, where the Python dies in the crash
-        // class before its guard. A record whose
-        // resolution fails in the walk does not
-        // refuse at the guard: the load below
+        // class before its guard. Two failures take
+        // the bare crash class instead, one on each
+        // side, and nothing is printed or written
+        // for either. An output whose resolution
+        // fails on the current-directory read
+        // (WW-45): the Python's guard evaluates the
+        // output's resolve first and dies there,
+        // before any comparison can name the
+        // record. A record whose resolution fails
+        // on the current-directory read (WW-35):
+        // the Python dies inside the guard
+        // expression, before any load. A record
+        // whose resolution fails in the walk does
+        // not refuse at the guard: the load below
         // refuses it by name, the crash class's
-        // named side. A record whose resolution
-        // fails on the current-directory read is
-        // the one exception (WW-35): the Python
-        // dies inside the guard expression, before
-        // any load, so the bare crash class fires
-        // here and nothing is printed or written.
+        // named side.
         let refused = match resolve_path(out.units()) {
+            Err(ResolveFail::Cwd) => return 1,
             Err(_) => true,
             Ok(resolved_out) => match resolve_path(parsed.positionals[0].units()) {
                 Ok(resolved_record) => resolved_out == resolved_record,
