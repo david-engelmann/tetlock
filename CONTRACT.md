@@ -478,3 +478,42 @@ reviews, before the repair code).
   failure postures of WW-34 and WW-25a, and a
   resolution the walk completes is statted
   too, its dangling end no failure at all.
+- WW-39. Round 6 probes the temp placement law
+  at this crate's view write seam, the family
+  measured in secondbill's Round 5 and
+  retroforge's Round 6 and which this crate's
+  seam predates. The oracle's view write
+  creates its temp through tempfile.mkstemp,
+  which absolutizes the parent lexically (cwd
+  join, then normpath, no link resolution);
+  this crate's write creates its temp under
+  the constructed parent as spelled (WW-36).
+  The probe set is the popped-link family at
+  every command that writes a view (ledger,
+  wall, tally): an output whose parent
+  contains a symlink component that a
+  following dotdot pops, across the existence
+  boundary (the lexical parent exists as a
+  directory, neither parent exists, the
+  popped component is a real directory), in
+  plain, tailed, absolute, deep, and
+  escape-link spellings, each measured
+  against the oracle before any repair is
+  written. Repairs follow the measurements
+  under new clauses; the harness gains the
+  proven cells with controls against the
+  pre-repair binary failing exactly the
+  convicted cells, boundary pins ordered
+  before convicted cells where a one-sided
+  write could echo through later snapshots.
+- WW-40. The CodeRabbit disposition owed from
+  Round 5 discharges here on evidence: the
+  Round 5 pull request carries zero inline
+  findings on read-back (checked 2026-11-04 in
+  the rotation-wide late sweep), so there is
+  nothing to fix and the absence is the
+  disposition.
+- WW-41. README records 6 of 100 only in the
+  closure commit written after this round's
+  three reviews, fixes, and owner
+  verification.
