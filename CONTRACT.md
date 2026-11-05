@@ -457,3 +457,24 @@ reviews, before the repair code).
   the empty spelling) pinned as agreeing.
   Control runs against the pre-repair binary
   fail exactly the new cells.
+- WW-38. Amendment, on a Round 4 harness cell
+  the first repair failed (an output spelled
+  through a loop component and a following
+  ".."): the loop conviction is not the walk's
+  seen map alone. Where the walk meets a path
+  under its own open resolution it stops and
+  returns the part resolved so far with the
+  rest of the spelling standing; the resolution
+  is the lexical normalization of that finished
+  spelling, and the loop is convicted only by
+  the interpreter's closing stat of the
+  finished path, which raises on ELOOP and
+  swallows every other failure. So a loop
+  component a following ".." cancels out of
+  the finished path resolves clean (the
+  spelling writes or fails at the write, as
+  its resolved self dictates), a loop left
+  standing in the finished path takes the
+  failure postures of WW-34 and WW-25a, and a
+  resolution the walk completes is statted
+  too, its dangling end no failure at all.
