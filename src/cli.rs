@@ -761,11 +761,42 @@ fn emit_view(document: &Value, out: &Text) -> i32 {
     }
 }
 
+/// The temp's directory as mkstemp reads the
+/// parent (WW-42): the parent absolutized
+/// lexically, joined to the working directory
+/// when relative and then normalized over its
+/// components with no link resolution anywhere
+/// in the step. An absolute parent never
+/// consults the working directory; a failed
+/// working-directory read on a relative parent
+/// fails the step (WW-43).
+fn lexical_abspath(units: &[u16]) -> Option<Vec<u16>> {
+    let joined: Vec<u16> = if units.first() == Some(&SEP) {
+        units.to_vec()
+    } else {
+        let cwd = std::env::current_dir().ok()?;
+        join_frag(&raw_units_of_path(&cwd), units)
+    };
+    Some(normalize_lexically(&joined))
+}
+
 fn write_atomically(out: &[u16], bytes: &[u8]) -> Result<(), ()> {
     let path = crate::util::os_path_from_units(out);
     let dir = match path.parent() {
         Some(parent) if !parent.as_os_str().is_empty() => parent.to_path_buf(),
         _ => std::path::PathBuf::from("."),
+    };
+    // The temp is created under the parent as
+    // mkstemp absolutizes it (WW-42), not under
+    // the parent as spelled: a symlink component
+    // the spelling pops with a following ".."
+    // must not carry the temp to the physical
+    // directory the interpreter never names. The
+    // rename below still targets the constructed
+    // path itself.
+    let tmp_dir = match lexical_abspath(&raw_units_of_path(&dir)) {
+        Some(units) => crate::util::os_path_from_units(&units),
+        None => return Err(()),
     };
     let name = path
         .file_name()
@@ -773,7 +804,7 @@ fn write_atomically(out: &[u16], bytes: &[u8]) -> Result<(), ()> {
         .unwrap_or_default();
     let mut attempt = 0u32;
     let tmp = loop {
-        let candidate = dir.join(format!(
+        let candidate = tmp_dir.join(format!(
             "{}.{}{}{}",
             name,
             std::process::id(),
