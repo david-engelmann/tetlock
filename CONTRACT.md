@@ -846,3 +846,71 @@ reviews, before the repair code).
   the closure commit written after this
   round's three reviews, fixes, and owner
   verification.
+- WW-56. Amendment, on this round's three
+  reviews. Four records the clauses above
+  state too loosely or leave out.
+  (a) WW-49's control sentence reads with
+  the tree-echo qualification: the harness
+  compares a full tree snapshot after
+  every step, so once a convicted write
+  lands on one side only, the case's later
+  steps fail as echoes of that split. At
+  433 steps the control's 26 failures are
+  producing steps plus echoes. The
+  process-id-1 suffix case fails steps 3
+  to 11: producing at 3, 4, 6, 8, 10, and
+  11 (the plain names at 247 and 251, the
+  raw name at 249, the popped name at 247,
+  and the added raw names at 245 and 246)
+  and echoing at 5, 7, and 9. The
+  three-digit case fails steps 2 to 8:
+  producing at 2, 3, 5, 7, and 8 (the
+  plain names at 247 and 249, the raw
+  names at 247, 245, and 246) and echoing
+  at 4 and 6. The planted case produces 1,
+  the all-65 step. The re-pin case
+  produces 9. The 53 standing cases and
+  the loop family pass on the control.
+  (b) The harness of record for this round
+  is the rename-adapted differential
+  (tetlock.cli against the staged renamed
+  oracle, with the tetlock help text),
+  extended in place. The goals-tree
+  standing copy still carried the
+  pre-rename wallofwrong form, and the
+  owner has canonicalized it from this
+  round's harness. Before the pairing was
+  traced, it reproduced 32 failures in a
+  verified-clean window, all on
+  prog-bearing surfaces. The probe,
+  triplet, and gate evidence was gathered
+  on prog-free surfaces and stands.
+  (c) The battery-design rule from mutant
+  L: boundary cells belong at each single
+  defect's own flip point, not at the
+  shipped combination's. At fixed width
+  eight, the lossy arm's flip sits at true
+  basename lengths 245 and 246, outside
+  the shipped combination's raw window
+  (249 and 250 at process id 1, 247 and
+  248 at three digits), so a battery
+  placed only at the combination's flip
+  passes a mutant that keeps the lossy
+  name. The four cells added at 245 and
+  246, at the end of each suffix case, are
+  what convict that mutant. Future
+  boundary batteries place cells per arm.
+  (d) temp_suffix is this crate's first
+  wall-clock read: SystemTime appears
+  exactly once in src/, there, and record
+  timestamps are caller-supplied and
+  parsed, never read. WW-48's nanos term
+  is justified by WW-47's requirement,
+  convicted in this round by the 65-plant
+  refusal, that the draw not be computable
+  from the process id. That is why this
+  crate takes the flighttape Round 15
+  (FT-74) shape, while unheard's UH-43
+  fitting, where determinism was filed
+  rather than convicted, differed on its
+  own facts.
