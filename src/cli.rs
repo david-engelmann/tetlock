@@ -285,7 +285,7 @@ const OUTPUT_OPT: OptSpec = OptSpec {
 
 const CONFESS_SPEC: SubSpec = SubSpec {
     usage: CONFESS_USAGE,
-    prog: "wallofwrong confess",
+    prog: "tetlock confess",
     help: CONFESS_HELP,
     positionals: &["record"],
     options: &[
@@ -310,7 +310,7 @@ const CONFESS_SPEC: SubSpec = SubSpec {
 
 const GRADE_SPEC: SubSpec = SubSpec {
     usage: GRADE_USAGE,
-    prog: "wallofwrong grade",
+    prog: "tetlock grade",
     help: GRADE_HELP,
     positionals: &["record"],
     options: &[
@@ -340,7 +340,7 @@ const GRADE_SPEC: SubSpec = SubSpec {
 
 const LEDGER_SPEC: SubSpec = SubSpec {
     usage: LEDGER_USAGE,
-    prog: "wallofwrong ledger",
+    prog: "tetlock ledger",
     help: LEDGER_HELP,
     positionals: &["record"],
     options: &[HELP_OPT, value_opt("--now"), OUTPUT_OPT],
@@ -349,7 +349,7 @@ const LEDGER_SPEC: SubSpec = SubSpec {
 
 const WALL_SPEC: SubSpec = SubSpec {
     usage: WALL_USAGE,
-    prog: "wallofwrong wall",
+    prog: "tetlock wall",
     help: WALL_HELP,
     positionals: &["record"],
     options: &[HELP_OPT, value_opt("--date"), OUTPUT_OPT],
@@ -358,7 +358,7 @@ const WALL_SPEC: SubSpec = SubSpec {
 
 const TALLY_SPEC: SubSpec = SubSpec {
     usage: TALLY_USAGE,
-    prog: "wallofwrong tally",
+    prog: "tetlock tally",
     help: TALLY_HELP,
     positionals: &["record"],
     options: &[HELP_OPT, value_opt("--now"), OUTPUT_OPT],
@@ -629,7 +629,7 @@ fn parse_sub(command: &'static str, tokens: &[Token], top_extras: &[Text]) -> Pa
         let rendered: Vec<String> = extras.iter().map(|t| stderr_render(t.units())).collect();
         return parse_error(
             TOP_USAGE,
-            "wallofwrong",
+            "tetlock",
             &format!("unrecognized arguments: {}", rendered.join(" ")),
         );
     }
@@ -662,7 +662,7 @@ fn parse_top(tokens: &[Token]) -> ParseOutcome {
                     if let Some(value) = glued {
                         return parse_error(
                             TOP_USAGE,
-                            "wallofwrong",
+                            "tetlock",
                             &format!(
                                 "argument -h/--help: ignored explicit argument {}",
                                 repr_text(&value)
@@ -690,7 +690,7 @@ fn parse_top(tokens: &[Token]) -> ParseOutcome {
             }
             return parse_error(
                 TOP_USAGE,
-                "wallofwrong",
+                "tetlock",
                 &format!(
                     "argument command: invalid choice: {} (choose from 'confess', 'grade', 'ledger', 'wall', 'tally')",
                     repr_text(&token.text)
@@ -705,7 +705,7 @@ fn parse_top(tokens: &[Token]) -> ParseOutcome {
     }
     parse_error(
         TOP_USAGE,
-        "wallofwrong",
+        "tetlock",
         "the following arguments are required: command",
     )
 }

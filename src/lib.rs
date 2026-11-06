@@ -1,4 +1,4 @@
-//! wallofwrong: confessions graded against what
+//! tetlock: confessions graded against what
 //! actually happened. Confessions are onrecord
 //! claims with due dates; the wall is a view over
 //! the record, never a second store (WW-1 to

@@ -5,9 +5,9 @@
 //! every assertion.
 
 use flighttape::value::{Text, Value};
-use wallofwrong::emit::{dumps_view, Mode};
-use wallofwrong::record::{Store, StoreError};
-use wallofwrong::wall::{confess, grade, ledger, tally, wall};
+use tetlock::emit::{dumps_view, Mode};
+use tetlock::record::{Store, StoreError};
+use tetlock::wall::{confess, grade, ledger, tally, wall};
 
 const CONF_A: &str = "claim-b0e7464b9254d2cb";
 const CONF_B: &str = "claim-1008d801474cbae0";
@@ -72,7 +72,7 @@ fn evidence(pairs: &[(&str, &str)]) -> Vec<(Text, Text)> {
 }
 
 fn run_cli(args: &[&str]) -> (i32, String, String) {
-    let output = std::process::Command::new(env!("CARGO_BIN_EXE_wallofwrong"))
+    let output = std::process::Command::new(env!("CARGO_BIN_EXE_tetlock"))
         .args(args)
         .output()
         .expect("the binary runs");
@@ -959,12 +959,12 @@ fn closed_at_launch_reads_the_runtime_substitution() {
         .write(true)
         .open("/dev/null")
         .expect("dev null opens");
-    assert!(wallofwrong::util::closed_at_launch(both.as_raw_fd() as u32));
+    assert!(tetlock::util::closed_at_launch(both.as_raw_fd() as u32));
     let write_only = std::fs::OpenOptions::new()
         .write(true)
         .open("/dev/null")
         .expect("dev null opens");
-    assert!(!wallofwrong::util::closed_at_launch(
+    assert!(!tetlock::util::closed_at_launch(
         write_only.as_raw_fd() as u32
     ));
 }
