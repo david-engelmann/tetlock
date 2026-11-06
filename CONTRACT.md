@@ -625,3 +625,224 @@ reviews, before the repair code).
   stand as twinned pins; control runs against
   the pre-WW-45 binary fail exactly those
   steps.
+- WW-46. The CodeRabbit disposition owed from
+  Round 6 discharges here on evidence: the
+  Round 6 pull request (PR 7) carries zero
+  inline findings and zero reviews on
+  read-back (checked 2026-11-06), and its
+  summary shell records the review as failed
+  because the pull request is closed, with a
+  findings-free walkthrough, the standing
+  shape since flighttape Round 13. There is
+  nothing to fix and nothing to dismiss; the
+  absence and the shell's exact state are the
+  disposition. Any late findings on this
+  round's pull request are owed to Round 8's
+  contract by the same shape.
+- WW-47. Round 7 measures this crate's temp
+  suffix, among the last unmeasured seams in
+  the line. The shipped generator builds the
+  candidate as the constructed name, a dot,
+  and the decimal digits of the process id,
+  a per-process counter, and the attempt,
+  concatenated, so its width is the digit
+  count of three numbers and the name
+  boundary moves with the width of the
+  process id that happens to run. Measured
+  against the oracle, whose suffix is
+  exactly eight characters at every process
+  id (writes at a 246-byte name, refuses at
+  247): at process id 1 the port's suffix is
+  three characters and it writes through a
+  251-byte name, refusing at 252; at a
+  three-digit process id the suffix is five
+  and it writes through 249, refusing at
+  250. Two further arms stand at the same
+  seam. The candidate's name is built
+  through a lossy conversion, so a name
+  carrying one raw byte is lengthened by
+  two bytes before the boundary is counted
+  (at process id 1 the port writes a
+  raw-byte name through 249 bytes where the
+  plain name runs to 251; at a three-digit
+  id, through 247 where the plain name runs
+  to 249). And the draw is a public function
+  of the process id, the counter, and the
+  attempt, every term known or enumerable
+  before the process runs: planting the one
+  first candidate is absorbed by the redraw,
+  as the oracle absorbs a plant, but
+  planting all 65 candidates the retry loop
+  can draw makes the port refuse a write
+  the oracle lands. The observable law is
+  the one the family settled: the candidate
+  is the name, a dot, and exactly eight
+  characters, drawn so the sequence cannot
+  be computed from the process id, created
+  exclusively under the lexically
+  absolutized parent at mode 0600.
+- WW-48. The repair, at the one view seam.
+  The candidate is assembled from raw bytes
+  end to end (the constructed name's own
+  bytes; no lossy step anywhere in the
+  construction), a dot, and exactly eight
+  lowercase hexadecimal characters drawn
+  from the first four bytes of a SHA-256
+  hash over the process id, the wall-clock
+  nanoseconds, the per-process counter, the
+  attempt, the temp directory's bytes, and
+  the name's bytes, so successive draws
+  differ and the sequence is not a public
+  function of the process id. The hash is
+  the sha2 crate, already this crate's
+  transitive dependency through flighttape
+  and now named directly; the construction
+  is the one flighttape's Round 15 repair
+  settled for the same seam. The create
+  stays exclusive with redraw on
+  AlreadyExists inside the standing
+  64-attempt budget, the mode stays 0600,
+  the temp is removed on any failure, and
+  the rename target and the cannot-write
+  message are unchanged. WW-42's placement
+  and WW-36's construction stand untouched.
+- WW-49. The harness gains the suffix
+  cells: boundary lengths on ledger in
+  plain, popped, and raw-byte spellings,
+  run in two process-id postures (process
+  id 1, and a namespace with 200 processes
+  burned so the binary runs at a
+  three-digit id), plus the planted cells
+  at process id 1 (one plant, absorbed;
+  all 65 plants, refused before the repair
+  and written after it). The ambient
+  posture's boundary is not pinned: its
+  drawn width varies with the ambient id,
+  which is the defect, not a posture.
+  Controls: the pre-repair binary fails
+  exactly the convicted steps in each
+  posture; a mutant drawing eighteen
+  characters fails the refusal side of the
+  boundary and a mutant keeping the lossy
+  name fails exactly the raw-byte steps.
+- WW-50. The re-pin. This crate consumes
+  flighttape directly (its value model, and
+  timeparse's parse at the wall view's two
+  day computations, for the ledger and
+  tally --now and for a claim's asserted
+  time) and through onrecord's store, whose
+  claim gate reads a timestamp's validity
+  from the same parse. Both pins stand two
+  rounds behind: flighttape at its Round 12
+  merge eebce0be and onrecord at its Round 4
+  merge c6516073, whose own flighttape pin
+  is the same Round 12 head. Onrecord's
+  Round 5 changed no source of its own,
+  only its flighttape pin, so the whole
+  two-jump delta is flighttape Round 13's
+  timestamp law (the fraction window and
+  the lone-NUL terminator) reaching three
+  acceptance surfaces in this CLI: the
+  record load's timestamp gate, the --now
+  day, and the wall view's landing day.
+  Triplet probes (the Python oracle, the
+  shipped binary, the re-pinned binary)
+  over sixteen fraction and separator forms
+  on the --now and --at surfaces find the
+  shipped binary diverging from the oracle
+  on exactly three forms (a colon standing
+  as the fraction separator, a fraction
+  whose digits run past six into a leftover
+  the boundary terminates, at Z and at an
+  offset sign) and the re-pinned binary
+  agreeing on every form. The round
+  therefore moves both pins in one step:
+  flighttape to 74a83298 (its Round 13
+  merge) and onrecord to 9e41a7be (its
+  Round 5 merge). No source of this crate
+  changes for the re-pin; the render-cost
+  model and every other surface stand as
+  they were.
+- WW-51. The harness gains the re-pin
+  cells: seeded records whose asserted time
+  carries the delta's shapes (the colon
+  fraction, the leftover fraction, and a
+  lone NUL standing as the whole tail after
+  the seconds, the terminator's completion
+  point), driven through the views that
+  read them, and --now steps at the three
+  convicted forms plus two agreement forms.
+  The control run against the shipped
+  binary fails exactly the convicted steps;
+  every standing case passes both runs.
+- WW-52. The record-side loop family,
+  measured on the Round 6 red team's cell
+  E1 and the shapes the owed file named. A
+  record spelled through a bare self-loop
+  parent, a mutual-loop parent, on ledger,
+  tally, and wall, with absolute and
+  relative outputs: the oracle raises
+  RuntimeError out of the guard's record
+  resolve, uncaught, and the port falls
+  through to the load's named refusal,
+  error, no such record, with the spelling
+  as typed; exit, stdout, and trees are
+  identical on every cell. A loop the
+  spelling cancels (the parent looped, a
+  following dotdot standing in the finished
+  path) resolves clean on both sides,
+  whether the record beneath exists or
+  not, and the load then refuses by name
+  on both sides in identical words, the
+  kernel's loop error reading as no such
+  record in the load on each. A plain link
+  chain onto a missing record, a
+  loop-shaped spelling whose target is the
+  directory itself onto an existing record,
+  and the same record named with no output
+  at all agree outright. Decision: WW-25a's
+  record-side arm stands. A record-side
+  walk failure falls through to the load's
+  named refusal, the crash class's named
+  side, in every geometry the family
+  measures; moving that arm to the bare
+  crash class would rewrite WW-25a's
+  pinned own-name cell and the guard's
+  failure taxonomy to change no exit,
+  stdout, or effect in any measured
+  geometry, only which named text the port
+  prints on one side of a deviation that
+  is already named. The family is pinned
+  as the harness measures it under WW-53.
+- WW-53. The harness gains the record-side
+  loop cells: the loop-parent shapes as
+  dev cells in the WW-52 pairing (the
+  port's named refusal against the
+  oracle's traceback), and the cancelled,
+  chain, self-target, and no-output shapes
+  as plain twins. Control runs against the
+  shipped binary pass the whole case: the
+  round moves no record-side behavior, and
+  the cells pin the posture so a future
+  change to it fails loudly.
+- WW-54. Amendment: WW-42's wording
+  aligned. The clause said the temp's
+  directory step keeps a leading separator
+  pair as its anchor; the normalization
+  that step performs rebuilds every
+  spelling under a single leading
+  separator (empty components drop, the
+  pair with them), and the pair stands
+  only in WW-36's construction and in the
+  rename target it produces. The temp
+  directory string reaches no output and
+  names the same directory on Linux either
+  way, so the alignment is to the words,
+  not the behavior: WW-42 is to be read
+  with its anchor sentence applying to the
+  construction, and the temp's step stated
+  as the single-separator rebuild it is.
+- WW-55. README records 7 of 100 only in
+  the closure commit written after this
+  round's three reviews, fixes, and owner
+  verification.
