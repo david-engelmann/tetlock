@@ -882,7 +882,7 @@ fn temp_suffix(dir: &[u16], name: &[u16], counter: u32, attempt: u32) -> Vec<u16
     let nanos = std::time::SystemTime::now()
         .duration_since(std::time::UNIX_EPOCH)
         .map(|duration| duration.as_nanos())
-        .unwrap_or(0);
+        .unwrap_or_else(|error| error.duration().as_nanos());
     let mut hasher = sha2::Sha256::new();
     hasher.update(std::process::id().to_le_bytes());
     hasher.update(nanos.to_le_bytes());

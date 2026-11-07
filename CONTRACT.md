@@ -914,3 +914,24 @@ reviews, before the repair code).
   fitting, where determinism was filed
   rather than convicted, differed on its
   own facts.
+- WW-57. Amendment, on CodeRabbit's
+  finding on PR 9 (comment 4498348502),
+  valid on the code as written. WW-48's
+  nanos term was drawn as
+  duration_since(UNIX_EPOCH) with a
+  fallback of zero on error, so a clock
+  reading before the epoch made the time
+  term the constant zero and the draw a
+  public function of the process id,
+  counter, attempt, directory, and name
+  again, the determinism WW-47 convicted.
+  The repair draws the term on the error
+  branch from the SystemTimeError's own
+  duration, the magnitude of the
+  reading's distance from the epoch,
+  which varies with the actual clock
+  reading instead of standing constant.
+  The post-epoch path is unchanged. The
+  observable law (width, retry, mode,
+  placement) is untouched, because the
+  term feeds only the hash mix.
