@@ -795,22 +795,35 @@ fn write_atomically(out: &[u16], bytes: &[u8]) -> Result<(), ()> {
     // rename below still targets the constructed
     // path itself.
     let tmp_dir = match lexical_abspath(&raw_units_of_path(&dir)) {
-        Some(units) => crate::util::os_path_from_units(&units),
+        Some(units) => units,
         None => return Err(()),
     };
-    let name = path
-        .file_name()
-        .map(|name| name.to_string_lossy().into_owned())
-        .unwrap_or_default();
+    // The candidate is the constructed name's own
+    // units, a dot, and the drawn suffix (WW-48),
+    // assembled as units and fsencoded whole, so
+    // a name carrying a raw byte reaches the
+    // create at its own length, never lengthened
+    // by a lossy conversion. The name is the part
+    // of the constructed path after its last
+    // separator; a construction with no component
+    // standing (the dot or the anchor alone) has
+    // no name, as pathlib's name reads there.
+    let name: &[u16] = match out.iter().rposition(|unit| *unit == SEP) {
+        Some(at) => &out[at + 1..],
+        None => out,
+    };
+    let name: &[u16] = if name == DOT { &[] } else { name };
     let mut attempt = 0u32;
     let tmp = loop {
-        let candidate = tmp_dir.join(format!(
-            "{}.{}{}{}",
-            name,
-            std::process::id(),
-            TEMP_COUNTER.fetch_add(1, std::sync::atomic::Ordering::SeqCst),
-            attempt
-        ));
+        let counter = TEMP_COUNTER.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
+        let mut candidate = tmp_dir.clone();
+        if candidate.last() != Some(&SEP) {
+            candidate.push(SEP);
+        }
+        candidate.extend_from_slice(name);
+        candidate.extend_from_slice(DOT);
+        candidate.extend_from_slice(&temp_suffix(&tmp_dir, name, counter, attempt));
+        let candidate = crate::util::os_path_from_units(&candidate);
         #[cfg(unix)]
         let opener = {
             use std::os::unix::fs::OpenOptionsExt;
@@ -851,6 +864,64 @@ fn write_atomically(out: &[u16], bytes: &[u8]) -> Result<(), ()> {
 }
 
 static TEMP_COUNTER: std::sync::atomic::AtomicU32 = std::sync::atomic::AtomicU32::new(0);
+
+/// The temp candidate's suffix (WW-48): exactly
+/// eight lowercase hexadecimal characters from
+/// the first four bytes of a SHA-256 hash over
+/// the process id, the wall-clock nanoseconds,
+/// the per-process counter, the attempt, the
+/// temp directory's bytes, and the name's
+/// bytes. The terms make successive draws
+/// differ and keep the sequence from being a
+/// public function of the process id, the
+/// defect WW-47 measures in the shipped
+/// decimal concatenation of the same three
+/// numbers.
+fn temp_suffix(dir: &[u16], name: &[u16], counter: u32, attempt: u32) -> Vec<u16> {
+    use sha2::Digest;
+    let nanos = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|duration| duration.as_nanos())
+        .unwrap_or_else(|error| error.duration().as_nanos());
+    let mut hasher = sha2::Sha256::new();
+    hasher.update(std::process::id().to_le_bytes());
+    hasher.update(nanos.to_le_bytes());
+    hasher.update(counter.to_le_bytes());
+    hasher.update(attempt.to_le_bytes());
+    hasher.update(units_bytes(dir));
+    hasher.update(units_bytes(name));
+    let digest = hasher.finalize();
+    let mut suffix = Vec::with_capacity(8);
+    for byte in &digest[..4] {
+        suffix.push(hex_unit(byte >> 4));
+        suffix.push(hex_unit(byte & 0xF));
+    }
+    suffix
+}
+
+fn hex_unit(nibble: u8) -> u16 {
+    match nibble {
+        0..=9 => b'0' as u16 + nibble as u16,
+        _ => b'a' as u16 + (nibble as u16 - 10),
+    }
+}
+
+/// A unit string's OS bytes, for the suffix
+/// hash's inputs: the fsencoding on unix, the
+/// lossy rendering where the crate has no
+/// fsencoding (the hash's inputs are a draw,
+/// never a path, so the rendering there costs
+/// nothing observable).
+fn units_bytes(units: &[u16]) -> Vec<u8> {
+    #[cfg(unix)]
+    {
+        crate::util::fsencode_bytes(units)
+    }
+    #[cfg(not(unix))]
+    {
+        String::from_utf16_lossy(units).into_bytes()
+    }
+}
 
 /// The raw units of an OS path, unedited: the
 /// walk and the construction read a path's own

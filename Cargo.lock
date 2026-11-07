@@ -49,7 +49,7 @@ dependencies = [
 [[package]]
 name = "flighttape"
 version = "1.0.0"
-source = "git+https://github.com/david-engelmann/flighttape?rev=eebce0be75a9c2ffa534635e37160c7cbef5d96e#eebce0be75a9c2ffa534635e37160c7cbef5d96e"
+source = "git+https://github.com/david-engelmann/flighttape?rev=74a83298aeb31c82e62b9fb0c613f5bc8600799e#74a83298aeb31c82e62b9fb0c613f5bc8600799e"
 dependencies = [
  "sha2",
 ]
@@ -73,7 +73,7 @@ checksum = "65cd87c9a6d60536580b316ad985726104730a5151c99845f2490428ef91240a"
 [[package]]
 name = "onrecord"
 version = "0.1.0"
-source = "git+https://github.com/david-engelmann/onrecord?rev=c6516073a190623c1109268c7505340405e72c0f#c6516073a190623c1109268c7505340405e72c0f"
+source = "git+https://github.com/david-engelmann/onrecord?rev=9e41a7bea5a9a710dedd9ffa6a0505dbd81a074a#9e41a7bea5a9a710dedd9ffa6a0505dbd81a074a"
 dependencies = [
  "flighttape",
  "sha2",
@@ -96,6 +96,7 @@ version = "0.1.0"
 dependencies = [
  "flighttape",
  "onrecord",
+ "sha2",
 ]
 
 [[package]]
