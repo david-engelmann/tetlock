@@ -1188,3 +1188,278 @@ reviews, before the repair code).
   judged overdue against. The ledger
   lead-in in Usage now states both
   halves in one sentence.
+- WW-67. The CodeRabbit disposition owed
+  from Round 8 discharges here on
+  evidence, read back in full in this
+  round (checked 2026-11-08). The Round 8
+  pull request (PR 11) carries twelve
+  review comments, nine reviews, and
+  four issue comments. The owner's
+  trigger stands at 6718018882
+  (2026-11-08T06:03:09Z); the summary
+  shell (6718019962) posted at
+  06:03:17Z and stands in completed
+  walkthrough form, with no Review
+  failed marker, last updated
+  2026-11-08T06:19:18Z, before the
+  06:26:24Z merge at
+  d3ed8422ff071322d6ed745b657eba94e430a239.
+  The one review carrying findings
+  (5816856733, COMMENTED, 06:09:10Z)
+  posted the four findings at
+  06:09:08Z, and the remaining
+  shell-side comment (6718072325,
+  06:09:26Z) is the action notice,
+  Already reviewed the last commit.
+  The owner's four replies (4505271922,
+  4505272059, 4505272266, 4505272460,
+  from 06:19:46Z to 06:20:00Z) disposed
+  of the findings as WW-66 records.
+  Four CodeRabbit acknowledgment
+  replies followed on the four threads,
+  all before the merge: 4505272581
+  (06:20:03Z) accepts the CARGO_HOME
+  dismissal, 4505272885 (06:20:11Z)
+  withdraws the PATH finding, 4505273092
+  (06:20:18Z) accepts the --now repair,
+  and 4505273164 (06:20:21Z) accepts the
+  Quickstart warning, noting the warning
+  informs rather than prevents, which
+  restates that repair's own terms and
+  raises no new claim. The remaining
+  eight reviews are the empty COMMENTED
+  shells the replies ride. No second
+  shell posted, nothing arrived after
+  the merge but the owner's landing
+  comment (6718221203, 06:26:55Z), and
+  no finding stands undisposed. Any
+  late findings on this round's pull
+  request are owed to Round 10's
+  contract by the same shape.
+- WW-68. The oracle's posture at this
+  seam, from evidence. The Python
+  writes its temp through
+  tempfile.mkstemp (the oracle's
+  _write_atomically), which draws each
+  candidate name from tempfile's
+  _RandomNameSequence: eight characters
+  per candidate, each a fresh draw from
+  a random.Random held for the process.
+  A Random constructed with no seed
+  argument is seeded from the operating
+  system's randomness source when one
+  is available, which is the seed
+  contract the interpreter on this box
+  (3.12.3) states in Lib/random.py, and
+  the sequence's own docstring in
+  Lib/tempfile.py calls its strings
+  unpredictable. No input an observer
+  can hold (the process id, the time,
+  the directory, the name) determines
+  any candidate, because the seed is
+  operating system entropy and is never
+  exposed. The port's draw (WW-48) is
+  the opposite shape: a public function
+  of inputs an observer can know or
+  fix, rescued from the process id
+  alone by a clock term that a frozen
+  and known clock stands still, on
+  either side of the epoch (WW-59).
+  The threat WW-59 left open is the
+  whole distance between the two
+  postures at this seam.
+- WW-69. The adjudication, and the
+  repair. WW-59's question is answered
+  yes: operating system randomness
+  enters the hash mix. temp_suffix
+  gains a seventh term, sixteen bytes
+  drawn fresh for each candidate from
+  /dev/urandom, the kernel's randomness
+  interface, read through the standard
+  library with no new dependency, and
+  appended to the hash input after the
+  name's bytes. The draw stays per
+  candidate, as mkstemp's does: every
+  candidate the retry loop tries
+  carries its own term, so the
+  candidate set is not a function of
+  anything an observer can hold, on
+  either side of the epoch and under a
+  frozen and known clock. Sixteen
+  bytes stands far beyond the suffix's
+  own width, so the set's
+  uncomputability rests on this term
+  alone. The failure posture is
+  refusal, never fallback: where the
+  entropy read fails or comes up
+  short, and where the crate has no
+  operating system randomness source
+  to read (its non-unix arm),
+  temp_suffix yields no suffix and
+  write_atomically refuses through
+  its standing arm, the cannot-write
+  line at exit 1, before any create,
+  so no computable mix is ever drawn
+  silently (the WW-57 lesson). The
+  observable law is otherwise
+  untouched: the candidate is the
+  name, a dot, and exactly eight
+  lowercase hexadecimal characters
+  from the first four bytes of the
+  hash; the create stays exclusive
+  with redraw on AlreadyExists inside
+  the standing 64-attempt budget; the
+  mode stays 0600; the temp is
+  removed on any failure; placement
+  (WW-42) and construction (WW-36)
+  stand. What the law now claims: the
+  candidate set cannot be computed
+  from the process id, nor from the
+  process id and a frozen and known
+  clock together. What it still does
+  not claim: the suffix carries 32
+  bits of the hash, so a planted name
+  can still collide by chance, once
+  in 2^32 per candidate on average,
+  and the redraw budget, not the
+  draw, is what answers a collision.
+- WW-70. Amendment, the evidence at the
+  seam, gathered in this round before and
+  after the repair. The battery is this
+  lane's own (ww9-scratch/battery),
+  modeled on the Round 8 red team's: the
+  clock frozen by an LD_PRELOAD shim at a
+  post-epoch reading (nanoseconds term
+  1790000000123456789) and at a pre-epoch
+  reading one nanosecond before the
+  epoch (term 1, the WW-57 error-branch
+  magnitude), the write run at process
+  id 1 in a fresh namespace, and the
+  planted set computed by the pre-round
+  draw's formula at that reading, all
+  65 candidates the retry loop can
+  draw. Against the control, a fresh
+  build of this round's base tree, the
+  frozen set refuses the write on both
+  sides of the epoch: exit 1, the
+  cannot-write line, nothing landed,
+  the plants untouched; at 64 plants
+  the write lands on both sides with
+  output byte-identical to the oracle's
+  (sha256 e2f3cbc9232c444c on every
+  landed cell in this battery). The
+  oracle lands at 65 plants on both
+  sides with the same bytes. Against
+  the repaired binary the same 65
+  plants land the write on both sides,
+  byte-identical output, the plants
+  untouched, the shape the oracle
+  shows; the post-epoch cell was
+  re-run against the final formatted
+  build with the same outcome. The
+  entropy failure posture is
+  demonstrated, not inferred: under a
+  shim that fails every open of
+  /dev/urandom with EACCES, the
+  repaired binary refuses (exit 1,
+  the standing cannot-write line) and
+  creates nothing at all in the output
+  directory, while the control lands
+  under the same shim, never reading
+  the device; those cells ran at the
+  ambient process id, the refusal
+  preceding any create and consulting
+  neither the clock nor the id. Three
+  unit pins land with the repair: the
+  entropy term decides the suffix at
+  fixed other terms, the suffix
+  matches an independent derivation of
+  the contracted mix, and successive
+  live draws differ inside the
+  contracted shape. A mutant that
+  drops the entropy term from the mix
+  fails exactly the first two pins
+  and passes the third, which pins
+  the shape and not the term; the
+  mutant ran in a scratch copy with
+  its own target directory, deleted
+  after the run.
+- WW-71. Amendment, the gate and the
+  harness on this round's tree. cargo
+  test passes 31 with 0 failed, the
+  Round 8 baseline of 28 plus the
+  three pins WW-70 names (3 library,
+  28 integration); cargo clippy
+  --all-targets with warnings denied
+  is clean, re-run after formatting;
+  cargo fmt --check is clean; the
+  Python codepoint scan over all 22
+  tracked files returns U+2014=0 and
+  U+2013=0. The standing differential
+  harness (the goals-tree copy,
+  WW_PY_SRC at the renamed oracle
+  snapshot) runs at 58 cases, 433
+  steps, 0 failures against this
+  round's binary, and at the same
+  shape against the control. No
+  harness cell's expectation changed:
+  its planted cells plant the WW-47
+  decimal candidates, which neither
+  draw produces, and the suffix
+  boundary, width, and mode cells
+  are untouched by a term that feeds
+  only the hash mix. The behavior
+  that changed is exercised by the
+  WW-70 battery alone, and it is
+  stated there.
+- WW-72. README records 9 of 100 only
+  in the closure commit written after
+  this round's three reviews, fixes,
+  and owner verification.
+- WW-73. Amendment, the CodeRabbit
+  disposition on PR 12, written after
+  the closure commit; the rounds line
+  stands untouched at 9 of 100. The
+  review's one finding (4505661668,
+  Minor, on the third pin WW-70
+  names) makes three points, each
+  verified against the code as
+  written before any repair. First,
+  the pin unwrapped the live draw
+  with expect, so on a non-unix
+  build, whose entropy arm yields
+  None on every call by WW-69's
+  design, and wherever /dev/urandom
+  cannot be read, the pin panicked
+  where the contracted outcome is
+  the refusal itself. Second, the
+  pin required two successive draws
+  to differ, which the contract
+  nowhere promises: the suffix
+  carries thirty-two bits of the
+  hash, so two valid draws can
+  collide, once in 2^32 per pair on
+  average, and the requirement was
+  a flake source in principle.
+  Third, its suggestions follow
+  from the two. Repair, in test code
+  only, no production behavior
+  changed: the pin is reworked and
+  renamed
+  a_live_draw_renders_eight_hex_characters_or_refuses,
+  and it draws live over fixed terms
+  and asserts, for each draw the
+  entropy source answers, the
+  contracted shape, exactly eight
+  lowercase hexadecimal characters,
+  and where the draw yields None it
+  accepts the contracted refusal
+  rather than panicking, so the pin
+  asserts what the contract promises
+  on every platform. The refusal
+  path itself stays covered where
+  it was covered already, the WW-70
+  battery's entropy-failure cells
+  and the red team's shim cells; no
+  injection seam was added to
+  production code to unit-test it.
