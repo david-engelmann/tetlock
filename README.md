@@ -48,7 +48,7 @@ cargo install --path .
 
 ## Quickstart
 
-Run a view over the sample record that ships in the test fixtures. The record holds two confessions, the outcome that graded one of them, and one plain claim, and the tally counts the record at a stated time.
+Run a view over the sample record that ships in the test fixtures. The record holds two confessions, the outcome that graded one of them, and one plain claim, and the tally counts the record at a stated time. The copy replaces any record.jsonl already in the directory, so a record holding confessions of your own belongs under a different name before the Quickstart is run again.
 
 ```sh
 cp tests/fixtures/record_synthetic.jsonl record.jsonl
@@ -107,7 +107,7 @@ tetlock grade record.jsonl --confession claim-239fdfa797bd1d2f --grade broke --h
 claim-4f8d9685876dede9
 ```
 
-The ledger lists every confession in the record with its state at a stated time. One confession stands graded and the other stands overdue.
+The ledger lists every confession in the record with its state at a stated time. The views read the whole record as it stands, and --now sets only the moment an ungraded confession is judged overdue against, never a snapshot of the record at that time. One confession stands graded and the other stands overdue.
 
 ```sh
 tetlock ledger --now 2026-06-06T00:00:00Z record.jsonl

@@ -1134,3 +1134,57 @@ reviews, before the repair code).
   it, verified against the captured
   files. The rounds line moves only
   in the closure commit (WW-64).
+- WW-66. CodeRabbit's review of this
+  round's pull request (PR 11) posted
+  four findings, and this item
+  disposes of them. It lands after
+  the closure commit by the round's
+  sequence, and the rounds line the
+  closure set is untouched and still
+  exact. Two findings are dismissed
+  with their reasons and no edit. The
+  Install block's scratch CARGO_HOME
+  and its session PATH entry stand as
+  the fleet's uniform self-contained
+  verification form, verified
+  verbatim in that form by this
+  round's reviews. The block performs
+  the default registry behavior, and
+  a reader with their own Cargo
+  configuration can run the same
+  commands under it. The PATH point
+  is the shape already dismissed in
+  flighttape's FT-87 and unheard's
+  UH-56. Two findings are repaired.
+  The Quickstart copies the sample
+  fixture over record.jsonl, and the
+  lane demonstrated with a sentinel
+  record that the copy replaces the
+  file silently, with no prompt. The
+  Quickstart lead-in now says the
+  copy replaces any record.jsonl
+  already in the directory, and that
+  a record holding confessions of
+  your own belongs under a different
+  name before the Quickstart is run
+  again. The last finding pressed
+  what --now controls, and the lane
+  demonstrated the answer against
+  this round's binary over the Usage
+  record. A ledger run at
+  2026-06-02T00:00:00Z, before the
+  grade's own timestamp of
+  2026-06-03T15:00:00Z, still reports
+  the deploy confession graded, so
+  the views read the whole record as
+  it stands, and --now does not make
+  a view a snapshot of the record at
+  that time. The ungraded migrate
+  confession, due 2026-06-05, reads
+  awaiting at 2026-06-02 and at
+  2026-06-04 and overdue at
+  2026-06-06, so --now sets only the
+  moment an ungraded confession is
+  judged overdue against. The ledger
+  lead-in in Usage now states both
+  halves in one sentence.
