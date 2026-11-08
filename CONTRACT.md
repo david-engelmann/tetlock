@@ -935,3 +935,159 @@ reviews, before the repair code).
   observable law (width, retry, mode,
   placement) is untouched, because the
   term feeds only the hash mix.
+- WW-58. The CodeRabbit disposition owed
+  from Round 7 discharges here on
+  evidence, read back in full in this
+  round (checked 2026-11-07). The Round 7
+  pull request (PR 9) carries three
+  reviews, three review comments, and
+  four issue comments. Its one inline
+  finding (comment 4498348502, the
+  pre-epoch constant fallback) was valid
+  on the code as written and was repaired
+  inside Round 7 as WW-57, with the
+  owner's factual reply standing on the
+  comment (4499472514,
+  2026-11-07T01:55:59Z, naming the repair
+  as landed at the pull request's head).
+  The summary shell (6697493145) stands
+  in completed walkthrough form, last
+  updated 2026-11-07T01:55:48Z, before
+  the 01:57:14Z merge, with no Review
+  failed marker; the remaining
+  shell-side comment (6697607791) is the
+  action notice, Already reviewed the
+  last commit. One further item arrived
+  after the owner's reply and fifty
+  seconds before the merge, and stands
+  unanswered on the pull request:
+  CodeRabbit's follow-up (comment
+  4499474239, review 5809330881,
+  2026-11-07T01:56:24Z), which WW-59
+  files. Any late findings on this
+  round's pull request are owed to
+  Round 9's contract by the same shape.
+- WW-59. Amendment, on CodeRabbit's
+  follow-up on PR 9 (comment 4499474239),
+  filed here exactly rather than left
+  unanswered. CodeRabbit accepts the
+  WW-57 repair and states a residual
+  concern: on a clock that is fixed or
+  predictable the error-branch term is
+  predictable with it, a hash adds no
+  randomness, and an actor who knows the
+  other inputs could pre-create the
+  candidates; it asks for an
+  unpredictable input, such as operating
+  system randomness, for pre-epoch draws
+  if that threat is in scope. The
+  concern is sound inside its premise,
+  and its premise is the scope line.
+  WW-48's law is that the draw cannot be
+  computed from the process id, and the
+  clock term varies with the actual
+  reading (WW-57); on a clock frozen at
+  one reading any clock-derived term
+  stands still, on either side of the
+  epoch, and computability returns for
+  an actor who knows that reading to the
+  nanosecond. No clause of this contract
+  claims the draw survives a frozen and
+  known clock. Whether operating system
+  randomness enters the hash mix is a
+  source question for a later round, to
+  be taken up with the threat decided;
+  this round changes no behavior, and
+  the item stands as the named candidate
+  the next source round at this seam
+  answers first.
+- WW-60. The CodeRabbit disposition for
+  the CI shaping pull request (PR 10)
+  discharges here on the same read-back.
+  PR 10 carries one review, one review
+  comment, and one issue comment, its
+  summary shell (6700624230) in completed
+  walkthrough form, last updated
+  2026-11-07T01:55:28Z, before the
+  01:57:38Z merge. Its one finding
+  (comment 4499468420, Minor) observes
+  that creating a merge group would run
+  the gate twice, once for the push
+  event on the queue branch and once for
+  merge_group, and asks that the push
+  run skip queue branches. The
+  observation is accurate and the repair
+  is not taken in this round, on two
+  recorded grounds. The workflow is the
+  fleet's uniform shaping step, landed
+  the same day on all ten of the line's
+  repos, and a one-repo divergence would
+  trade a fleet property for a local
+  one. And merge queues cannot be
+  enabled on user-owned repos at all
+  (the ruleset API rejects the
+  merge_queue rule there), so no merge
+  group can form on this repo today and
+  the duplicate run cannot occur. The
+  exclusion belongs to the fleet pass
+  that enables queues, and this item is
+  the finding's answer of record.
+- WW-61. The README takes the fleet
+  storefront standard in this round. The
+  first screen stands in the standard's
+  order: the title, the lede byte
+  identical to the repository description
+  read back through the API (David's
+  sentence, standing as the pinned
+  description in the fleet form), one
+  paragraph carrying the boundary
+  sentences, the one ci badge, and one
+  captured output. Install and
+  Quickstart run verbatim from a clean
+  staging, Quickstart over the synthetic
+  record that ships in the test
+  fixtures; Usage shows captured output
+  for all five commands, every capture
+  taken from this round's binary over
+  synthetic inputs. The badge is claimed
+  in workflow-state form only: the
+  workflow (403263182) stands active and
+  its latest run on main at this round's
+  base completed success
+  (2026-11-07T01:57:40Z); this lane's
+  fetch of the badge image timed out,
+  and no rendered state is claimed. The
+  Status section tracks reality and the
+  rounds line stays at 7 of 100 in this
+  round's commits (WW-64).
+- WW-62. Item 3 of the storefront
+  checklist does not pass and stands
+  recorded open. Cargo.toml carries no
+  description field, so the one-line
+  description stands in two of its three
+  homes, the repository description and
+  the README lede, byte identical in
+  both. Writing the field is a separate
+  pass; no description is invented
+  here.
+- WW-63. The gate and the harness on
+  this round's tree. The Python
+  codepoint scan over all tracked files
+  returns U+2014=0 and U+2013=0; cargo
+  fmt --check is clean; cargo clippy
+  --all-targets with warnings denied is
+  clean; cargo test passes 28 with 0
+  failed, the Round 7 baseline held on
+  a tree that changes no source. The
+  standing differential harness (the
+  goals-tree copy the owner
+  canonicalized in Round 7) runs against
+  this round's binary at 58 cases, 433
+  steps, 0 failures, the flat shape a
+  round that changes no source owes as
+  evidence it touched nothing
+  behavioral.
+- WW-64. README records 8 of 100 only
+  in the closure commit written after
+  this round's three reviews, fixes,
+  and owner verification.
