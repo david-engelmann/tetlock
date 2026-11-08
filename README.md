@@ -197,6 +197,79 @@ tetlock tally --now 2026-06-06T00:00:00Z record.jsonl
 }
 ```
 
+A grade can be corrected when a fuller picture replaces the first reading. Grading the same confession a second time, without naming the outcome the correction replaces, refuses. The error names the outcome a correction must supersede.
+
+```sh
+tetlock grade record.jsonl --confession claim-239fdfa797bd1d2f --grade held --happened "A fuller trace shows the deploy never stopped. The twelve minutes were the migration waiting on its own health check." --at 2026-06-07T11:00:00Z --asserter operator --evidence trace:run-33
+```
+
+```text
+error, confession claim-239fdfa797bd1d2f is already graded; a correction must supersede outcome claim-4f8d9685876dede9
+```
+
+The same grade with --supersedes naming that outcome lands, and the command prints the id of the new outcome claim.
+
+```sh
+tetlock grade record.jsonl --confession claim-239fdfa797bd1d2f --grade held --happened "A fuller trace shows the deploy never stopped. The twelve minutes were the migration waiting on its own health check." --at 2026-06-07T11:00:00Z --asserter operator --evidence trace:run-33 --supersedes claim-4f8d9685876dede9
+```
+
+```text
+claim-ca37878353a2cedd
+```
+
+The tally after the correction counts the deploy confession once, under its new grade, and the replaced outcome counts nowhere. The superseded count stands at zero here, because that count is for a confession superseded while ungraded, a state a later claim in the record brings about and no command in this tool writes.
+
+```sh
+tetlock tally --now 2026-06-08T00:00:00Z record.jsonl
+```
+
+```text
+{
+  "total": 2,
+  "by_state": {
+    "graded": 1,
+    "awaiting": 0,
+    "overdue": 1,
+    "superseded": 0
+  },
+  "graded": 1,
+  "by_grade": {
+    "held": 1,
+    "broke": 0,
+    "unverifiable": 0
+  },
+  "actions": [
+    {
+      "action": "deploy",
+      "graded": 1,
+      "held": 1,
+      "broke": 0,
+      "unverifiable": 0
+    }
+  ],
+  "malformed": 0
+}
+```
+
+Each view also takes -o, or --output in full, and writes its document to the named file instead of printing it. The command prints nothing. The ledger written this way, after the correction above, opens with the deploy confession under its corrected grade.
+
+```sh
+tetlock ledger --now 2026-06-08T00:00:00Z -o ledger.json record.jsonl
+```
+
+```text
+{
+  "confessions": [
+    {
+      "id": "claim-239fdfa797bd1d2f",
+      "action": "deploy",
+      "sentence": "The staging deploy finishes without downtime.",
+      "due": "2026-06-04",
+      "grade": "held",
+      "state": "graded"
+    },
+```
+
 ## Status
 
 All five commands are built and run as a Rust binary, with the Python of the first two rounds standing as the behavior reference the port is pinned against. The record layer is consumed from the onrecord crate at a pinned revision, and the tape values the views read come from the flighttape crate at a pinned revision. The grade on an outcome is supplied by the grader. Classifying what kind of wrong a false confession was is not built, and nothing here guesses at it.

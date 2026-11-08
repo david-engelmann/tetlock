@@ -1091,3 +1091,46 @@ reviews, before the repair code).
   in the closure commit written after
   this round's three reviews, fixes,
   and owner verification.
+- WW-65. The red team's one Minor in
+  this round's reviews, and its repair.
+  Two shipped behaviors stood nowhere
+  in the README. Grade carries
+  --supersedes, the correction path,
+  and the three views carry -o and
+  --output, writing the document to a
+  named file instead of printing it.
+  The tally capture the page printed
+  carries a superseded count, and no
+  command the page documented could
+  produce a superseded confession.
+  The repair stands in the closure
+  amendments commit, after the three
+  reviews, and extends Usage with both
+  behaviors, each demonstrated against
+  this round's binary over the Usage
+  record itself. A second grade on the
+  graded deploy confession refuses
+  with the error naming the outcome a
+  correction must supersede. The same
+  grade with --supersedes lands and
+  prints the new outcome's id. The
+  tally then counts the confession
+  once, under its corrected grade, and
+  the replaced outcome counts nowhere.
+  The superseded count stands at zero
+  in that tally, exactly as the binary
+  prints it. That count is the WW-10
+  state, a confession superseded while
+  ungraded, which a later claim in the
+  record brings about and no command
+  in this tool writes (WW-8b). A
+  ledger run with -o prints nothing
+  and writes the document to the named
+  file, and the README shows the
+  file's opening lines as the capture,
+  framed in the prose as the file's
+  opening. Every new capture is byte
+  identical to the run that produced
+  it, verified against the captured
+  files. The rounds line moves only
+  in the closure commit (WW-64).
