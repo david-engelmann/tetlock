@@ -1416,3 +1416,50 @@ reviews, before the repair code).
   in the closure commit written after
   this round's three reviews, fixes,
   and owner verification.
+- WW-73. Amendment, the CodeRabbit
+  disposition on PR 12, written after
+  the closure commit; the rounds line
+  stands untouched at 9 of 100. The
+  review's one finding (4505661668,
+  Minor, on the third pin WW-70
+  names) makes three points, each
+  verified against the code as
+  written before any repair. First,
+  the pin unwrapped the live draw
+  with expect, so on a non-unix
+  build, whose entropy arm yields
+  None on every call by WW-69's
+  design, and wherever /dev/urandom
+  cannot be read, the pin panicked
+  where the contracted outcome is
+  the refusal itself. Second, the
+  pin required two successive draws
+  to differ, which the contract
+  nowhere promises: the suffix
+  carries thirty-two bits of the
+  hash, so two valid draws can
+  collide, once in 2^32 per pair on
+  average, and the requirement was
+  a flake source in principle.
+  Third, its suggestions follow
+  from the two. Repair, in test code
+  only, no production behavior
+  changed: the pin is reworked and
+  renamed
+  a_live_draw_renders_eight_hex_characters_or_refuses,
+  and it draws live over fixed terms
+  and asserts, for each draw the
+  entropy source answers, the
+  contracted shape, exactly eight
+  lowercase hexadecimal characters,
+  and where the draw yields None it
+  accepts the contracted refusal
+  rather than panicking, so the pin
+  asserts what the contract promises
+  on every platform. The refusal
+  path itself stays covered where
+  it was covered already, the WW-70
+  battery's entropy-failure cells
+  and the red team's shim cells; no
+  injection seam was added to
+  production code to unit-test it.

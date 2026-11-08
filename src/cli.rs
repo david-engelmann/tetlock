@@ -1504,20 +1504,33 @@ mod tests {
     }
 
     #[test]
-    fn successive_live_draws_differ_in_eight_hex_characters() {
-        // Two live draws over the same named
-        // terms, as a redraw presents them,
-        // differ because each carries its own
-        // entropy (WW-69), and the suffix
+    fn a_live_draw_renders_eight_hex_characters_or_refuses() {
+        // A live draw over fixed terms ends
+        // one of the two ways the contract
+        // allows (WW-69, WW-73). Where the
+        // entropy source reads, the suffix
         // keeps its contracted shape: eight
         // lowercase hexadecimal characters.
+        // Where it cannot be read, and on
+        // every non-unix build, whose
+        // entropy arm yields None on every
+        // call, the draw yields None and
+        // the caller refuses the write, so
+        // the pin accepts the refusal
+        // rather than panicking on it. Two
+        // draws are not required to differ:
+        // the suffix carries thirty-two
+        // bits of the hash, so a collision
+        // between two valid draws breaks
+        // no term of the contract.
         let (dir, name) = terms();
-        let first = temp_suffix(&dir, &name, 0, 0).expect("entropy source present");
-        let second = temp_suffix(&dir, &name, 0, 0).expect("entropy source present");
-        assert_eq!(first.len(), 8);
-        assert!(first
-            .iter()
-            .all(|unit| (48..=57).contains(unit) || (97..=102).contains(unit)));
-        assert_ne!(first, second);
+        for attempt in 0..=1 {
+            if let Some(suffix) = temp_suffix(&dir, &name, 0, attempt) {
+                assert_eq!(suffix.len(), 8);
+                assert!(suffix
+                    .iter()
+                    .all(|unit| (48..=57).contains(unit) || (97..=102).contains(unit)));
+            }
+        }
     }
 }
