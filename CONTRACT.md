@@ -1323,3 +1323,96 @@ reviews, before the repair code).
   in 2^32 per candidate on average,
   and the redraw budget, not the
   draw, is what answers a collision.
+- WW-70. Amendment, the evidence at the
+  seam, gathered in this round before and
+  after the repair. The battery is this
+  lane's own (ww9-scratch/battery),
+  modeled on the Round 8 red team's: the
+  clock frozen by an LD_PRELOAD shim at a
+  post-epoch reading (nanoseconds term
+  1790000000123456789) and at a pre-epoch
+  reading one nanosecond before the
+  epoch (term 1, the WW-57 error-branch
+  magnitude), the write run at process
+  id 1 in a fresh namespace, and the
+  planted set computed by the pre-round
+  draw's formula at that reading, all
+  65 candidates the retry loop can
+  draw. Against the control, a fresh
+  build of this round's base tree, the
+  frozen set refuses the write on both
+  sides of the epoch: exit 1, the
+  cannot-write line, nothing landed,
+  the plants untouched; at 64 plants
+  the write lands on both sides with
+  output byte-identical to the oracle's
+  (sha256 e2f3cbc9232c444c on every
+  landed cell in this battery). The
+  oracle lands at 65 plants on both
+  sides with the same bytes. Against
+  the repaired binary the same 65
+  plants land the write on both sides,
+  byte-identical output, the plants
+  untouched, the shape the oracle
+  shows; the post-epoch cell was
+  re-run against the final formatted
+  build with the same outcome. The
+  entropy failure posture is
+  demonstrated, not inferred: under a
+  shim that fails every open of
+  /dev/urandom with EACCES, the
+  repaired binary refuses (exit 1,
+  the standing cannot-write line) and
+  creates nothing at all in the output
+  directory, while the control lands
+  under the same shim, never reading
+  the device; those cells ran at the
+  ambient process id, the refusal
+  preceding any create and consulting
+  neither the clock nor the id. Three
+  unit pins land with the repair: the
+  entropy term decides the suffix at
+  fixed other terms, the suffix
+  matches an independent derivation of
+  the contracted mix, and successive
+  live draws differ inside the
+  contracted shape. A mutant that
+  drops the entropy term from the mix
+  fails exactly the first two pins
+  and passes the third, which pins
+  the shape and not the term; the
+  mutant ran in a scratch copy with
+  its own target directory, deleted
+  after the run.
+- WW-71. Amendment, the gate and the
+  harness on this round's tree. cargo
+  test passes 31 with 0 failed, the
+  Round 8 baseline of 28 plus the
+  three pins WW-70 names (3 library,
+  28 integration); cargo clippy
+  --all-targets with warnings denied
+  is clean, re-run after formatting;
+  cargo fmt --check is clean; the
+  Python codepoint scan over all 22
+  tracked files returns U+2014=0 and
+  U+2013=0. The standing differential
+  harness (the goals-tree copy,
+  WW_PY_SRC at the renamed oracle
+  snapshot) runs at 58 cases, 433
+  steps, 0 failures against this
+  round's binary, and at the same
+  shape against the control. No
+  harness cell's expectation changed:
+  its planted cells plant the WW-47
+  decimal candidates, which neither
+  draw produces, and the suffix
+  boundary, width, and mode cells
+  are untouched by a term that feeds
+  only the hash mix. The behavior
+  that changed is exercised by the
+  WW-70 battery alone, and it is
+  stated there.
+- WW-72. README records 9 of 100 only
+  in the closure commit written after
+  this round's three reviews, fixes,
+  and owner verification.
