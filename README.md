@@ -2,44 +2,280 @@
 
 Before anything irreversible runs, the agent states in writing what it believes is about to happen. Then reality grades the sentence.
 
-## What this is
+Approvals in agent tools ask the wrong question. They show a command and ask whether it may run, and nobody can hold a command's consequences in their head at a glance. Tetlock asks for a confession instead. Before a destructive call runs, the agent states in one plain sentence what it believes is about to happen, and the operator approves the sentence. Later the outcome is graded against what actually happened. Tetlock grades predictions, onrecord keeps memories. A confession is an onrecord claim with a due date, and the ledger, the wall, and the tally are views computed from that record on every run, never a second store.
 
-Approvals in agent tools ask the wrong question. They show you a command and ask whether it may run. Nobody can hold a command's consequences in their head at a glance. Tetlock asks for a confession instead. Before a destructive call executes, the agent states in one plain sentence what it believes is about to happen, and the operator approves the sentence. Later, the outcome is graded against what actually happened. Tetlock grades predictions, onrecord keeps memories.
+![ci](https://github.com/david-engelmann/tetlock/actions/workflows/ci.yml/badge.svg)
 
-Confessions are onrecord claims with due dates, living in the record file and nowhere else. The honesty ledger, the weekly wall, and the tally are views computed from the record on every run, never a second store. The ledger lists every confession as graded, awaiting, overdue, or superseded. The wall renders one ISO week: the confessions that broke that week, each with its sentence and what actually happened, and the week's overdue ungraded confessions as their own list. The tally counts the whole record at a stated time: the well-formed confessions by state and by grade, per action, every count with its denominator in the document and the arithmetic closed. In Round 1 the grade is supplied by the grader; classifying what kind of wrong a false confession was is a later round's work, and nothing here guesses at it.
+```text
+{
+  "total": 2,
+  "by_state": {
+    "graded": 1,
+    "awaiting": 1,
+    "overdue": 0,
+    "superseded": 0
+  },
+  "graded": 1,
+  "by_grade": {
+    "held": 0,
+    "broke": 1,
+    "unverifiable": 0
+  },
+  "actions": [
+    {
+      "action": "deploy-staging",
+      "graded": 1,
+      "held": 0,
+      "broke": 1,
+      "unverifiable": 0
+    }
+  ],
+  "malformed": 0
+}
+```
+
+## Install
+
+The install needs Git and a Rust toolchain.
+
+```sh
+git clone https://github.com/david-engelmann/tetlock.git
+cd tetlock
+export CARGO_HOME="$PWD/.cargo-home"
+export PATH="$CARGO_HOME/bin:$PATH"
+cargo install --path .
+```
+
+## Quickstart
+
+Run a view over the sample record that ships in the test fixtures. The record holds two confessions, the outcome that graded one of them, and one plain claim, and the tally counts the record at a stated time. The copy replaces any record.jsonl already in the directory, so a record holding confessions of your own belongs under a different name before the Quickstart is run again.
+
+```sh
+cp tests/fixtures/record_synthetic.jsonl record.jsonl
+tetlock tally --now 2026-01-09T00:00:00Z record.jsonl
+```
+
+```text
+{
+  "total": 2,
+  "by_state": {
+    "graded": 1,
+    "awaiting": 1,
+    "overdue": 0,
+    "superseded": 0
+  },
+  "graded": 1,
+  "by_grade": {
+    "held": 0,
+    "broke": 1,
+    "unverifiable": 0
+  },
+  "actions": [
+    {
+      "action": "deploy-staging",
+      "graded": 1,
+      "held": 0,
+      "broke": 1,
+      "unverifiable": 0
+    }
+  ],
+  "malformed": 0
+}
+```
+
+## Usage
+
+Two confessions go into a fresh record. The first command creates the record file, and each confession prints the id of the claim it wrote.
+
+```sh
+tetlock confess record.jsonl --action deploy --sentence "The staging deploy finishes without downtime." --due 2026-06-04 --at 2026-06-01T09:00:00Z --asserter agent --approval "ticket 41"
+tetlock confess record.jsonl --action migrate --sentence "The legacy table drops cleanly in one pass." --due 2026-06-05 --at 2026-06-01T09:05:00Z --asserter agent --approval "ticket 42"
+```
+
+```text
+claim-239fdfa797bd1d2f
+claim-e1d9ba7b5df0e427
+```
+
+The first confession is graded once its outcome is known. The grade names what happened, the evidence points at the run that showed it, and the command prints the id of the outcome claim it wrote.
+
+```sh
+tetlock grade record.jsonl --confession claim-239fdfa797bd1d2f --grade broke --happened "The deploy stopped for twelve minutes while the migration ran." --at 2026-06-03T15:00:00Z --asserter operator --evidence trace:run-31
+```
+
+```text
+claim-4f8d9685876dede9
+```
+
+The ledger lists every confession in the record with its state at a stated time. The views read the whole record as it stands, and --now sets only the moment an ungraded confession is judged overdue against, never a snapshot of the record at that time. One confession stands graded and the other stands overdue.
+
+```sh
+tetlock ledger --now 2026-06-06T00:00:00Z record.jsonl
+```
+
+```text
+{
+  "confessions": [
+    {
+      "id": "claim-239fdfa797bd1d2f",
+      "action": "deploy",
+      "sentence": "The staging deploy finishes without downtime.",
+      "due": "2026-06-04",
+      "grade": "broke",
+      "state": "graded"
+    },
+    {
+      "id": "claim-e1d9ba7b5df0e427",
+      "action": "migrate",
+      "sentence": "The legacy table drops cleanly in one pass.",
+      "due": "2026-06-05",
+      "grade": null,
+      "state": "overdue"
+    }
+  ]
+}
+```
+
+The wall renders one ISO week, the confessions that broke that week and the week's ungraded confessions.
+
+```sh
+tetlock wall --date 2026-06-03 record.jsonl
+```
+
+```text
+{
+  "week": "2026-W23",
+  "broke": [
+    {
+      "action": "deploy",
+      "sentence": "The staging deploy finishes without downtime.",
+      "happened": "The deploy stopped for twelve minutes while the migration ran.",
+      "outcome": "claim-4f8d9685876dede9"
+    }
+  ],
+  "ungraded": [
+    {
+      "action": "migrate",
+      "sentence": "The legacy table drops cleanly in one pass.",
+      "due": "2026-06-05"
+    }
+  ]
+}
+```
+
+The tally counts the whole record at a stated time, every count with its denominator in the document.
+
+```sh
+tetlock tally --now 2026-06-06T00:00:00Z record.jsonl
+```
+
+```text
+{
+  "total": 2,
+  "by_state": {
+    "graded": 1,
+    "awaiting": 0,
+    "overdue": 1,
+    "superseded": 0
+  },
+  "graded": 1,
+  "by_grade": {
+    "held": 0,
+    "broke": 1,
+    "unverifiable": 0
+  },
+  "actions": [
+    {
+      "action": "deploy",
+      "graded": 1,
+      "held": 0,
+      "broke": 1,
+      "unverifiable": 0
+    }
+  ],
+  "malformed": 0
+}
+```
+
+A grade can be corrected when a fuller picture replaces the first reading. Grading the same confession a second time, without naming the outcome the correction replaces, refuses. The error names the outcome a correction must supersede.
+
+```sh
+tetlock grade record.jsonl --confession claim-239fdfa797bd1d2f --grade held --happened "A fuller trace shows the deploy never stopped. The twelve minutes were the migration waiting on its own health check." --at 2026-06-07T11:00:00Z --asserter operator --evidence trace:run-33
+```
+
+```text
+error, confession claim-239fdfa797bd1d2f is already graded; a correction must supersede outcome claim-4f8d9685876dede9
+```
+
+The same grade with --supersedes naming that outcome lands, and the command prints the id of the new outcome claim.
+
+```sh
+tetlock grade record.jsonl --confession claim-239fdfa797bd1d2f --grade held --happened "A fuller trace shows the deploy never stopped. The twelve minutes were the migration waiting on its own health check." --at 2026-06-07T11:00:00Z --asserter operator --evidence trace:run-33 --supersedes claim-4f8d9685876dede9
+```
+
+```text
+claim-ca37878353a2cedd
+```
+
+The tally after the correction counts the deploy confession once, under its new grade, and the replaced outcome counts nowhere. The superseded count stands at zero here, because that count is for a confession superseded while ungraded, a state a later claim in the record brings about and no command in this tool writes.
+
+```sh
+tetlock tally --now 2026-06-08T00:00:00Z record.jsonl
+```
+
+```text
+{
+  "total": 2,
+  "by_state": {
+    "graded": 1,
+    "awaiting": 0,
+    "overdue": 1,
+    "superseded": 0
+  },
+  "graded": 1,
+  "by_grade": {
+    "held": 1,
+    "broke": 0,
+    "unverifiable": 0
+  },
+  "actions": [
+    {
+      "action": "deploy",
+      "graded": 1,
+      "held": 1,
+      "broke": 0,
+      "unverifiable": 0
+    }
+  ],
+  "malformed": 0
+}
+```
+
+Each view also takes -o, or --output in full, and writes its document to the named file instead of printing it. The command prints nothing. The ledger written this way, after the correction above, opens with the deploy confession under its corrected grade.
+
+```sh
+tetlock ledger --now 2026-06-08T00:00:00Z -o ledger.json record.jsonl
+```
+
+```text
+{
+  "confessions": [
+    {
+      "id": "claim-239fdfa797bd1d2f",
+      "action": "deploy",
+      "sentence": "The staging deploy finishes without downtime.",
+      "due": "2026-06-04",
+      "grade": "held",
+      "state": "graded"
+    },
+```
 
 ## Status
 
-Round 1 is closed. Confessions, outcomes, the
-ledger, and the wall.
+All five commands are built and run as a Rust binary, with the Python of the first two rounds standing as the behavior reference the port is pinned against. The record layer is consumed from the onrecord crate at a pinned revision, and the tape values the views read come from the flighttape crate at a pinned revision. The grade on an outcome is supplied by the grader. Classifying what kind of wrong a false confession was is not built, and nothing here guesses at it.
 
-Round 2 is closed. The tally view, and the malformed
-test made whole: a confession claim is now checked
-against all of WW-5, sentence rule included, in every
-view. Setup landed earlier in October 2026.
+Closed perfection rounds, 8 of 100. A round counts only when a full cycle of work, audit, review, red team, and approval has closed.
 
-Round 3 is closed. The tool is a Rust library crate
-with a thin binary now, reproducing Rounds 1 and 2
-behavior exactly. The record layer is consumed from
-the onrecord crate at a pinned revision, the line's
-first cross-repo crate consumption, instead of a
-local copy, and the date drift the copy had kept
-against the record's own contract is retired with
-it. The Python leaves the tree in this round.
-
-## Programme status
-
-- Closed perfection rounds, 7 of 100. A round counts only when a
-  full cycle of work, audit, review, red team, and approval has
-  closed.
-- Contract, WW-1 to WW-12 as amended, met for the Round 1 scope.
-  WW-13 to WW-16 with amendment WW-8c, written ahead of
-  the code and met in Round 2. WW-17 to WW-23, written
-  ahead of the code and met in Round 3.
-- Local gate, python3 scripts/codepoint_scan.py and
-  cargo test, with cargo clippy --all-targets -- -D warnings
-  and cargo fmt --check. CI runs the same commands.
-
-## Licence
+## License
 
 MIT. See LICENSE.
