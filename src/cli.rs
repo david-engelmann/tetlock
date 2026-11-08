@@ -822,7 +822,11 @@ fn write_atomically(out: &[u16], bytes: &[u8]) -> Result<(), ()> {
         }
         candidate.extend_from_slice(name);
         candidate.extend_from_slice(DOT);
-        candidate.extend_from_slice(&temp_suffix(&tmp_dir, name, counter, attempt));
+        let suffix = match temp_suffix(&tmp_dir, name, counter, attempt) {
+            Some(suffix) => suffix,
+            None => return Err(()),
+        };
+        candidate.extend_from_slice(&suffix);
         let candidate = crate::util::os_path_from_units(&candidate);
         #[cfg(unix)]
         let opener = {
@@ -865,24 +869,50 @@ fn write_atomically(out: &[u16], bytes: &[u8]) -> Result<(), ()> {
 
 static TEMP_COUNTER: std::sync::atomic::AtomicU32 = std::sync::atomic::AtomicU32::new(0);
 
-/// The temp candidate's suffix (WW-48): exactly
-/// eight lowercase hexadecimal characters from
-/// the first four bytes of a SHA-256 hash over
-/// the process id, the wall-clock nanoseconds,
-/// the per-process counter, the attempt, the
-/// temp directory's bytes, and the name's
-/// bytes. The terms make successive draws
-/// differ and keep the sequence from being a
-/// public function of the process id, the
-/// defect WW-47 measures in the shipped
-/// decimal concatenation of the same three
-/// numbers.
-fn temp_suffix(dir: &[u16], name: &[u16], counter: u32, attempt: u32) -> Vec<u16> {
-    use sha2::Digest;
+/// The temp candidate's suffix (WW-48, WW-69):
+/// exactly eight lowercase hexadecimal
+/// characters from the first four bytes of a
+/// SHA-256 hash over the process id, the
+/// wall-clock nanoseconds, the per-process
+/// counter, the attempt, the temp directory's
+/// bytes, the name's bytes, and sixteen bytes
+/// of operating system randomness drawn fresh
+/// for this candidate. The entropy term is
+/// what keeps the candidate set from being a
+/// public function of inputs an observer can
+/// know or fix (WW-59): the earlier terms
+/// alone stand still under a frozen and known
+/// clock. A draw that cannot take its entropy
+/// term yields None, and the caller refuses
+/// the write; the draw never falls back to a
+/// computable mix (WW-57).
+fn temp_suffix(dir: &[u16], name: &[u16], counter: u32, attempt: u32) -> Option<Vec<u16>> {
     let nanos = std::time::SystemTime::now()
         .duration_since(std::time::UNIX_EPOCH)
         .map(|duration| duration.as_nanos())
         .unwrap_or_else(|error| error.duration().as_nanos());
+    let entropy = os_entropy()?;
+    Some(suffix_from_terms(
+        dir, name, counter, attempt, nanos, &entropy,
+    ))
+}
+
+/// The suffix the terms decide, factored out
+/// of temp_suffix so the tests can pin the
+/// mix term by term: the hash input is the
+/// process id, the nanoseconds, the counter,
+/// the attempt, the directory's bytes, the
+/// name's bytes, and the entropy, in that
+/// order, each integer little-endian.
+fn suffix_from_terms(
+    dir: &[u16],
+    name: &[u16],
+    counter: u32,
+    attempt: u32,
+    nanos: u128,
+    entropy: &[u8; 16],
+) -> Vec<u16> {
+    use sha2::Digest;
     let mut hasher = sha2::Sha256::new();
     hasher.update(std::process::id().to_le_bytes());
     hasher.update(nanos.to_le_bytes());
@@ -890,6 +920,7 @@ fn temp_suffix(dir: &[u16], name: &[u16], counter: u32, attempt: u32) -> Vec<u16
     hasher.update(attempt.to_le_bytes());
     hasher.update(units_bytes(dir));
     hasher.update(units_bytes(name));
+    hasher.update(entropy);
     let digest = hasher.finalize();
     let mut suffix = Vec::with_capacity(8);
     for byte in &digest[..4] {
@@ -897,6 +928,31 @@ fn temp_suffix(dir: &[u16], name: &[u16], counter: u32, attempt: u32) -> Vec<u16
         suffix.push(hex_unit(byte & 0xF));
     }
     suffix
+}
+
+/// Sixteen bytes of operating system
+/// randomness (WW-69), drawn from
+/// /dev/urandom, the kernel's randomness
+/// interface, through the standard library's
+/// file read. Any failure, the open or a
+/// short or failed read, yields None. The
+/// crate's non-unix arm has no operating
+/// system randomness source to read and
+/// yields None on every call, so a build
+/// there refuses view writes rather than
+/// drawing computably.
+#[cfg(unix)]
+fn os_entropy() -> Option<[u8; 16]> {
+    use std::io::Read;
+    let mut bytes = [0u8; 16];
+    let mut file = std::fs::File::open("/dev/urandom").ok()?;
+    file.read_exact(&mut bytes).ok()?;
+    Some(bytes)
+}
+
+#[cfg(not(unix))]
+fn os_entropy() -> Option<[u8; 16]> {
+    None
 }
 
 fn hex_unit(nibble: u8) -> u16 {
@@ -1373,5 +1429,95 @@ pub fn run_cli() -> i32 {
     match parse_top(&tokens) {
         ParseOutcome::Run(command, parsed) => execute(command, &parsed),
         ParseOutcome::Exit(code) => code,
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn render(
+        dir: &[u16],
+        name: &[u16],
+        counter: u32,
+        attempt: u32,
+        nanos: u128,
+        entropy: &[u8; 16],
+    ) -> String {
+        suffix_from_terms(dir, name, counter, attempt, nanos, entropy)
+            .iter()
+            .map(|unit| char::from_u32(*unit as u32).unwrap())
+            .collect()
+    }
+
+    fn terms() -> (Vec<u16>, Vec<u16>) {
+        (
+            "/tmp/ww9".encode_utf16().collect(),
+            "out.json".encode_utf16().collect(),
+        )
+    }
+
+    #[test]
+    fn the_entropy_term_decides_the_suffix() {
+        // With every other term fixed, the
+        // entropy alone moves the suffix
+        // (WW-69): a mix that dropped or
+        // ignored the term fails here, and
+        // the same terms, entropy included,
+        // decide the same suffix, so the
+        // entropy is an input to the mix and
+        // not a hidden state.
+        let (dir, name) = terms();
+        let nanos = 1_790_000_000_123_456_789u128;
+        let a = render(&dir, &name, 3, 3, nanos, &[7u8; 16]);
+        let b = render(&dir, &name, 3, 3, nanos, &[8u8; 16]);
+        assert_ne!(a, b);
+        assert_eq!(a, render(&dir, &name, 3, 3, nanos, &[7u8; 16]));
+    }
+
+    #[test]
+    fn the_suffix_matches_an_independent_derivation() {
+        // The expected suffix is derived here
+        // from the contracted input layout
+        // (WW-48, WW-69), term by term, rather
+        // than trusted from the construction
+        // under test.
+        use sha2::Digest;
+        let (dir, name) = terms();
+        let nanos = 1_790_000_000_123_456_789u128;
+        let entropy = [42u8; 16];
+        let mut hasher = sha2::Sha256::new();
+        hasher.update(std::process::id().to_le_bytes());
+        hasher.update(nanos.to_le_bytes());
+        hasher.update(3u32.to_le_bytes());
+        hasher.update(3u32.to_le_bytes());
+        hasher.update(units_bytes(&dir));
+        hasher.update(units_bytes(&name));
+        hasher.update(entropy);
+        let digest = hasher.finalize();
+        let mut expected = String::new();
+        for byte in &digest[..4] {
+            expected.push_str(&format!("{byte:02x}"));
+        }
+        assert_eq!(expected.len(), 8);
+        assert_eq!(render(&dir, &name, 3, 3, nanos, &entropy), expected);
+    }
+
+    #[test]
+    fn successive_live_draws_differ_in_eight_hex_characters() {
+        // Two live draws over the same named
+        // terms, as a redraw presents them,
+        // differ because each carries its own
+        // entropy (WW-69), and the suffix
+        // keeps its contracted shape: eight
+        // lowercase hexadecimal characters.
+        let (dir, name) = terms();
+        let first = temp_suffix(&dir, &name, 0, 0).expect("entropy source present");
+        let second = temp_suffix(&dir, &name, 0, 0).expect("entropy source present");
+        assert_eq!(first.len(), 8);
+        assert!(first
+            .iter()
+            .all(|unit| (48..=57).contains(unit) || (97..=102).contains(unit)));
+        assert_ne!(first, second);
     }
 }
