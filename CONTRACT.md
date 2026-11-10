@@ -1544,7 +1544,8 @@ reviews, before the repair code).
   strings; and supersedes, a claim id
   or null. The optional fields are
   subject and due; either may stand
-  null where it stands, and due
+  null where it stands, a subject
+  otherwise is a string, and due
   otherwise is an ISO date string.
   Fields beyond these are part
   of the claim and are kept verbatim.
@@ -1613,7 +1614,7 @@ reviews, before the repair code).
   reject verdicts and the three views'
   documents stand compared byte for byte
   between this round's binary and the
-  Python oracle over fifty-two
+  Python oracle over fifty-three
   hand-minted field cells in this
   round's own battery, each one change
   from a valid confession or a valid
@@ -1656,7 +1657,7 @@ reviews, before the repair code).
   the non-empty strings, the standing
   nulls, the chain laws and the
   digest's object, and the live
-  outcome. The review found them, five
+  outcome. The review found them, six
   further cells prove the amended
   text, and the repairs stand recorded
   on the pull request. No behavior
@@ -1735,7 +1736,7 @@ reviews, before the repair code).
   reason, a relocation that changes no
   case and no expectation. This round's
   own battery stands where WW-76 and
-  WW-77 record it: 73 cells, no splits.
+  WW-77 record it: 74 cells, no splits.
 
 - WW-79. README records 10 of 100 in
   this round's closure commit, the
