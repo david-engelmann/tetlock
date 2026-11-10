@@ -1688,3 +1688,34 @@ reviews, before the repair code).
   over the oracle's shape, not a
   divergence. No conviction stands
   under this item either.
+
+- WW-78. The gate and the harness on
+  this round's tree. Cargo test runs
+  31 tests, all passing; clippy over
+  all targets with warnings denied is
+  clean; cargo fmt --check is clean;
+  the codepoint scan over the tracked
+  tree reports no em dashes and no en
+  dashes. The local gate ran under the
+  box's file-count quota, which refused
+  the test-profile build's new files in
+  bursts (os error 122); the gate
+  completed on a patient retry loop,
+  the tests on the ninth attempt and
+  clippy on the fourth, both against
+  the tree as it stands, and the
+  counts above are from those completed
+  runs. The standing differential
+  harness, extended in place under
+  WW-76, runs 98 cases and 591 steps
+  with no failures against this round's
+  binary; its temp root stood outside
+  the workspace for the same quota
+  reason, a relocation that changes no
+  case and no expectation. This round's
+  own battery stands where WW-76 and
+  WW-77 record it: 68 cells, no splits.
+
+- WW-79. README records 10 of 100 in
+  this round's closure commit, the
+  rounds line moving only there.
