@@ -1463,3 +1463,228 @@ reviews, before the repair code).
   and the red team's shim cells; no
   injection seam was added to
   production code to unit-test it.
+
+- WW-74. The CodeRabbit disposition owed
+  from Round 9 discharges here on
+  evidence, read back in full in this
+  round (checked 2026-11-09). The Round 9
+  pull request (PR 12) carries three
+  reviews, three review comments, and
+  four issue comments. WW-73 disposed
+  the review's one inline finding
+  (4505661668, Minor), and the bot's
+  acknowledgment (4505686611) accepted
+  the repair and resolved the thread.
+  Two items stand in the same review
+  that WW-73's enumeration does not
+  name, and this item is their record.
+  The first is the Nitpick standing in
+  review 5817299310's body (src/cli.rs
+  889-898), asking for regression tests
+  that inject a failed and a short
+  entropy read through write_atomically
+  and assert the write fails before any
+  create. It is answered on the ground
+  WW-73's own closing paragraph records:
+  no injection seam was added to
+  production code to unit-test the
+  refusal, and the refusal path stands
+  covered where it was covered already,
+  the WW-70 battery's entropy-failure
+  cells and the red team's shim cells,
+  which run the shipped binary against
+  reads that fail and reads that
+  truncate. WW-77 re-runs that posture
+  at this round's binary. The second is
+  the failed Docstring Coverage check
+  standing in the same review's summary
+  and in the summary shell's pre-merge
+  checks (6719567763): coverage 60.00
+  percent against a threshold of 80.00
+  percent, over five functions across
+  one file, none of them named. It is
+  dismissed on the ground this line
+  states for the same check wherever it
+  recurs: it names no function, the
+  repository carries no docstring
+  configuration or threshold of its
+  own, and the check applies the review
+  tool's default profile, so there is
+  no repo rule for it to enforce. No
+  reply thread exists for a review-body
+  item; this item is its record. The
+  remaining contents of the pull request
+  are the owner's trigger, the summary
+  shell in rate-limit-banner form over
+  its complete walkthrough, the action
+  notice 6719636992 (Already reviewed
+  the last commit, carrying no finding),
+  and the owner's landing comment. The
+  finishing-touches and autofix
+  checkboxes are standing offers, not
+  findings. Nothing else stands
+  undisposed. Any late findings on this
+  round's pull request are owed to
+  Round 11's contract by the same shape.
+
+- WW-75. WW-5 restated, so the base
+  claim stands in this contract alone.
+  A confession is an onrecord claim, and
+  the claim's full field set is this. The
+  record is an append-only JSON lines
+  file; each line is one claim object.
+  The required fields are id; text;
+  asserter; asserted_at, an ISO
+  timestamp string the caller supplies,
+  the store never inventing a time;
+  evidence, a list of at least one
+  entry, each entry an object whose
+  source and reference are non-empty
+  strings; and supersedes, a claim id
+  or null. The optional fields are
+  subject and due, due an ISO date
+  string. Fields beyond these are part
+  of the claim and are kept verbatim.
+  The id is the word claim, a dash, and
+  the first sixteen hexadecimal
+  characters of the canonical form 1
+  digest of the claim without its id,
+  together with its position, the count
+  of lines already in the record; a
+  read recomputes every id and flags a
+  mismatch. A line that fails this
+  shape, a missing or mistyped required
+  field among it, is a named defect at
+  read time with its line number, and
+  every read on a record holding
+  defects refuses, naming them. The
+  enforcement is the onrecord crate's,
+  consumed at its pin (WW-50), not
+  forked: this repo's storage format is
+  that record format, which is the
+  coupling WW-6a states, and it is a
+  coupling of format, not of reference
+  chasing; no reader of this contract
+  needs onrecord's open beside it to
+  know a claim's fields. Over that
+  shape tetlock lays its own reading,
+  WW-5, WW-5a, WW-5b, and WW-7a
+  together: a confession carries kind
+  with the value confession; its text
+  is the sentence, under the sentence
+  rules; its subject names the action
+  it predicts; its due states when the
+  outcome should be known; its evidence
+  holds at least one entry whose source
+  is approval, naming the WW-1 approval
+  in its reference. An outcome carries
+  kind with the value outcome, a grade
+  from the fixed set (held, broke,
+  unverifiable), a subject of the word
+  confession, a colon, and the
+  confession's claim id, and a text
+  stating what actually happened. The
+  two layers fail differently, and the
+  difference is part of the law: a
+  claim failing the record shape stops
+  every read, while a confession
+  standing in the record shape but
+  breaking the confession reading is
+  read and named, in the ledger's
+  malformed list with its reasons,
+  counted in the tally's malformed
+  count, and refused by grade; an
+  outcome carrying a grade outside the
+  fixed set refuses the views outright,
+  naming the grade.
+
+- WW-76. The differential proof of the
+  restatement. The loader's accept and
+  reject verdicts and the three views'
+  documents stand compared byte for byte
+  between this round's binary and the
+  Python oracle over forty-seven
+  hand-minted field cells in this
+  round's own battery, each one change
+  from a valid confession or a valid
+  outcome, every id derived by the
+  oracle from the defective claim
+  itself, so each cell carries exactly
+  the defect it names: each required
+  field missing and mistyped, the
+  evidence list empty, malformed, and
+  carrying an extra key, the optional
+  fields missing, mistyped, and
+  unparsable, fields beyond the set
+  kept, the sentence rules broken four
+  ways, a missing id, a forged id, raw
+  lines that are not JSON, not an
+  object, and empty, and grade refused
+  a malformed confession. Forty further
+  cases spliced into the standing
+  differential harness carry the same
+  variants through its seedmint form.
+  Every cell agrees on both
+  instruments: the fields WW-75
+  restates are the fields the loader
+  enforces, in both layers, a
+  record-shape defect refusing every
+  read on both sides with the same
+  named defects, and a
+  confession-reading defect surfacing
+  in the same malformed lists, the
+  same tally count, and the same grade
+  refusal. The restatement exposes no
+  divergence between the fields this
+  contract documents and the fields the
+  code enforces; nothing was repaired
+  under this item, and no behavior
+  changed in this round.
+
+- WW-77. The grading and wall surfaces
+  measured fresh at this round's
+  binary, seventeen cells in the same
+  battery, every cell agreeing with the
+  oracle. The due-date boundary: a
+  confession stands awaiting on the day
+  before its due date, awaiting at the
+  due date's first instant and at its
+  last, and overdue from the following
+  date, in the ledger's states and the
+  tally's counts alike; the boundary is
+  the date, as WW-8a states, never the
+  instant inside it. The wall's week:
+  an outcome asserted at the week's
+  first instant and at its last stands
+  graded on the wall for a date inside
+  that week, and one asserted the
+  instant before the week or the
+  instant after it does not; a
+  confession due on the week's Monday
+  and one due on its Sunday stand in
+  the ungraded list, and one due the
+  day before the week or the day after
+  it does not. The wall is a view:
+  across every cell of both instruments
+  in this round, and through view
+  writes named by -o as well as views
+  to the terminal, the record's bytes
+  after the views equal its bytes
+  before them. The confession flow end
+  to end: confess mints a claim whose
+  field set is exactly the set WW-75
+  restates plus kind, and whose id
+  recomputes from the claim without it.
+  The draw's refusal posture, re-run
+  under the WW-70 entropy shim against
+  a view write through -o: the write
+  refuses with the cannot-write line,
+  creates nothing, and leaves the
+  record untouched; the oracle under
+  the same shim writes, its name draw
+  never refusing, which is the
+  asymmetry WW-69 contracted, the
+  refusal being this repo's law laid
+  over the oracle's shape, not a
+  divergence. No conviction stands
+  under this item either.
