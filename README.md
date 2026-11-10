@@ -274,7 +274,7 @@ tetlock ledger --now 2026-06-08T00:00:00Z -o ledger.json record.jsonl
 
 All five commands are built and run as a Rust binary, with the Python of the first two rounds standing as the behavior reference the port is pinned against. The record layer is consumed from the onrecord crate at a pinned revision, and the tape values the views read come from the flighttape crate at a pinned revision. The grade on an outcome is supplied by the grader. Classifying what kind of wrong a false confession was is not built, and nothing here guesses at it.
 
-Closed perfection rounds, 9 of 100. A round counts only when a full cycle of work, audit, review, red team, and approval has closed.
+Closed perfection rounds, 10 of 100. A round counts only when a full cycle of work, audit, review, red team, and approval has closed.
 
 ## License
 
