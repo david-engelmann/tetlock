@@ -1533,8 +1533,9 @@ reviews, before the repair code).
   the claim's full field set is this. The
   record is an append-only JSON lines
   file; each line is one claim object.
-  The required fields are id; text;
-  asserter; asserted_at, an ISO
+  The required fields are id, text,
+  and asserter, each a non-empty
+  string; asserted_at, an ISO
   timestamp string the caller supplies,
   the store never inventing a time;
   evidence, a list of at least one
@@ -1542,17 +1543,26 @@ reviews, before the repair code).
   source and reference are non-empty
   strings; and supersedes, a claim id
   or null. The optional fields are
-  subject and due, due an ISO date
-  string. Fields beyond these are part
+  subject and due; either may stand
+  null where it stands, and due
+  otherwise is an ISO date string.
+  Fields beyond these are part
   of the claim and are kept verbatim.
   The id is the word claim, a dash, and
   the first sixteen hexadecimal
-  characters of the canonical form 1
-  digest of the claim without its id,
-  together with its position, the count
-  of lines already in the record; a
-  read recomputes every id and flags a
-  mismatch. A line that fails this
+  characters of the SHA-256 digest,
+  under canonical form 1, of an object
+  holding the claim without its id
+  under the key claim and its position
+  under the key position, the position
+  the count of lines already in the
+  record; a read recomputes every id
+  and flags a mismatch. Two chain laws
+  ride on supersedes: a supersedes
+  naming no claim in the record is a
+  defect, and a claim superseded by
+  two claims is a defect, each named
+  at read time like the rest. A line that fails this
   shape, a missing or mistyped required
   field among it, is a named defect at
   read time with its line number, and
@@ -1593,7 +1603,7 @@ reviews, before the repair code).
   read and named, in the ledger's
   malformed list with its reasons,
   counted in the tally's malformed
-  count, and refused by grade; an
+  count, and refused by grade; a live
   outcome carrying a grade outside the
   fixed set refuses the views outright,
   naming the grade.
@@ -1603,7 +1613,7 @@ reviews, before the repair code).
   reject verdicts and the three views'
   documents stand compared byte for byte
   between this round's binary and the
-  Python oracle over forty-seven
+  Python oracle over fifty-two
   hand-minted field cells in this
   round's own battery, each one change
   from a valid confession or a valid
@@ -1617,7 +1627,12 @@ reviews, before the repair code).
   fields missing, mistyped, and
   unparsable, fields beyond the set
   kept, the sentence rules broken four
-  ways, a missing id, a forged id, raw
+  ways, a missing id, a forged id, the
+  optional fields standing null, two
+  claims superseding one target, a bad
+  grade on an outcome superseded by an
+  outcome and on one superseded by a
+  plain claim, raw
   lines that are not JSON, not an
   object, and empty, and grade refused
   a malformed confession. Forty further
@@ -1634,11 +1649,17 @@ reviews, before the repair code).
   confession-reading defect surfacing
   in the same malformed lists, the
   same tally count, and the same grade
-  refusal. The restatement exposes no
-  divergence between the fields this
-  contract documents and the fields the
-  code enforces; nothing was repaired
-  under this item, and no behavior
+  refusal. The two implementations
+  diverge nowhere in this battery.
+  The restatement's own first wording
+  under-stated the law at four points:
+  the non-empty strings, the standing
+  nulls, the chain laws and the
+  digest's object, and the live
+  outcome. The review found them, five
+  further cells prove the amended
+  text, and the repairs stand recorded
+  on the pull request. No behavior
   changed in this round.
 
 - WW-77. The grading and wall surfaces
@@ -1654,11 +1675,11 @@ reviews, before the repair code).
   tally's counts alike; the boundary is
   the date, as WW-8a states, never the
   instant inside it. The wall's week:
-  an outcome asserted at the week's
-  first instant and at its last stands
-  graded on the wall for a date inside
-  that week, and one asserted the
-  instant before the week or the
+  an outcome graded broke, asserted at
+  the week's first instant and at its
+  last, stands on the wall for a date
+  inside that week, and one asserted
+  the instant before the week or the
   instant after it does not; a
   confession due on the week's Monday
   and one due on its Sunday stand in
@@ -1714,7 +1735,7 @@ reviews, before the repair code).
   reason, a relocation that changes no
   case and no expectation. This round's
   own battery stands where WW-76 and
-  WW-77 record it: 68 cells, no splits.
+  WW-77 record it: 73 cells, no splits.
 
 - WW-79. README records 10 of 100 in
   this round's closure commit, the
