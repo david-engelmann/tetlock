@@ -2000,3 +2000,7 @@ reviews, before the repair code).
   the counts above from those completed
   runs; hosted CI stands as the gate of
   record on the pushed head.
+
+- WW-84. README records 11 of 100 in
+  this round's closure commit, the
+  rounds line moving only there.
