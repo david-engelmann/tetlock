@@ -1741,3 +1741,266 @@ reviews, before the repair code).
 - WW-79. README records 10 of 100 in
   this round's closure commit, the
   rounds line moving only there.
+
+- WW-80. The CodeRabbit disposition owed
+  from Round 10 discharges here on
+  evidence, read back in full in this
+  round (checked 2026-11-11). The Round 10
+  pull request (PR 13) carries thirteen
+  reviews, seventeen review comments, and
+  four issue comments. The one review
+  carrying findings (5835014264) posted
+  five Minors on the WW-75 restatement
+  and the WW-77 wall sentence, and the
+  owner's five replies disposed of them
+  as the pull request body records: the
+  five findings are fixed in 7ce9a663,
+  each proved by a battery cell, and one
+  fragment of the first finding was not
+  adopted, its wording describing
+  asserted_at as an ISO date where the
+  pinned loader reads an ISO timestamp.
+  The bot's follow-up acknowledgment on
+  that thread (4519896404) accepts the
+  correction and raises one further true
+  omission in its place, the subject type
+  law, fixed in 433e3931 with its own
+  cell (the owner's reply 4519966303) and
+  accepted in the bot's closing
+  acknowledgment (4519968804), which
+  resolves the thread. The remaining
+  four threads end in the bot's
+  acknowledgments accepting each fix
+  (4519892315, 4519892749, 4519893614,
+  4519894323), each marked resolved. The
+  summary shell (6755515119) stands in
+  its final edited form at 10,623
+  characters: a rate-limit banner over a
+  complete walkthrough, a Low merge-risk
+  line whose coverage stands at the slice
+  head 2602c718 while its commits line
+  reads through the final head 433e3931,
+  four pre-merge checks all passing
+  (Description, Title, Linked Issues,
+  Out of Scope Changes), two files
+  selected (CONTRACT.md and README.md),
+  an effort of 1 (Trivial) at about five
+  minutes, and the shell's run
+  2d8c31e7-7a6a-4301-a196-3864376a332a.
+  The one remaining shell-side comment
+  (6755695394) is the rate-limited action
+  notice answering the owner's trigger
+  (6755515427), carrying no finding; the
+  owner's landing comment (6756698890)
+  closes the pull request. No Round 10
+  disposition is falsified by the
+  follow-ups or the shell's final form:
+  the bot's acknowledgments confirm each
+  repair, its one new catch was repaired
+  inside Round 10 and stands in WW-75's
+  final text, and the Docstring Coverage
+  ground WW-74 states for the recurring
+  check was not tested on this pull
+  request, whose review posted no such
+  item. Any late findings on this
+  round's pull request are owed to
+  Round 12's contract by the same shape.
+
+- WW-81. Fresh measurement on the round's
+  named surfaces, in this round's own
+  battery, fifty-seven cells, every cell
+  decided at its exact point on both
+  implementations (this round's binary
+  and the final Python oracle, whose
+  pairing WW-56 records; the oracle
+  snapshot was re-verified this round
+  byte for byte against the tree at
+  e0244e88, the parent of the port commit
+  2b07909d, with the staged renamed copy
+  differing in exactly the four rename
+  lines). The grading and banding law,
+  twenty-three cells. The due-date
+  boundary is the date, as WW-8a states:
+  a confession due 2026-09-17 stands
+  awaiting at the day before's last
+  instant, at the due date's first
+  instant (the exact point itself), at
+  its midday, and at its last instant,
+  and overdue from the following date's
+  first instant, in the ledger's states
+  and the tally's counts alike; three
+  offset spellings of the same instants
+  land on the same UTC dates (WW-9b), and
+  a leap-day due date (2024-02-29) stands
+  awaiting on the leap day and overdue
+  on 2024-03-01. The wall's week edges
+  are exact (WW-9a): a broke outcome
+  asserted at the week's first instant,
+  its last instant, and its last
+  fractional instant stands on the wall
+  for 2026-W38, and one asserted the
+  instant before the week or the instant
+  after it does not; confessions due on
+  the week's Monday and Sunday stand in
+  the ungraded list, and one due the day
+  before or the day after does not; the
+  wall's own date argument in its ISO
+  week form and its basic calendar form
+  selects the same week. One confession
+  per grade fills each tally band, and a
+  correction superseding the broke
+  outcome moves its confession to the
+  held band with the replaced outcome
+  counting nowhere. The draw, eleven
+  cells, re-probed with a positive
+  control bracketed at both ends: a
+  plain view write lands on this round's
+  binary, byte-identical to the oracle's
+  (the first bracket); under the WW-70
+  entropy shim the write refuses with
+  the cannot-write line, creates
+  nothing, and leaves the record
+  untouched, and under a four-byte
+  entropy source bound over the device
+  in a mount namespace, where the open
+  succeeds and the sixteen-byte read
+  comes up short, the same refusal
+  stands on all four of its checks; the
+  oracle under the failing shim writes,
+  the WW-69 asymmetry standing as
+  contracted; and the plain write lands
+  again after the shim cells (the
+  closing bracket). The resolver and
+  walk constants, eleven cells, measured
+  at the shipped binary and never
+  inherited: head chains away from the
+  record write through 990 and 991
+  splices and refuse with the guard
+  phrase at 992 and 993, so the constant
+  re-derives at 991 nested splices
+  resolving and the 992nd failing
+  (WW-33); head chains onto the record
+  refuse at both counts, at 991 because
+  the resolved output is the record and
+  at 992 under the walk's failure
+  posture (WW-34); prefix chains at 991
+  resolve at the guard and fail at the
+  write on both sides with the
+  cannot-write phrase, the kernel cap
+  posture WW-37 records, and at 992 take
+  the guard's refusal; the oracle writes
+  at 991 away and crashes uncaught at
+  992, the named deviation class. The
+  pins, twelve cells: the flighttape pin
+  (74a83298) and the onrecord pin
+  (9e41a7be) stand identically in
+  Cargo.toml and Cargo.lock, and each
+  pin's tree was re-verified blob by
+  blob against the remote, flighttape
+  at fifty blobs and onrecord at twenty,
+  every blob fetched and its git blob
+  identity recomputed from its bytes
+  with no mismatch; one mutation per pin
+  family (a single hex character of one
+  blob identity flipped in the manifest
+  copy) is convicted by the pin check,
+  and the restored manifest passes
+  again. No cell diverges and no
+  behavior changed in this round.
+
+- WW-82. A realistic pass: realistic data
+  at real shapes and volumes, synthetic
+  in content and real in shape, run
+  through the shipped binary's surfaces
+  and twinned against the oracle, seven
+  cells, no divergences. The record
+  holds 240 confessions across the
+  twenty-six ISO weeks 2026-W02 through
+  2026-W27, each naming one of sixteen
+  operations actions, a one-sentence
+  prediction, a due date inside its
+  week, and an approval reference, minted
+  through the oracle's own id derivation
+  under a fixed seed. Its parts: 200 of
+  the confessions stand graded (130
+  held, 48 broke, 22 unverifiable), 6
+  stand superseded while ungraded by
+  plain claims later in the record, 4
+  stand malformed by the confession
+  reading (no approval evidence), and
+  the remaining 30 ungraded well-formed
+  confessions carry due dates in the
+  record's final weeks, standing
+  awaiting at the pass's two earlier
+  stated times (2026-03-02 and
+  2026-05-11) and overdue at its last
+  (2026-07-06); the record's 450 lines
+  are the 240 confessions, the 200
+  outcomes, the 6 superseding plain
+  claims, and 4 standing notes. Thirty-
+  four view steps (the ledger and the
+  tally at the three stated times, the
+  wall for each of the twenty-six weeks,
+  and one ledger and one tally written
+  through -o) agree byte for byte on
+  both implementations, the trees after
+  the views are identical, and the
+  record's bytes stand untouched by
+  them. The tally's arithmetic closes
+  from the document itself: its total
+  is the 236 well-formed confessions
+  (240 minted less the 4 malformed, the
+  malformed count standing apart as
+  WW-14 states), the state counts sum
+  to the total (200 graded, 30 overdue,
+  6 superseded, 0 awaiting at the last
+  stated time), the grade counts sum to
+  the graded count (130, 48, and 22),
+  and the sixteen action rows' grade
+  counts sum to the document's. The
+  write path runs fresh through both
+  implementations: twelve confessions
+  minted by the confess command and six
+  grades landed by the grade command,
+  with the closing tally, nineteen steps
+  whose streams and records agree byte
+  for byte. Every total in this item
+  traces from the parts stated above.
+
+- WW-83. The gate and the harness on
+  this round's tree. Cargo test runs
+  31 tests, all passing (3 library, 28
+  integration), the Round 9 baseline
+  held on a tree that changes no source;
+  clippy over all targets with warnings
+  denied is clean; cargo fmt --check is
+  clean; the Python codepoint scan over
+  the tracked tree reports no em dashes
+  and no en dashes. The standing
+  differential harness, extended in
+  place under WW-76, runs 98 cases and
+  591 steps with no failures against
+  this round's binary; its temp root
+  stands outside the workspace under
+  the same quota WW-78 records, a
+  relocation that changes no case and
+  no expectation. This round's own
+  battery stands where WW-81 records
+  it: 57 cells, no splits; the
+  realistic pass stands where WW-82
+  records it: 7 cells, no divergences.
+  The local work ran under the box's
+  file-count quota and write fault at
+  their hardest: the workspace refused
+  every write (os error 122), so the
+  lane's tree, build target, and battery
+  staged outside it, and the release
+  build and gate completed on a patient
+  retry loop once a write window opened,
+  the counts above from those completed
+  runs; hosted CI stands as the gate of
+  record on the pushed head.
+
+- WW-84. README records 11 of 100 in
+  this round's closure commit, the
+  rounds line moving only there.
