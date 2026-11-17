@@ -2004,3 +2004,24 @@ reviews, before the repair code).
 - WW-84. README records 11 of 100 in
   this round's closure commit, the
   rounds line moving only there.
+
+- WW-85. Repair record, appended at the
+  Round 11 gate before merge, WW-81
+  unrewritten. WW-81's topic sentence
+  distributes both implementations over
+  all 57 of the battery's cells. The
+  distribution is exact for 45 of them:
+  the grading family's 23, the draw
+  family's 11, and the chains family's
+  11, each decided at its exact point on
+  this round's binary and on the final
+  Python oracle. The pins family's 12
+  cells were decided by the procedure
+  WW-81's own pins paragraph states:
+  each pin's tree re-verified blob by
+  blob against the remote, one mutation
+  in a manifest copy convicted by the
+  pin check, and the restored manifest
+  passing again. No oracle comparison
+  decides those 12 cells, and WW-81's
+  sentence stands qualified to the 45.
