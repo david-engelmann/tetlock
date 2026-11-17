@@ -2219,3 +2219,8 @@ reviews, before the repair code).
   steps agreeing byte for byte, and the
   records after it agreeing byte for
   byte. No divergences.
+
+
+- WW-91. README records 12 of 100 in
+  this round's closure commit, the
+  rounds line moving only there.
