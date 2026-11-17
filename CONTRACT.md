@@ -2025,3 +2025,202 @@ reviews, before the repair code).
   passing again. No oracle comparison
   decides those 12 cells, and WW-81's
   sentence stands qualified to the 45.
+
+
+- WW-86. The CodeRabbit disposition owed
+  from Round 11 discharges here on
+  evidence, read back in full in this
+  round (checked 2026-11-17). The Round
+  11 pull request (PR 14) carries no
+  reviews, no review comments, and four
+  issue comments. The summary shell
+  (6805268063) stands in its final form
+  at 12,230 characters, updated
+  2026-11-17T03:29:04Z, ten seconds
+  before the merge: a complete
+  walkthrough over a Minimal merge-risk
+  line whose coverage stands at the
+  repair head 313f5923 on both its
+  source and covered commits, four
+  pre-merge checks all passing (Title,
+  Linked Issues, Out of Scope Changes,
+  Description), one file selected for
+  processing (CONTRACT.md), an effort of
+  2 (Simple) at about ten minutes, no
+  actionable comments generated in the
+  recent review, and the shell's run
+  5fa148b5-8507-47fc-85c7-37578ff649df.
+  The shell re-rendered once after the
+  owner's merge-time body patch recorded
+  it at 12,228 characters, updated
+  2026-11-17T03:26:21Z; the two added
+  characters change no
+  disposition-bearing element, and no
+  dismissal is owed in either form. The
+  manual trigger (6805271581) stands
+  answered by the bot's own note
+  (6805371230) that the last commit was
+  already reviewed. The owner's landing
+  comment (6937288247) closes the pull
+  request and carries this round's
+  charges. The bot's appendix on the
+  pull request body, 737 characters from
+  its marker, carries three bullets,
+  each correct in substance: the README
+  at 11 of 100, the Round 10 contract
+  notes with the seven-cell realistic
+  comparison, and the validation
+  coverage clarified as 45 checks
+  compared across both implementations
+  with 12 dependency-pin checks on
+  verification and mutation checks. No
+  Round 11 disposition is falsified by
+  the shell's final form or the
+  follow-ups, and no CodeRabbit material
+  arrived after the landing. Any late
+  findings on this round's pull request
+  are owed to Round 13's contract by the
+  same shape.
+
+- WW-87. The differential's direct
+  re-run, owed from Round 11, executed
+  in the original configuration: the
+  standing harness invoked as a plain
+  python3 differential.py from its own
+  directory, no wrapper and no retry
+  layer, so the driver process carries
+  the baseline stack the boundary
+  seedmint cases are calibrated to. The
+  run stands at 98 cases and 591 steps
+  with no failures, every case agreeing
+  on both implementations, this round's
+  binary from the base tree and the
+  final Python oracle. The driver-side
+  failures the wrapped runs of Round 11
+  carried do not recur in the direct
+  configuration, and the red team's
+  Round 11 diagnosis stands confirmed by
+  the run: the failures were a property
+  of the wrapping stack, not of either
+  implementation. No behavior changed in
+  this round.
+
+- WW-88. The base tree's clean local
+  gate, owed from Round 11, completed on
+  the tree as it stands at the Round 11
+  merge (the base sources byte-identical
+  to the Round 11 head outside
+  CONTRACT.md and README.md). Cargo test
+  runs 31 tests, all passing (3 library,
+  28 integration, the two pin tests
+  among the integration set, so the pins
+  family's suite limb stands discharged
+  beside its API limb in WW-89); clippy
+  over all targets with warnings denied
+  is clean; cargo fmt --check is clean;
+  the Python codepoint scan over the
+  tracked tree reports no em dashes and
+  no en dashes. The release build's
+  sha256 is reproduced at
+  b290dd22774dc6e150718887b4b19ee03aa9fd763d0da2707e7078c75a1371dc,
+  the figure Round 11's body cited, from
+  a clean release build of the base tree
+  in this round. WW-62 stands carried by
+  name: Cargo.toml carries no
+  description field, and storefront item
+  3 does not pass; it is routed to the
+  main chat with a recommendation and no
+  description is invented here. The
+  execution history behind these figures
+  stands in the round's attempt record
+  across the lanes that carried the
+  round: every refused, lost, or
+  restart-killed attempt is recorded
+  there and counted nowhere else, and
+  the runs counted here are the ones
+  that completed.
+
+- WW-89. Fresh measurement on the
+  round's named surfaces, in this
+  round's own battery, fifty-eight
+  cells. Forty-six cells decided at
+  their exact points on both
+  implementations (this round's binary
+  and the final Python oracle, whose
+  pairing WW-56 records; the oracle
+  snapshot re-verified this round byte
+  for byte against the tree at e0244e88,
+  the staged copy matching on all five
+  files and the staged renamed copy
+  differing in exactly the four rename
+  lines): the grading family's
+  twenty-four cells, the draw family's
+  eleven, and the chains family's
+  eleven, in the shapes WW-81 contracts,
+  every cell passing and no cell
+  diverging. The battery stands one cell
+  larger than Round 11's fifty-seven:
+  the grading harness decides the
+  offset-spelling date law as its own
+  cell (grading-08b) beside the
+  twenty-three numbered cells WW-81
+  counts. The pins family's twelve cells
+  decided by the procedure WW-85 states,
+  re-executed this round: the flighttape
+  pin (74a83298) at tree
+  afd4d7d13520411e003762548fc79082a1b9cf6e
+  and the onrecord pin (9e41a7be) at
+  tree
+  1ea53c3de8bad60652eebdee50fafff9ae26dd2d
+  stand identically in Cargo.toml and
+  Cargo.lock, each pin's tree
+  re-verified blob by blob against the
+  remote (flighttape fifty blobs,
+  onrecord twenty, every blob's git
+  identity recomputed from its bytes
+  with no mismatch), one mutation per
+  family convicted by the pin check, and
+  the restored manifest passing again.
+  No behavior changed in this round.
+
+- WW-90. A realistic pass on the WW-82
+  record's stated parts, rebuilt exactly
+  (the Round 11 lane's generator stood
+  under /tmp and is lost with it, so the
+  record is shape-identical to Round
+  11's, not byte-identical; every
+  contracted behavior is checked the
+  same): 240 confessions across the
+  twenty-six ISO weeks 2026-W02 through
+  2026-W27, each naming one of sixteen
+  operations actions, minted through the
+  oracle's own id derivation; 200 graded
+  (130 held, 48 broke, 22 unverifiable),
+  6 superseded while ungraded, 4
+  malformed by the confession reading,
+  30 ungraded well-formed with due dates
+  in the final weeks; 450 lines as 240
+  confessions, 200 outcomes, 6
+  superseding plain claims, and 4
+  standing notes. Seven cells, all
+  passing: the record's own shape at 450
+  lines loads on both implementations;
+  thirty-four view steps agreeing byte
+  for byte on both implementations, the
+  trees after the views identical, the
+  record's bytes untouched; the tally's
+  arithmetic closing from the document
+  itself (total 236 well-formed, states
+  200 graded, 30 overdue, 6 superseded,
+  0 awaiting at the last stated time,
+  grades 130, 48, and 22, the sixteen
+  action rows summing to the graded
+  count); the write path's nineteen
+  steps agreeing byte for byte, and the
+  records after it agreeing byte for
+  byte. No divergences.
+
+
+- WW-91. README records 12 of 100 in
+  this round's closure commit, the
+  rounds line moving only there.
