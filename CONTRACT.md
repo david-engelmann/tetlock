@@ -2413,3 +2413,28 @@ reviews, before the repair code).
   cells (cal-01 to cal-06), all passing;
   no conviction, and no behavior changed
   in this round.
+
+
+- WW-96. Closure. The base gate at the
+  entering tree stands clean under the
+  build slot (cargo fmt --check, clippy
+  over all targets with warnings denied,
+  and cargo test at 31 tests, 3 library
+  and 28 integration, all passing, every
+  exit 0), and the head gate runs on
+  this closure tree under the same slot
+  before the pull request opens, its
+  figures carried in the pull request's
+  verified block. The pins and the
+  oracle pairing stand re-verified in
+  WW-94. The Python codepoint scan over
+  the base tree reports no em dashes and
+  no en dashes, with the planted control
+  convicted, and the scan over this
+  closure tree reads the same. WW-62
+  stands carried by name: Cargo.toml
+  carries no description field, and
+  storefront item 3 does not pass.
+  README records 13 of 100 in this
+  round's closure commit, the rounds
+  line moving only there.
