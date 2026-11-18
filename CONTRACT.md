@@ -2224,3 +2224,192 @@ reviews, before the repair code).
 - WW-91. README records 12 of 100 in
   this round's closure commit, the
   rounds line moving only there.
+
+
+- WW-92. The step 0 read-back of PR 15,
+  owed by the body's closing sentence
+  and charged by the owner's landing
+  comment (6957872911), discharges here
+  on evidence, read back in full in this
+  round (checked 2026-11-17). PR 15
+  stands closed and merged; its body
+  stands at 14,289 characters including
+  the owner completion record, in which
+  the owner's patch repaired the three
+  defects the checkpoint reviews found
+  in the body's prose: the step 0 census
+  corrected to four issue comments
+  including the bot's already-reviewed
+  note (6953082341), the WW-86 bullet
+  quoting PR 14's bot note as it stands
+  (Already reviewed the last commit,
+  6805371230), and the WW-89 bullet's
+  untraceable graded 0.7 figure struck
+  for the traced outcome (grading-08b
+  asserts the two offset spellings' Rust
+  ledger outputs byte-identical;
+  grading-08 and grading-09 assert the
+  ledger state overdue for the same
+  instant under +02:00 and -05:00
+  spellings). The census at this hand
+  stands at seven issue comments, no
+  reviews, and no review comments: the
+  Trunk queue note (6952962877, in its
+  final form reading Merged
+  successfully), the manual trigger
+  (6952965558), the summary shell, the
+  already-reviewed note, the owner's
+  /trunk merge submission (6957644951),
+  the owner's landing comment, and a
+  Trunk error note (6957874200) the
+  landing comment's own census prose
+  tripped, a parsing artifact carrying
+  no finding. The summary shell
+  (6952965898) stands at 11,070
+  characters at this hand, updated
+  2026-11-17T18:49:47Z: a complete
+  walkthrough over a Minimal merge-risk
+  line whose coverage stands at the
+  final head c675ea2a, four pre-merge
+  checks all passing, no actionable
+  comments, and the shell's run
+  98049dbf-a613-4eba-a928-cb8257508eb4.
+  The shell's drift across hands (11,066
+  at the build lane's read, 11,068 at
+  the red team's and the owner's, 11,070
+  at the owner's landing census and at
+  this hand) changes no
+  disposition-bearing element, and no
+  dismissal is owed in any form. The
+  queue landing stands verified at this
+  hand: the landing commit ddcb5fb2
+  carries the reviewed tree ebcee641
+  itself (22 blobs), single parent
+  82688877, and the README on main reads
+  12 of 100. No Round 12 disposition is
+  falsified, and no CodeRabbit material
+  arrived after the landing. Any late
+  findings on this round's pull request
+  are owed to Round 14's contract by the
+  same shape.
+
+- WW-93. The second-hand release rebuild
+  the Round 12 red team left unrun
+  discharges here by execution. The red
+  team's rebuild queued about sixty-one
+  minutes and was stood down unrun with
+  no partial build, its doubt resting on
+  the lane's own artifact recomputed at
+  the red team's hand. In this round the
+  release artifact was rebuilt
+  independently at the entering tree
+  (main ddcb5fb2, tree ebcee641) under
+  the build slot, from a fresh target
+  directory in this lane's scratch:
+  cargo build --release exits 0 and the
+  artifact's sha256 reads
+  b290dd22774dc6e150718887b4b19ee03aa9fd763d0da2707e7078c75a1371dc,
+  exactly the figure the Round 12 lane's
+  build produced and the red team
+  recomputed, at 1,027,936 bytes. The
+  attempts behind the counted run stand
+  in the round's record: two queue waits
+  killed by restart waves before the
+  slot was reached, one completed hold
+  whose cargo stages failed on the box's
+  file-count quota and counts nowhere,
+  and the counted run itself, which
+  acquired the slot on its launch into a
+  post-restart lull. No behavior changed
+  in this round.
+
+- WW-94. The standing battery re-run,
+  with its figure contracted explicitly:
+  fifty-eight cells, every cell passing
+  and no cell diverging, on this round's
+  binary from the base tree and the
+  final Python oracle (the pairing WW-56
+  records; the oracle snapshot
+  re-verified this round byte for byte
+  against the tree at e0244e88, the
+  staged copy matching on all five files
+  and the staged renamed copy differing
+  in exactly the four rename lines). The
+  grading family's twenty-four cells,
+  including the offset-spelling cell
+  grading-08b, named as the one-cell
+  delta over Round 11's fifty-seven; the
+  draw family's eleven; the chains
+  family's eleven; in the shapes WW-81
+  contracts, run by instruments carried
+  over from the Round 12 lane's scripts
+  with every cell byte-identical outside
+  the header lines. The pins family's
+  twelve cells decided by the procedure
+  WW-85 states, re-executed this round:
+  the flighttape pin (74a83298) at tree
+  afd4d7d13520411e003762548fc79082a1b9cf6e
+  and the onrecord pin (9e41a7be) at
+  tree
+  1ea53c3de8bad60652eebdee50fafff9ae26dd2d
+  stand identically in Cargo.toml and
+  Cargo.lock, each pin's tree
+  re-verified blob by blob against the
+  remote (flighttape fifty blobs,
+  onrecord twenty, every blob's git
+  identity recomputed from its bytes
+  with no mismatch), one mutation per
+  family convicted by the pin check, and
+  the restored manifest passing again;
+  the pins family's suite limb stands
+  discharged in the cargo gates of
+  WW-96. Beside the battery, the
+  standing differential re-run in the
+  original configuration (the standing
+  harness invoked as a plain python3
+  differential.py from its own
+  directory, no wrapper and no retry
+  layer) stands at 98 cases and 591
+  steps with no failures, every case
+  agreeing on both implementations. No
+  behavior changed in this round.
+
+- WW-95. A fresh twin measurement on a
+  surface no prior round has swept: the
+  wall command's ISO calendar, proposed
+  in the round's record before any run.
+  Round 12's realistic pass ran wall
+  only at the Mondays of its record's
+  own weeks, the differential samples
+  individual dates and spellings, and
+  the battery's wall cells decide single
+  instants; this round sweeps the
+  calendar itself. One fixed record,
+  minted through the oracle's own id
+  derivation, carries confessions and
+  outcomes in four boundary weeks
+  (2025-W52, 2026-W01, 2026-W53,
+  2027-W01). For every calendar date
+  from 2024-01-01 through 2027-12-31
+  inclusive (1,461 dates: 366, 365, 365,
+  and 365 by year), wall --date ran on
+  both implementations: 2,922
+  invocations, every one exit 0 with
+  empty stderr, stdout byte-identical
+  between the implementations on every
+  date. The rendered week label on every
+  date equals the ISO year and week
+  computed independently from the civil
+  calendar, across 2026's fifty-three
+  ISO weeks and 2024's leap February.
+  Week coherence holds over the 209 ISO
+  weeks the span touches, each week's
+  in-span dates rendering one identical
+  document per implementation (2027-W52
+  stands at five in-span dates, the span
+  ending Friday 2027-12-31). The four
+  boundary weeks render their minted
+  content on both implementations. Six
+  cells (cal-01 to cal-06), all passing;
+  no conviction, and no behavior changed
+  in this round.
