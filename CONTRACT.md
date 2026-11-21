@@ -2438,3 +2438,330 @@ reviews, before the repair code).
   README records 13 of 100 in this
   round's closure commit, the rounds
   line moving only there.
+
+
+- WW-97. The step 0 read-back of PR 17,
+  charged by the owner's landing comment
+  (7023697079), discharges here on
+  evidence, read back in full in this
+  round (checked 2026-11-19). PR 17
+  stands closed and merged through the
+  Trunk merge queue
+  (2026-11-18T02:05:34Z); its body
+  stands at 15,444 characters, the
+  lane's body with its step 0 record and
+  the owner completion record the owner
+  appended after the CodeRabbit
+  appendix. The census at this hand
+  stands at six issue comments, one
+  review, and one review comment: the
+  Trunk queue note (6966595538, in its
+  final form the merged notice), the
+  manual CodeRabbit trigger
+  (6966597187), the summary shell, the
+  lane's /trunk merge submission
+  (6966691696), the bot's
+  already-reviewed note (6966705248, 573
+  characters, carrying no finding), and
+  the owner's landing comment itself,
+  standing last with this round's
+  charges. The summary shell
+  (6966597685) stands at 8,573
+  characters at this hand, updated
+  2026-11-18T01:58:08Z, agreeing exactly
+  with the form the owner completion
+  record states: a complete walkthrough
+  of WW-92 to WW-96 over a Low
+  merge-risk line whose coverage stands
+  at the final head e1b36eea on both its
+  source and covered commits, four
+  pre-merge checks all passing, one
+  actionable comment. The lane's step 0
+  record cited the shell at 8,571
+  characters (updated
+  2026-11-18T01:55:55Z); the difference
+  is the standing +2 re-render drift and
+  changes no disposition-bearing
+  element. The one actionable comment, a
+  Minor on README.md line 277
+  (4608263046, in review 5949694280)
+  holding that the closed-round count
+  must stay at 12 until Round 13's cycle
+  closes, stands dismissed in the body's
+  step 0 record with its reason written
+  in full, and the owner completion
+  record adds the point of history the
+  dismissal's premise missed: the queue
+  landed before the owner reviews ran,
+  the reviews followed as a post-landing
+  audit (spec fidelity APPROVE with one
+  Minor, standards REPAIR on the same
+  Minor, red team APPROVE with no
+  findings, its reproductions supplying
+  the review the dismissal presumed),
+  and the count on main read 12 of 100
+  until the landing and 13 of 100 after,
+  never premature. The queue landing
+  stands verified at this hand: the
+  landing commit 8dce20c1 carries the
+  reviewed tree d1654ac7 itself (22
+  blobs, every blob's git identity
+  recomputed from its bytes during this
+  round's base extraction, with no
+  mismatch), single parent ddcb5fb2, and
+  the README on main reads 13 of 100.
+  The erratum this round was charged to
+  contract stands in the next paragraph.
+  Any late findings on this round's pull
+  request are owed to Round 15's
+  contract by the same shape.
+
+  The WW-93 erratum, contracted by name.
+  WW-93's summary sentence counts two
+  queue waits killed by restart waves
+  behind the counted release rebuild,
+  and that sentence is superseded by
+  this account, which PR 17's execution
+  history states in full and the owner
+  completion record corrects: behind the
+  counted run stand three restart-killed
+  queue waits, the launches at 19:11Z
+  and 19:52Z on 2026-11-17, which died
+  queued before the slot was reached,
+  and the launch at 20:57Z, which died
+  queued in the 22:02Z restart wave
+  after sixty-six minutes; one completed
+  hold, the launch at 20:45Z, which
+  acquired the slot at 20:48:30Z and
+  whose cargo stages failed on the box's
+  file-count quota, counted nowhere in
+  every text; and the counted run
+  itself, launched at 22:03Z into the
+  post-restart lull, which ran complete
+  by 22:08:47Z and produced the artifact
+  at the contracted sha256. The
+  corrected census is three
+  restart-killed queue waits, one
+  quota-failed hold counted nowhere, and
+  one counted run. WW-93's discharge
+  stands untouched: the release artifact
+  stands reproduced at the contracted
+  hash by four independent builds, the
+  post-landing red team's among them,
+  and nothing in this erratum reopens
+  it. The lane's progress record for
+  Round 13, which repeats the undercount
+  in its own summary, is likewise
+  superseded by this account.
+
+- WW-98. The standing regression, in the
+  forms the charges contract. The
+  differential re-run in the original
+  configuration (the standing harness10
+  invoked as a plain python3
+  differential.py from its own
+  directory, no wrapper and no retry
+  layer, against this round's base-tree
+  binary) stands at 98 cases and 591
+  steps with no failures, every case
+  agreeing on both implementations. The
+  standing battery re-run, with its
+  figure contracted explicitly:
+  fifty-eight cells, every cell passing
+  and no cell diverging, on this round's
+  binary from the base tree and the
+  final Python oracle. The grading
+  family's twenty-four cells, including
+  the offset-spelling cell grading-08b,
+  named as the one-cell delta over Round
+  11's fifty-seven; the draw family's
+  eleven; the chains family's eleven; in
+  the shapes WW-81 contracts, run by
+  instruments carried over from the
+  Round 13 lane's scripts with every
+  cell byte-identical outside the header
+  lines. The pins family's twelve cells
+  decided by the procedure WW-85 states,
+  re-executed this round: the flighttape
+  pin (74a83298) at tree
+  afd4d7d13520411e003762548fc79082a1b9cf6e
+  and the onrecord pin (9e41a7be) at
+  tree
+  1ea53c3de8bad60652eebdee50fafff9ae26dd2d
+  stand identically in Cargo.toml and
+  Cargo.lock, each pin's tree
+  re-verified blob by blob against the
+  remote (flighttape fifty blobs,
+  onrecord twenty, every blob's git
+  identity recomputed from its bytes
+  with no mismatch), one mutation per
+  family convicted by the pin check, and
+  the restored manifest passing again.
+  The oracle snapshot stands re-verified
+  this round byte for byte against the
+  tree at e0244e88 (tree
+  1d765b77d17936428df546e7bfce5bb167f282ef),
+  the staged copy matching on all five
+  files and the staged renamed copy
+  differing in exactly the four rename
+  lines (eight changed lines counted on
+  the plus-minus convention over four
+  files, wall.py identical). The battery
+  chain's first run lost every product
+  to a shut write wave and counts
+  nowhere; the figures above are its
+  rerun's, landed whole in the
+  foreground-capture pattern. No
+  behavior changed in this round.
+
+- WW-99. The local gate, owed across
+  three dead launches in the round's
+  first lane and discharged here. At the
+  base tree (extracted from main
+  8dce20c1 and verified blob for blob
+  against the remote tree before any
+  stage ran, 22 files, no mismatch),
+  under the build slot: cargo fmt
+  --check exit 0, clippy over all
+  targets with warnings denied exit 0,
+  cargo test at 31 tests, 3 library and
+  28 integration, all passing, exit 0,
+  and the debug build exit 0, the binary
+  at sha256
+  bef8abf56364ae6bda6a406ad1bbbca1f2ce0543e27a3641831ebd54128bbe77
+  and 2,018,560 bytes. At the head tree
+  (this closure tree, verified the same
+  way before its gate ran): cargo fmt
+  --check exit 0, clippy over all
+  targets with warnings denied exit 0,
+  cargo test at 31 tests, 3 library and
+  28 integration, all passing, exit 0,
+  debug build exit 0, the binary at the
+  same sha256 and byte count as the base
+  tree's. The Python codepoint scan over
+  the base tree reports no em dashes and
+  no en dashes across its 22 text files,
+  the planted control convicted at one
+  and one, and the scan over this
+  closure tree reads the same. The chain
+  history stands in the round's record
+  in full: five launches of the base
+  chain across the round's two lanes,
+  the first dying queued in the box
+  reboot of 2026-11-19 at 23:46Z, the
+  second acquiring the slot and dying in
+  its first second on the first lane's
+  own scripting error before any stage
+  produced a figure, the third's logs
+  zeroed in the write wave of 2026-11-20
+  at 01:40Z, the fourth acquiring the
+  slot at once and sitting probe-blocked
+  for about ninety minutes in a shut
+  write wave before a runtime restart
+  killed it with no stage run, and the
+  fifth running the gate and the
+  differential clean inside one hold;
+  and the battery chain's first run,
+  taken unslotted from 06:07Z on
+  2026-11-21 while its slotted hold
+  queued, losing every product to a shut
+  write wave at zero bytes and counting
+  nowhere, its rerun in the
+  foreground-capture pattern landing
+  every stage clean after the restart at
+  10:51Z that day cleared a wave shut
+  since about 06:05Z. WW-62 stands
+  carried by name in WW-101.
+
+- WW-100. A fresh twin measurement on a
+  surface no prior round has swept:
+  non-ASCII content through the write
+  and read paths, proposed in the
+  round's record before any run. Prior
+  rounds swept the wall's ISO calendar
+  (WW-95), the case corpus through the
+  differential, the battery's ASCII
+  fixtures, and a 450-line realistic
+  record of ASCII confessions; no round
+  had celled what the twins do with
+  content outside ASCII, where the two
+  implementations' string handling can
+  part. Twelve confessions written by
+  identical command sequences on both
+  implementations into twin fresh
+  records, each sentence carrying one
+  payload family (precomposed accented
+  Latin; the same text decomposed; CJK;
+  a ZWJ family emoji and a
+  regional-indicator flag; Arabic RTL;
+  Hebrew with an embedded Latin word;
+  JSON-escaping characters; a non-BMP
+  mathematical letter and superscript
+  modifiers; stacked combining marks; a
+  4,000-character sentence of repeated
+  accented words; a one-character
+  sentence; and a sentence mixing Latin,
+  Cyrillic, and CJK in one line), with
+  asserter, approval, and on the graded
+  subset happened and evidence carrying
+  payloads of their own. Twenty-nine
+  celled comparisons as executed: the
+  write path's twelve cells and the
+  record-bytes cell after them, the
+  grade path's six cells and its
+  record-bytes cell, the views' four
+  agreement cells and four posture
+  cells, and the reader-symmetry cell;
+  every cell passing, the two record
+  files byte-identical after the write
+  path and again after the grade path,
+  every view's stdout byte-identical at
+  exit 0 with empty stderr on both
+  implementations, and the
+  reader-symmetry cell agreeing exactly
+  (the oracle's id derivation refused at
+  construction on the unencodable text,
+  the fallback id stood in, and ledger
+  on the twins agreed on the record).
+  The proposal's arithmetic stands
+  corrected here exactly: it stated 48
+  invocations and 24 twin comparisons,
+  and the driver as built cells 29
+  comparisons; the proposal's figures do
+  not sum from the celled surface, a
+  derivation miss in the proposal, and
+  the figures contracted are the
+  executed ones. The first run of the
+  surface stands in the round's record
+  at 28 of 29: its one failing cell, the
+  tally view's posture cell, failed on
+  the driver's own malformed invocation
+  (tally called without its required
+  --now argument; both implementations
+  refused identically at exit 2 with the
+  same usage error, and the tally
+  agreement cell passed), the amendment
+  was recorded in the round's record
+  before the amended run, and the
+  amended run passes all 29 cells. No
+  cell in either run shows the twins
+  parting; there is no conviction. No
+  behavior changed in this round.
+
+- WW-101. Closure. The base gate at the
+  entering tree and the head gate on
+  this closure tree stand clean under
+  the build slot, their figures carried
+  in WW-99. The standing regression
+  stands re-run in WW-98, the pins and
+  the oracle pairing re-verified there,
+  and the fresh surface stands measured
+  in WW-100. The Python codepoint scan
+  over both trees reports no em dashes
+  and no en dashes, with the planted
+  control convicted. WW-62 stands
+  carried by name: Cargo.toml carries no
+  description field, and storefront item
+  3 does not pass. README records 14 of
+  100 in this round's closure commit,
+  the rounds line moving only there.
