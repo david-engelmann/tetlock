@@ -2747,3 +2747,21 @@ reviews, before the repair code).
   cell in either run shows the twins
   parting; there is no conviction. No
   behavior changed in this round.
+
+- WW-101. Closure. The base gate at the
+  entering tree and the head gate on
+  this closure tree stand clean under
+  the build slot, their figures carried
+  in WW-99. The standing regression
+  stands re-run in WW-98, the pins and
+  the oracle pairing re-verified there,
+  and the fresh surface stands measured
+  in WW-100. The Python codepoint scan
+  over both trees reports no em dashes
+  and no en dashes, with the planted
+  control convicted. WW-62 stands
+  carried by name: Cargo.toml carries no
+  description field, and storefront item
+  3 does not pass. README records 14 of
+  100 in this round's closure commit,
+  the rounds line moving only there.
