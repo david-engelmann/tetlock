@@ -3026,10 +3026,19 @@ reviews, before the repair code).
   bef8abf56364ae6bda6a406ad1bbbca1f2ce0543e27a3641831ebd54128bbe77
   and 2,018,560 bytes. At the head tree
   (this closure tree, verified the same
-  way before its gate ran): HEADFIGS.
-  The Python codepoint scan over the
-  base tree reports no em dashes and no
-  en dashes across its 22 text files,
+  way before its gate ran): cargo fmt
+  --check exit 0, clippy over all
+  targets with warnings denied exit 0,
+  cargo test at 31 tests, 3 library and
+  28 integration, all passing, exit 0,
+  and the debug build exit 0, the binary
+  at the same sha256
+  bef8abf56364ae6bda6a406ad1bbbca1f2ce0543e27a3641831ebd54128bbe77
+  and the same 2,018,560 bytes,
+  byte-identical to the base tree's
+  binary. The Python codepoint scan over
+  the base tree reports no em dashes and
+  no en dashes across its 22 text files,
   the planted control convicted at one
   and one, and the scan over this
   closure tree reads the same. The chain
@@ -3098,3 +3107,23 @@ reviews, before the repair code).
   control), so no derivation miss stands
   against the proposal. No behavior
   changed in this round.
+
+- WW-107. Closure. The base gate at the
+  entering tree and the head gate on
+  this closure tree stand clean under
+  the build slot, their figures carried
+  in WW-105. The standing regression
+  stands re-run in WW-104, the pins
+  re-verified by the repaired procedure
+  in WW-103, the oracle pairing
+  re-verified in WW-104, and the fresh
+  surface stands measured in WW-106. The
+  Python codepoint scan over both trees
+  reports no em dashes and no en dashes,
+  with the planted control convicted.
+  WW-62 stands carried by name:
+  Cargo.toml carries no description
+  field, and storefront item 3 does not
+  pass. README records 15 of 100 in this
+  round's closure commit, the rounds
+  line moving only there.
