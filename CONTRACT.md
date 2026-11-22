@@ -3672,15 +3672,15 @@ reviews, before the repair code).
   fidelity APPROVE with two Minors,
   standards APPROVE with one Minor, red
   team APPROVE with two Minors, no
-  Blocker, no Major, and no defect in
-  the round at any grade on any axis.
-  The red team's review stands completed
-  by a completion lane after the first
-  red team lane ended with four legs
-  pending: the completion lane ran every
-  pending leg at its own hand (the API
-  listing comparison, its own pins
-  mutations at fresh paths, a
+  Blocker and no Major on any axis, and
+  no defect beyond the Minors recorded
+  for each axis. The red team's review
+  stands completed by a completion lane
+  after the first red team lane ended
+  with four legs pending: the completion
+  lane ran every pending leg at its own
+  hand (the API listing comparison, its
+  own pins mutations at fresh paths, a
   seventeen-case differential slice,
   both fresh surfaces re-run whole, and
   the tenth case), so no claim in Round
