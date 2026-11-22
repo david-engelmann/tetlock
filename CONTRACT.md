@@ -3437,7 +3437,9 @@ reviews, before the repair code).
   bef8abf56364ae6bda6a406ad1bbbca1f2ce0543e27a3641831ebd54128bbe77
   and 2,018,560 bytes. At the head tree
   (this closure tree, verified the same
-  way before its gate ran): cargo fmt
+  way before its gate ran), in the two
+  passes banked as gate_head16_run1.log
+  and gate_head16_run2.log: cargo fmt
   --check exit 0, clippy over all
   targets with warnings denied exit 0,
   cargo test at 31 tests, 3 library and
