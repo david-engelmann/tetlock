@@ -3127,3 +3127,488 @@ reviews, before the repair code).
   pass. README records 15 of 100 in this
   round's closure commit, the rounds
   line moving only there.
+
+
+- WW-108. The step 0 read-back of PR 21,
+  charged by the owner's landing comment
+  (7070945197), discharges here on
+  evidence, read back in full in this
+  round (checked 2026-11-21). PR 21
+  stands closed and merged through the
+  Trunk merge queue; its body stands at
+  16,933 characters, the lane's body
+  with its step 0 record and the owner
+  completion record the owner appended
+  after the CodeRabbit appendix. The
+  census at this hand stands at four
+  issue comments, no reviews, and no
+  review comments: the Trunk queue note
+  (7070423184, 113 characters, updated
+  2026-11-21T23:00:02Z, in its final
+  form the merged notice), the summary
+  shell (7070425254), the lane's /trunk
+  merge submission (7070489932, 12
+  characters), and the owner's landing
+  comment itself (7070945197, 2,442
+  characters at this hand, updated
+  2026-11-21T23:32:55Z), standing last
+  with this round's charges. The summary
+  shell stands at 11,389 characters at
+  this hand, updated
+  2026-11-21T22:52:37Z, agreeing exactly
+  with the form the owner completion
+  record states at the owner's hand; the
+  lane's step 0 record cited the shell
+  at 11,387 characters, updated
+  2026-11-21T22:49:41Z. The difference
+  is the standing +2 re-render drift,
+  named here as standing: a shell's
+  character count is cited with the
+  reading hand and its edit stamp, and
+  the drift changes no
+  disposition-bearing element. The shell
+  carries no actionable comments, no
+  review, and no inline comments over a
+  Minimal merge-risk line whose coverage
+  stands at the final head 85e77fb8,
+  four pre-merge checks all passing, so
+  nothing stood to fix or dismiss, and
+  all three owner review axes sustained
+  that disposition on the shell's actual
+  content. Its Title check's observation
+  stands bounded as the lane bounded it:
+  the check calls the title specific
+  enough to identify the change but
+  overly broad and dense (111
+  characters, 16 words), passing as
+  partially related; the title names the
+  round's three contracted items
+  deliberately, in the house form, and
+  stands; the observation stands
+  ungraded. The owner reviews stand as
+  the completion record states them:
+  spec fidelity APPROVE with one Minor,
+  standards APPROVE with two Minors, red
+  team APPROVE with two Minors and three
+  carried environment limitations, no
+  Blocker, no Major, and no defect in
+  the round at any grade on any axis.
+  The WW-103 pins restore repair stands
+  discharged by execution at the red
+  team's own hand: the red team re-ran
+  the repaired procedure with its own
+  planted mutations at paths the lane
+  did not use (tests/validate.rs on
+  flighttape, tests/test_store.rs on
+  onrecord) and convicted both, the
+  differing path set exactly the planted
+  path in each case, and the clean
+  rebuilds passed on both pins; the
+  Round 14 tautology charge is
+  discharged. The head gate's launch
+  accounting stands carried into the
+  CONTRACT text here, as the owner's
+  charge directs, the spec axis's one
+  Minor and the standards axis's second
+  Minor converging on its absence from
+  Round 15's CONTRACT: four launch
+  events. The first launch (20:39Z)
+  queued behind a hold of about two
+  hours and died queued in the runtime
+  restart at about 22:25Z with no stage
+  run. The second launch (22:26Z) ran at
+  once but its cargo stages failed at
+  exit 101, because the write fault had
+  zeroed the shared cargo registry index
+  configuration (config.json in the
+  crates.io sparse index cache, found at
+  zero bytes, its timestamp 21:07Z
+  inside the shut wave); the Round 15
+  lane restored the file to the standard
+  registry configuration, and the third
+  launch (the pass 1 retry, 22:37Z) ran
+  clean and the fourth (pass 2, 22:40Z)
+  ran clean with figures identical to
+  pass 1. The failed 22:26Z run counts
+  as a failed run, not a gate pass; the
+  two counted passes are the retry and
+  pass 2. The failed run's evidence
+  position stands stated as it stands,
+  the standards axis's first Minor and
+  the red team's first Minor converging
+  on it: no banked stage output survives
+  for the failed run in the Round 15
+  scratch (its gate log holds only the
+  final pass, the failed segment rotated
+  out or never landed), so its exit 101
+  figure rests on the lane's narrative
+  in the PR body and the lane record,
+  and on the restored configuration
+  file's mtime; the red team verified
+  that file at its hand at 76 bytes of
+  the standard sparse configuration (dl
+  https://static.crates.io/crates, api
+  https://crates.io), its restore stamp
+  (2026-11-21T22:32:21Z) falling after
+  the failed run and before the clean
+  retry, as the account requires, and
+  the Round 15 CONTRACT itself does not
+  state the 101 figure. At this round's
+  lane start the file stands at 76 bytes
+  with the standard content, verified at
+  this hand. The evidence retention rule
+  stands from this round, charged by the
+  owner and stated here as standing:
+  every gate run's stage output is
+  banked under its own file at launch
+  time, so a failed run's exits survive
+  the round; this round's gate
+  instrument refuses to reuse a run's
+  log file, and this round's gate
+  figures in WW-110 rest on per-run
+  files. The red team's second Minor
+  names six adjacent malformed shapes
+  the WW-106 surface did not cell (a
+  byte order mark before the first line,
+  invalid UTF-8 inside a record, a bare
+  JSON scalar as a line, a duplicate key
+  inside one object, a whitespace-only
+  line between records, a final line
+  without a trailing newline); they
+  stand discharged in WW-111 as an
+  extension of that surface. The red
+  team's three carried limitations stand
+  contracted as they stand, limitations
+  and not defects: the WW-106 surface's
+  full re-run stands unrun at its hand
+  (the lane's own driver, re-run at its
+  hand, died inside its write-retry
+  after eighty refused attempts, six
+  further write probes between
+  2026-11-21T23:09Z and 23:11Z all
+  refused with the same error, and the
+  fault zeroed the red team's own tree
+  manifest file during its review); the
+  differential re-run agreed on all 17
+  cases it executed before dying at the
+  eighteenth on a PermissionError
+  writing its seed file at
+  2026-11-21T23:11:49Z; and the six
+  extra malformed cases stand unrun
+  under the same fault on the same probe
+  evidence. Those legs rest on the
+  lane's banks, which the red team read
+  whole and matched cell for cell, on
+  both trees re-listed at its hand (22
+  blobs each, differing in exactly
+  CONTRACT.md and README.md), and on
+  both banked binaries hashed at its
+  hand. The standards axis records one
+  verification limit, graded as no
+  finding: the step 0 appendix
+  byte-for-byte claim could not be
+  re-verified at its hand, no separate
+  release-notes comment standing on PR
+  21 and the shell's re-render no longer
+  carrying the block; the appendix in
+  the body is the standard block,
+  accurately summarizes the diff, and no
+  disposition changes. The queue landing
+  stands verified at this hand: the
+  landing commit db6de301 carries the
+  reviewed tree 3742caa8 itself (22
+  blobs, every blob's git identity
+  recomputed from its bytes during this
+  round's base extraction, with no
+  mismatch), single parent 25b0d89e, and
+  the README on main reads 15 of 100.
+  Any late findings on this round's pull
+  request are owed to Round 17's
+  contract by the same shape.
+
+- WW-109. The standing regression, in
+  the forms the charges contract. The
+  differential re-run in the original
+  configuration (the standing harness10
+  invoked as a plain python3
+  differential.py from its own
+  directory, no wrapper and no retry
+  layer, against this round's base-tree
+  binary) stands at 98 cases and 591
+  steps with no failures, every case
+  agreeing on both implementations, exit
+  0. The standing battery re-run, with
+  its figure contracted explicitly:
+  fifty-eight cells, every cell passing
+  and no cell diverging, on this round's
+  binary from the base tree and the
+  final Python oracle. The grading
+  family's twenty-four cells, including
+  the offset-spelling cell grading-08b,
+  named as the one-cell delta over Round
+  11's fifty-seven; the draw family's
+  eleven; the chains family's eleven; in
+  the shapes WW-81 contracts, run by
+  instruments carried over from the
+  Round 15 lane's scripts with every
+  cell byte-identical outside the header
+  lines. The pins family's twelve cells
+  stand decided by the repaired restore
+  procedure of WW-103, standing as this
+  round's pins procedure: the clean
+  rebuilt manifest equals the verified
+  manifest on both families, and a
+  rebuilt manifest carrying one planted
+  mutation stands convicted on both
+  families, the differing path named in
+  each (.github/workflows/ci.yml). On
+  flighttape (74a83298, tree afd4d7d1,
+  fifty blobs) and on onrecord
+  (9e41a7be, tree 1ea53c3d, twenty
+  blobs): the listed tree and the blob
+  count match the contracted pin on both
+  families, no listed blob's identity
+  mismatches its recomputation on
+  either, the mutation of
+  .github/workflows/ci.yml (19340a1e to
+  09340a1e) stands convicted by the pin
+  check on both, the clean rebuilt
+  manifest equals the verified manifest
+  on both, a planted mutation in the
+  rebuild stands convicted on both with
+  the differing path
+  .github/workflows/ci.yml named, and
+  the repaired restore cell passes on
+  both. The oracle snapshot stands
+  re-verified this round byte for byte
+  against the tree at e0244e88 (tree
+  1d765b77d17936428df546e7bfce5bb167f282ef),
+  the staged copy matching on all five
+  files and the staged renamed copy
+  differing in exactly the four rename
+  lines (eight changed lines counted on
+  the plus-minus convention over four
+  files, wall.py identical). The battery
+  chain's history stands in full: its
+  first launch (2026-11-22T00:32Z)
+  queued behind a bluepencil lane's
+  probe-gated loop and an onrecord build
+  and died queued in the runtime restart
+  at about 02:25Z with no stage run; its
+  probe-gated relaunch at 02:26Z found
+  its write window after two probes and
+  ran the grading, draw, and chains
+  families clean inside the window; the
+  pins stage's first launch in that
+  chain hung on a stalled API read and
+  was killed at the lane's hand at
+  02:37Z, exit 143 in its own log,
+  counting nowhere; the oracle stage
+  completed clean in the same chain; the
+  malformed and contested stages of that
+  chain exited with their logs at zero
+  bytes and count nowhere, and the pins
+  stage and both fresh surfaces stand
+  re-run clean after it, the surfaces
+  under the derivation amendment of
+  WW-111 and WW-112. No behavior changed
+  in this round.
+
+- WW-110. The local gate, under the
+  evidence retention rule stated in
+  WW-108: every run's stage output
+  stands banked under its own file at
+  launch time, and this round's gate
+  instrument refuses to reuse a run's
+  log file, so each run below names its
+  own file. At the base tree (extracted
+  from main db6de301 and verified blob
+  for blob against the remote tree
+  before any stage ran, 22 files, no
+  mismatch), under the build slot, in
+  the run banked as
+  gate_base16_run1.log: cargo fmt
+  --check exit 0, clippy over all
+  targets with warnings denied exit 0,
+  cargo test at 31 tests, 3 library and
+  28 integration, all passing, exit 0,
+  and the debug build exit 0, the binary
+  at sha256
+  bef8abf56364ae6bda6a406ad1bbbca1f2ce0543e27a3641831ebd54128bbe77
+  and 2,018,560 bytes. At the head tree
+  (this closure tree, verified the same
+  way before its gate ran), in the two
+  passes banked as gate_head16_run1.log
+  and gate_head16_run2.log: cargo fmt
+  --check exit 0, clippy over all
+  targets with warnings denied exit 0,
+  cargo test at 31 tests, 3 library and
+  28 integration, all passing, exit 0,
+  and the debug build exit 0, the binary
+  at the same sha256
+  bef8abf56364ae6bda6a406ad1bbbca1f2ce0543e27a3641831ebd54128bbe77
+  and the same 2,018,560 bytes,
+  byte-identical to the base tree's
+  binary. The Python codepoint scan over
+  the base tree reports no em dashes and
+  no en dashes across its 22 text files,
+  the planted control convicted at one
+  and one, and the scan over this
+  closure tree reads the same. The chain
+  history stands in full: Chain A's
+  first launch (2026-11-21T23:46Z)
+  queued behind two holds, acquired the
+  build slot at 2026-11-22T00:20Z, and
+  died in the runtime restart at about
+  00:26Z during its probe gate, the
+  write wave standing shut at every
+  probe, with no stage run, counting
+  nowhere; its relaunch at 00:27Z
+  acquired the slot at once, found its
+  write window after two probes, and ran
+  the extraction, the base gate, and the
+  differential clean inside one hold by
+  00:34Z. The head gate's launch history
+  stands in the round's record in full.
+  WW-62 stands carried by name in
+  WW-113.
+
+- WW-111. A fresh twin measurement
+  extending the WW-106 surface: the six
+  adjacent malformed shapes the Round 15
+  red team named as standing outside
+  that surface's sixteen cells, celled
+  here on the same independent arms and
+  in the same driver shape, proposed in
+  the round's record with the charges
+  before any run. Every record is
+  hand-written by the driver, neither
+  implementation writing it, so reader
+  symmetry is intrinsic to every cell.
+  Six shapes (a UTF-8 byte order mark
+  before the first line of the standing
+  valid record; invalid UTF-8 bytes
+  inside a record's text value; a bare
+  JSON scalar as a line between two
+  valid confession lines; a duplicate
+  key inside one object; a
+  whitespace-only line between two valid
+  confession lines; a final line without
+  a trailing newline) and one control,
+  the standing valid record, each read
+  by the ledger view at a fixed instant
+  on both implementations in twin fresh
+  directories. The twins agree on all
+  seven celled comparisons, seven of
+  seven, the ledger outputs matching on
+  both implementations on every cell,
+  the control standing on the valid
+  record; no parting stands anywhere on
+  the extension. The surface's first
+  measuring run stands amended before
+  its re-run, the amendment recorded in
+  the round's record with the first bank
+  preserved: the extension's first
+  completed run measured nothing, its
+  Python arm failing to start under a
+  wrong oracle path in the lane's
+  standalone launch environment, and its
+  two standing lines then carried
+  hand-set ids in the WW-106 manner,
+  under which an id defect, not the
+  separator shape, is what the cells
+  would have measured; as re-run, the
+  standing lines stand minted at their
+  record positions and the byte
+  anomalies applied after minting, so
+  the shapes named in the charge are
+  what the seven agreements measure. No
+  behavior changed in this round.
+
+- WW-112. A fresh twin measurement on a
+  surface no prior round has swept:
+  contested and time-shifted outcomes on
+  the read path, proposed in the round's
+  record before any run. WW-106 and
+  WW-111 cell what the twins do with
+  record bytes that are not well-formed,
+  and the battery's grading family cells
+  due-date and week boundaries for
+  single outcomes and one supersession
+  correction; no round had celled
+  records whose outcomes stand in
+  contested multiplicity or in shifted
+  time against their confessions, where
+  the twins' resolution posture can
+  part. Every record is hand-written by
+  the driver, so symmetry is intrinsic
+  to every cell. Eight families (two
+  outcomes grading the same confession
+  with different grades, neither
+  superseding the other; an outcome
+  asserted before its confession; a
+  confession asserted after the view
+  instant whose outcome stands asserted
+  before it; a confession born overdue,
+  its due date preceding its
+  asserted_at; the standing valid
+  confession line duplicated byte for
+  byte; an outcome superseding its own
+  confession; a confession superseding
+  an outcome; three outcomes on one
+  confession at successive times, none
+  superseding) and one control, the
+  standing valid pair, each read on both
+  implementations in twin fresh
+  directories, the ledger view at each
+  family's fixed instant and the tally
+  view as part of the same cell on the
+  two families that name it. The twins
+  agree on all nine celled comparisons,
+  nine of nine, the ledger view matching
+  on both implementations on every
+  family and the tally view matching on
+  the two families that name it, the
+  control standing on the valid pair; no
+  parting stands anywhere on the
+  surface. The surface's first measuring
+  run stands amended before its re-run,
+  the amendment recorded in the round's
+  record with the first bank preserved:
+  as first authored, every claim carried
+  a hand-set id, under which both arms
+  stop at the derivation gate and the
+  contested posture the charge names is
+  never reached; as re-run, every claim
+  stands minted at its file position by
+  the oracle's own derivation, the
+  battery mint pattern, outcomes
+  referencing the minted confession ids,
+  and the byte-duplicate family keeps
+  its replayed line as designed, its
+  second copy's derivation failing at
+  its position on both arms together. No
+  behavior changed in this round.
+
+
+- WW-113. Closure. The base gate at the
+  entering tree and the head gate on
+  this closure tree stand clean under
+  the build slot, their figures carried
+  in WW-110, each run banked under its
+  own file under the retention rule. The
+  standing regression stands re-run in
+  WW-109, the pins re-verified by the
+  repaired procedure standing from
+  WW-103, the oracle pairing re-verified
+  in WW-109, and the fresh surfaces
+  stand measured in WW-111 and WW-112.
+  The Python codepoint scan over both
+  trees reports no em dashes and no en
+  dashes, with the planted control
+  convicted. WW-62 stands carried by
+  name: Cargo.toml carries no
+  description field, and storefront item
+  3 does not pass. README records 16 of
+  100 in this round's closure commit,
+  the rounds line moving only there.
