@@ -3587,3 +3587,26 @@ reviews, before the repair code).
   second copy's derivation failing at
   its position on both arms together. No
   behavior changed in this round.
+
+
+- WW-113. Closure. The base gate at the
+  entering tree and the head gate on
+  this closure tree stand clean under
+  the build slot, their figures carried
+  in WW-110, each run banked under its
+  own file under the retention rule. The
+  standing regression stands re-run in
+  WW-109, the pins re-verified by the
+  repaired procedure standing from
+  WW-103, the oracle pairing re-verified
+  in WW-109, and the fresh surfaces
+  stand measured in WW-111 and WW-112.
+  The Python codepoint scan over both
+  trees reports no em dashes and no en
+  dashes, with the planted control
+  convicted. WW-62 stands carried by
+  name: Cargo.toml carries no
+  description field, and storefront item
+  3 does not pass. README records 16 of
+  100 in this round's closure commit,
+  the rounds line moving only there.
