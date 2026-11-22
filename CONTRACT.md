@@ -4122,3 +4122,26 @@ reviews, before the repair code).
   the run left it, the only bank the
   surface has. No behavior changed in
   this round.
+
+
+- WW-118. Closure. The base gate at the
+  entering tree and the head gate on
+  this closure tree stand clean under
+  the build slot, their figures carried
+  in WW-116, each run banked under its
+  own file under the retention rule. The
+  standing regression stands re-run in
+  WW-115, the pins re-verified by the
+  repaired procedure standing from
+  WW-103, the oracle pairing re-verified
+  in WW-115, and the fresh surface
+  stands measured in WW-117. The Python
+  codepoint scan over both trees reports
+  no em dashes and no en dashes, with
+  the planted control convicted. WW-62
+  stands carried by name: Cargo.toml
+  carries no description field, and
+  storefront item 3 does not pass.
+  README records 17 of 100 in this
+  round's closure commit, the rounds
+  line moving only there.
