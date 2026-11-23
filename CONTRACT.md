@@ -4448,8 +4448,13 @@ reviews, before the repair code).
   at sha256
   bef8abf56364ae6bda6a406ad1bbbca1f2ce0543e27a3641831ebd54128bbe77
   and 2,018,560 bytes. At the head tree
-  (this closure tree, verified the same
-  way before its gate ran), in the two
+  (the earlier staged closure tree the
+  gate actually checked, verified the
+  same way before its gate ran, and
+  distinct from the final closure tree,
+  which carries this item's completed
+  text and differs from the gated tree
+  in CONTRACT.md alone), in the two
   passes banked as gate_head18_run1.log
   (start 2026-11-23T01:12:05Z) and
   gate_head18_run2.log (start
