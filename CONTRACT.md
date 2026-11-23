@@ -5422,3 +5422,27 @@ reviews, before the repair code).
   confessions in file order, and every
   other resolution input is a set or a
   map over the whole record.
+
+
+- WW-133. Closure. The slice and closure
+  stand staged in separate directories,
+  stage_slice holding WW-129 through
+  WW-132 and stage_closure holding
+  WW-129 through WW-133 with the README
+  at 20 of 100, the README's rounds line
+  changing in the closure commit only
+  and the slice staging carrying the
+  README at 19 of 100 untouched. The
+  CONTRACT appends only, the staged
+  closure's CONTRACT standing as a
+  byte-prefix extension of the base
+  tree's CONTRACT, verified mechanically
+  at this hand before the pushes. The
+  tree diff from the base tree to the
+  head touches exactly CONTRACT.md and
+  README.md. WW-62 and storefront item 3
+  stand NOT PASSING by name at this
+  closure, the Cargo.toml at 355 bytes
+  carrying no description field, not
+  repaired in this round and carried in
+  the body's known deviations.
