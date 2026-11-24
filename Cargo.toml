@@ -2,6 +2,7 @@
 name = "tetlock"
 version = "0.1.0"
 edition = "2021"
+description = "Before anything irreversible runs, the agent states in writing what it believes is about to happen. Then reality grades the sentence."
 
 [dependencies]
 flighttape = { git = "https://github.com/david-engelmann/flighttape", rev = "74a83298aeb31c82e62b9fb0c613f5bc8600799e" }
