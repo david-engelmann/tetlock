@@ -5446,3 +5446,427 @@ reviews, before the repair code).
   carrying no description field, not
   repaired in this round and carried in
   the body's known deviations.
+
+
+- WW-134. Round 21 opened by reading PR
+  31 back whole through the API, the
+  body with the owner completion record
+  appended, and the landing stands
+  exactly as the owner's closeout
+  records it. The pull request stands
+  closed and merged as squash commit
+  5059c604ef4d3c71d519b2968239f964bccce389,
+  single parent d4947448, tree d9c616ec,
+  head 6a5474b7 on base d4947448, and
+  the body stands at 13,067 characters
+  at this hand, the completion record's
+  heading standing at the 8,935
+  character mark, two separator
+  characters after the lane's 8,933
+  character body. The census at this
+  hand is four issue comments and no
+  reviews. The comments are the trunk
+  seed 7098936209 at 113 characters, the
+  CodeRabbit shell 7098942827 at 11,099
+  characters at this hand, edited
+  2026-11-23T11:27:36Z, the trunk merge
+  comment 7099673697 at 12 characters,
+  and the landing comment 7099951279 at
+  3,304 characters, which seats this
+  round. The three verdicts stand as the
+  record gives them. Spec fidelity
+  APPROVE with one Minor. Standards
+  APPROVE with one Minor, the same
+  point. Red team APPROVE with no
+  findings and no carried limitation,
+  every charged leg run at its hand. No
+  Blocker and no Major at any hand. The
+  staging correction stands contracted
+  in one line: staging run 3, the
+  restaging that added the one clause
+  naming the gated staging's test temp
+  output under target and verified
+  against run 2 differing in that clause
+  alone, produced the pushed text, and
+  WW-131's own staging account stopped
+  at run 2 and never named it. The
+  SIGTERM incident stands as it now
+  stands verified: the Round 20 lane's
+  error, sending a SIGTERM at about
+  08:44Z to the or27 lane's queued flock
+  under the misreading that it was a
+  dead holder, stands disclosed in the
+  open at every level of that round's
+  record; the slot's holder at 08:44Z
+  was the touchstone lane's chain24
+  shell, acquired at 08:17:52Z and held
+  until the restart at about 09:24Z; the
+  or27 lane's own logs show its test
+  stage complete at 07:38:15Z and its
+  clippy carrying exactly one run header
+  at 09:28:54Z at exit 0 with its chain
+  DONE at 09:31:27Z, so the killed flock
+  had run nothing and every delayed
+  stage completed afterward; no loss,
+  queue delay only, with the stated
+  limits standing in the red team's
+  report. Both of Round 20's gates
+  passed whole at their first runs, the
+  base run 1 from its own start line at
+  2026-11-23T10:32:45Z and the head run
+  1 from 10:49:18Z, each run's registry
+  configuration standing at 76 bytes on
+  its own log's own line, the registry
+  figure rule discharged in its first
+  round at three hands. The eleventh
+  postures case stands discharged by
+  execution, run from an adapted copy
+  whose adaptations are the docstring,
+  the arm paths, the work root, and the
+  cell accounting alone, agreeing at its
+  contracted posture and recorded as the
+  postures surface's extension case at 1
+  of 1. The file-order surface stands at
+  10 of 10 on its first run, and the
+  Round 20 red team's eleventh
+  file-order case stands contracted as
+  composed and run at its hand, a
+  three-outcome supersession chain whose
+  file order, asserted-time order, and
+  mint order all differ, the arms
+  agreeing byte for byte on ledger,
+  tally, and wall; this round runs it
+  under WW-137. WW-103 stands discharged
+  by execution at a seventh independent
+  hand, the red team's mutations at
+  flighttape src/identity.rs and
+  onrecord src/digest.rs convicted at
+  exactly the planted paths. One
+  ungraded observation from the
+  standards hand stands in the record:
+  the Round 20 lane scratch's banked
+  shell copy stands at zero bytes under
+  the fault, no text claims the shell
+  stands banked, and no figure rests on
+  the empty bank. Shells are cited drift
+  aware throughout, character count with
+  the reading hand and the edit stamp.
+
+- WW-135. The standing regression ran in
+  the contracted forms at the base tree
+  binary. The differential closed at 98
+  cases, 591 steps, 0 failures in the
+  original configuration, the direct
+  harness against the base tree Rust
+  binary and the oracle at its renamed
+  source root, its output banked in
+  differential21.log. The battery stands
+  whole at 58 cells, every cell passing
+  at the first run under the gated
+  runner. The grading battery holds 24
+  cells, grading-08b among them, the
+  offset spellings landing on the same
+  UTC date as the Z spelling. The draw
+  battery holds 11 cells and the chains
+  battery 11, the draw cells under the
+  failing-open shim and the four-byte
+  short-read source, the chain cells at
+  the 990 to 993 depths in the away,
+  onto, and prefix postures. The pins
+  hold 12 cells by the repaired WW-103
+  restore procedure, an independent
+  fetch of both pinned trees through the
+  API with every blob identity
+  recomputed from its bytes, able to
+  fail for a real reason and convicted
+  at this hand by the planted mutations
+  it caught. Flighttape stands at tree
+  afd4d7d1, 50 blobs, and onrecord at
+  tree 1ea53c3d, 20 blobs, every listed
+  identity matching its recomputation,
+  the planted mutation of each tree's
+  workflow file convicted by the pin
+  check, each restore cell's clean
+  rebuild equal to the verified
+  manifest, its planted mutation
+  convicted by path, and its repair
+  passing. The pins bank landed at the
+  run itself under chain B launch 3,
+  after launch 1's run had passed every
+  check and failed only at its bank
+  write against the shut wave, and the
+  independent second capture re-fetched
+  both trees and matched the bank field
+  for field before the gate, the WW-121
+  discipline discharged at this hand in
+  its own right. The oracle snapshot
+  stands re-verified against the API
+  tree of commit e0244e88, tree
+  1d765b77, 30 blobs with every identity
+  recomputed; the staged source at
+  ww-oracle matches the snapshot in all
+  five files, and the renamed copy
+  differs from it in exactly four files
+  at two changed lines each, eight
+  changed lines in all, wall.py
+  identical, as the rename requires.
+
+- WW-136. The local gate ran at the base
+  and head trees under the build slot,
+  in the retention form, every run's
+  stage output banked under its own file
+  at launch time, the gate script
+  refusing to reuse an existing log. At
+  the base tree the gate's run 1 passed
+  whole at the first run, its output
+  standing banked as
+  gate_base20_run1.log in this round's
+  scratch under a carried name: the
+  carried gate21.sh kept the Round 20
+  log-name pattern, the pattern stands
+  corrected in gate21.sh before the head
+  gate, which banks as
+  gate_head21_run1.log, and the base
+  bank stands unrenamed at its true
+  name, its own first line reading gate
+  base run1 with this round's start line
+  and tree. The run's start line reads
+  2026-11-23T13:40:48Z, the registry
+  configuration checked at the run's
+  start and banked in the log at 76
+  bytes, the standard sparse
+  configuration, format, clippy, the 31
+  tests (3 library and 28 integration),
+  and the build all at exit 0, and the
+  binary hashed at this hand at
+  2,018,560 bytes, sha256
+  bef8abf56364ae6bda6a406ad1bbbca1f2ce0543e27a3641831ebd54128bbe77.
+  The codepoint scan of the base tree
+  ran once, banked in scan_base21.log,
+  its planted control read at 1 and 1
+  and the tree's totals at 0 and 0 over
+  22 text files. The round's complete
+  launch accounting stands here in this
+  item. Chain B launch 1 (2026-11-23
+  11:46Z, the API stages) ran the pins
+  whole, all twelve checks True on both
+  families, but the pins bank's write
+  failed after 60 tries against the shut
+  wave, so the stage counts as failed,
+  and the runner died on its own log
+  writes before the second capture and
+  the oracle, which stood unrun. Chain B
+  launch 2 (12:11Z) landed its probe
+  file whole and exited 1 in about five
+  seconds with its outer log standing at
+  zero bytes under the fault; no stage
+  ran, a dead launch. Chain A launch 1
+  (11:46Z, under flock on the build
+  slot) queued from 11:46Z, acquired the
+  slot at about 12:21Z, and died inside
+  its probe gate in the runtime restart
+  at about 13:26Z with no stage run, its
+  chain log standing at zero bytes and
+  its probe file truncated in the
+  restart. The first lane's wave openers
+  stand in the same window: opener run 1
+  probed the shut wave from 12:12Z to
+  13:02Z, 200 probes each refused, and
+  opener run 2 died in the same restart
+  after 100 refused probes, its last
+  banked line at 13:26:31Z. Chain B
+  launch 3 (13:27Z) opened its window
+  after 2 probes and completed whole,
+  the pins bank landing at the run
+  itself, the second capture matching
+  the bank field for field before the
+  gate, and the oracle verification
+  complete, each stage exit 0. Chain A
+  launch 2 (13:39Z) acquired the slot,
+  opened its window after 2 probes, and
+  completed whole, the read-back, the
+  extraction, the base gate run 1, and
+  the differential at 98 cases, 591
+  steps, 0 failures, each stage exit 0.
+  The first lane's late gated attempt
+  stands unbanked beyond a zero-byte
+  outer log and a probe file truncated
+  at 15:27Z; no stage ran under it and
+  no figure rests on it. The completion
+  lane's gated launch 1 (2026-11-25
+  04:03Z) probed the shut wave for about
+  58 minutes and died in the runtime
+  restart at about 05:01Z with no stage
+  run, its outer log standing at zero
+  bytes, a dead launch. The completion
+  lane's gated launch 2 (05:12Z) opened
+  its window on the first probes after
+  the restart and completed its four
+  stages at the first run, the grading
+  battery, the draw and chains battery,
+  the eleventh file-order case, and the
+  links surface, each exit 0. Staging
+  run 1 staged the slice and the closure
+  in separate directories, stage_slice
+  holding the tree with CONTRACT at
+  220,191 bytes and stage_closure the
+  tree with CONTRACT at 221,666 bytes
+  and the README at 21 of 100 in the
+  closure only, each staged CONTRACT a
+  byte-prefix extension of the last and
+  every other file identical but the
+  closure README's rounds line. The
+  staging completed by the rename route,
+  stage21_mv.py carrying stage21.py's
+  logic with every file written to a
+  scratch temp under hash verification
+  and renamed into place, after the
+  direct route failed against the
+  fault's subdirectory shape; the
+  staging attempts stand counted here:
+  two stage21.py launches dead on the
+  shut wave at the first file, a staging
+  retry-hold dead at about 06:17Z after
+  a 1500 second window search found no
+  window, the rename staging's first
+  runs dead to an import defect at this
+  lane's hand and to the wave shutting
+  whole across 300 tries, a probe-gated
+  staging campaign killed in the runtime
+  restart at about 07:18Z at seven
+  minutes, and the rename staging's
+  completed run on the restart's open
+  window at about 07:21Z. The head gate
+  ran on staging run 1's closure
+  staging. Head gate launch 1 (about
+  07:22Z, under flock on the build slot)
+  never reached the gate stage and died
+  in the runtime restart at about 12:51Z
+  leaving no bank, a dead launch. Head
+  gate launch 2 opened its window after
+  2 probes and the gate's run 1 passed
+  whole at the first run, its output
+  banked in gate_head21_run1.log, its
+  start line reading
+  2026-11-25T12:54:10Z, the registry
+  configuration checked at the run's
+  start and banked in the log at 76
+  bytes, format, clippy, the 31 tests (3
+  library and 28 integration), and the
+  build all at exit 0, and the binary
+  hashed at this hand at 2,018,560
+  bytes, sha256
+  bef8abf56364ae6bda6a406ad1bbbca1f2ce0543e27a3641831ebd54128bbe77,
+  the same hash the base tree's run
+  produced. The codepoint scans of the
+  staged slice and closure trees ran
+  once each, banked in scan_slice21.log
+  and scan_closure21.log, their planted
+  controls read at 1 and 1 and each
+  tree's totals at 0 and 0 over 23 text
+  files. Staging run 2 restaged both
+  trees from the completed item draft;
+  against the gated staging the run 2
+  slice differs in CONTRACT.md alone and
+  the run 2 closure differs in
+  CONTRACT.md and in the removal of a
+  six-byte probe file this lane's own
+  write probe had left at the gated
+  staging's root, a file no build input
+  reads. The final staging run restaged
+  both trees from the draft carrying
+  this completed accounting and stands
+  verified against the run before it
+  differing in CONTRACT.md alone in both
+  trees, so the gate's verdict stands
+  for the shipped trees but for the gate
+  item's own completed text.
+
+- WW-137. Fresh surface work ran in the
+  two charged parts, each proposed in
+  the lane record before it ran, on
+  genuinely independent arms, the base
+  tree Rust binary against the Python
+  oracle at its renamed source root,
+  twin fresh directories, exit and
+  stdout and stderr compared byte for
+  byte. Part (a) ran the Round 20 red
+  team's composed eleventh file-order
+  case by name, from the adapted copy
+  orders21_r10.py, whose only changes
+  from the red team's banked composition
+  are the provenance line and the work
+  root in this scratch, the case's
+  claims, instants, views, and
+  contracted posture the red team's own.
+  The case agrees with its composition
+  at its contracted posture: only an
+  outcome supersedes an outcome, so the
+  live outcome is O_c, the confession
+  resolves graded broke on ledger and
+  tally, and the wall at 2026-09-16, ISO
+  2026-W38, lands it in broke with
+  ungraded empty, the arms agreeing byte
+  for byte on all three views. The
+  eleventh case is recorded as the
+  file-order surface's extension case at
+  1 of 1, agreeing with its composition;
+  the surface's ten stand as Round 20
+  measured them. Part (b) measured a
+  fresh twin surface Rounds 15 through
+  20 did not measure, supersession
+  chains and cross-links on the read
+  path, ten cells at a 2026-09-18 now
+  and a 2026-09-16 wall date, every cell
+  passing on both arms byte for byte at
+  the first run with no amendment. An
+  outcome chain of three resolves graded
+  broke with only the live outcome's
+  asserted date counting at the wall,
+  the earlier week's wall standing
+  empty. A restatement chain of three
+  states two superseded and one
+  awaiting, the wall's ungraded holding
+  the chain's tail alone though every
+  due lands in the week. An outcome
+  keyed to the chain's root grades the
+  root before the superseded test
+  applies, and the wall lands the root
+  in broke beside the tail in ungraded;
+  an outcome keyed to the middle link
+  grades it held though the tail
+  supersedes it, the wall's broke
+  standing empty. An outcome of one
+  confession superseded by another
+  confession's outcome dies globally,
+  its own confession left awaiting and
+  the wall's broke empty. A note
+  superseding a confession puts the
+  confession in the superseded set, the
+  set being kind-blind, while a note
+  superseding an outcome leaves the
+  outcome live and every view resolving
+  exactly as the control resolves. A
+  fourth live outcome on a chain of
+  three refuses every view at exit 1,
+  the refusal naming the confession and
+  both live outcomes with the file-first
+  live outcome named first on both arms.
+  The surface's contracted rules stand
+  pinned by both implementations read at
+  this hand, the oracle's wall.py
+  outcome index, superseded sets, and
+  confession state against the Rust
+  wall.rs outcome index, superseded ids,
+  and confession state: only an outcome
+  supersedes an outcome and that set is
+  global across confessions, the
+  superseded set consulted for a
+  confession's state gathers every
+  claim's supersedes pointer kind-blind,
+  a confession holding a live outcome is
+  graded before the superseded test
+  applies, and the wall's broke list
+  tests only the live outcome's grade
+  and week while its ungraded list skips
+  superseded confessions.
