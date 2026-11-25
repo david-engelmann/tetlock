@@ -5870,3 +5870,45 @@ reviews, before the repair code).
   tests only the live outcome's grade
   and week while its ungraded list skips
   superseded confessions.
+
+
+- WW-138. Closure. The round stands
+  carried by two lanes, stated plainly.
+  The first lane banked the read-back of
+  PR 31, the pins and oracle evidence,
+  the differential, and the base gate
+  before it went silent on 2026-11-23;
+  the completion lane seated on
+  2026-11-25 found no live process of
+  the first lane standing, verified
+  every bank it builds on at its own
+  hand, and carried the round through
+  the battery and the fresh surface
+  runs, the staging, the pushes, the
+  head gate, and the pull request. WW-62
+  stands carried by name NOT PASSING as
+  it stood at the round's seating: at
+  this round's base 5059c604 the
+  Cargo.toml stands at 355 bytes and
+  carries no description field, so the
+  crates.io metadata case stands unmet.
+  It is carried, not repaired, by the
+  standing charge. Storefront item 3
+  stands NOT PASSING by name on the same
+  fact, judged against this round's
+  base. The item 3 slice has since
+  landed on main (PR 33, squash
+  c1a7b424, 2026-11-24) adding the
+  description field to the Cargo.toml
+  there; that landing stands outside
+  this round's trees, which stand on the
+  earlier base by the standing charge,
+  and the next round contracts both
+  landings. The README stands at 21 of
+  100 in the closure commit only, the
+  slice README standing at 20 of 100 as
+  the base left it. CONTRACT stands
+  append-only by byte-prefix at both
+  steps. The tree diff base to head
+  touches exactly CONTRACT.md and
+  README.md.
