@@ -7350,7 +7350,22 @@ reviews, before the repair code).
   exactly CONTRACT.md and README.md with
   no extra local file. No launch died
   before its gate, and no POST failed at
-  any point in the round.
+  any point in the round. A repair
+  followed the pushes: step 0 returned
+  two valid findings on WW-157's command
+  attributions (the sentence precedence
+  belongs to confess, and the
+  existence-before-date precedence to
+  the views), repaired in a further
+  commit confined to CONTRACT.md,
+  staging run 3 having rebuilt
+  stage_slice and stage_closure from the
+  corrected draft with only WW-156's and
+  WW-157's own sections differing from
+  run 2, verified section by section at
+  this hand, the repair applied to
+  staging in those directories before
+  its push.
 
 - WW-157. The fresh surface, refusal
   precedence across the command layer,
@@ -7372,29 +7387,27 @@ reviews, before the repair code).
   malformed grade value; the grade value
   outranks the record's own defects; the
   record's defects outrank an unknown
-  target id; the sentence rule outranks
-  the load, the load then refusing on
-  its own line once the sentence stands
-  sound; and the already-graded and
-  superseded refusals outrank the
-  supersedes-names refusal. On the
+  target id; the evidence parse outranks
+  the target's WW-5 field defects, the
+  target's own refusal then firing under
+  a clean parse; and the already-graded
+  and superseded refusals outrank the
+  supersedes-names refusal. On confess,
+  the sentence rule outranks the load,
+  the load then refusing on its own line
+  once the sentence stands sound. On the
   views, the overwrite guard outranks
   the load under both target spellings,
   and the load then outranks the instant
-  parse on a fresh target. On record,
-  the instant parse outranks the outcome
-  index, the index then refusing on the
-  second live outcome once the instant
-  stands sound; and the evidence parse
-  outranks the target's WW-5 field
-  defects, the target's own refusal then
-  firing under a clean parse. On
-  confess, the record's existence
+  parse; the instant parse outranks the
+  outcome index, the index then refusing
+  on the second live outcome once the
+  instant stands sound; and existence
   outranks the date parse, an absent
   record refusing as no such record
-  before any date is read, and the write
-  then creating the record the views had
-  refused to read.
+  before any date is read, the closing
+  confess then creating the record the
+  views had refused to read.
 
 
 - WW-158. Closure. The round stands
