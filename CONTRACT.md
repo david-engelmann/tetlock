@@ -8370,3 +8370,453 @@ reviews, before the repair code).
   this round's base. The README rounds
   line moves to 27 of 100 in this
   closure commit only.
+
+
+- WW-169. PR 47 read back whole at this
+  hand. Its body stands at 26,152
+  characters at this hand, the owner
+  completion record included; the lane's
+  opened body stood at 24,072
+  characters, and the owner completion
+  record closes it. The chain stands at
+  two commits: the slice 086849ff on
+  tree 06c10931 carrying CONTRACT.md
+  alone, and the closure and head
+  f638d13e on tree 6efa2d7c carrying
+  CONTRACT.md and README.md; both
+  messages carry the sign-off trailer.
+  The squash e4c8f7a5 stands on main
+  with the single parent 424310e8 and
+  tree 6efa2d7c, the head tree itself,
+  so the landed tree is byte-identical
+  to the reviewed head tree, and the
+  README on main reads 27 of 100. The
+  census at this hand stands at four
+  issue comments, no reviews, and no
+  review comments: the Trunk note
+  7195911621 at 113 characters, created
+  2026-11-26T15:11:26Z and updated
+  2026-11-26T15:26:01Z in its merged
+  form; the shell 7195917167 standing at
+  11,027 characters at this hand,
+  created 2026-11-26T15:11:39Z and last
+  edited 2026-11-26T15:18:21Z, banked
+  whole in the Round 27 scratch at its
+  completed reading of 11,025
+  characters, last edited
+  2026-11-26T15:14:32Z at that hand, the
+  two added characters standing as two
+  blank lines of furniture in the live
+  form; the merge comment 7196078650 at
+  12 characters; and the landing comment
+  7202218296 at 3,446 characters, posted
+  2026-11-26T20:01:49Z, which carries
+  this round's charges. The hosted
+  checks on the head f638d13e read live
+  at this hand stand at eight check
+  runs, all completed success: the gate
+  twice, CodeQL, the three Analyze runs
+  for actions, python, and rust,
+  CodeRabbit, and the Trunk Merge Queue
+  run from 2026-11-26T15:18:41Z to
+  2026-11-26T15:26:01Z. Step 0 of Round
+  27 stands in its full form: the shell
+  banked whole in the Round 27 scratch
+  at its completed reading of 11,025
+  characters and observed in progress at
+  5,202 characters before that; it
+  generated no actionable comments, no
+  review object and no review comments
+  stand, four pre-merge checks passed,
+  the merge risk stood Minimal, the
+  review covering the head f638d13e
+  itself, and one dismissal stands with
+  its reason in the Round 27 lane
+  record, the title check's commentary
+  that the title is long and lists
+  several sub-activities, the check
+  itself passed and the title following
+  the standing fleet form. The three
+  reviews ran as a post-landing re-audit
+  over the landed tree: spec fidelity
+  APPROVE with no findings; standards
+  APPROVE with no findings; and the red
+  team APPROVE with no findings and no
+  carried limitation, its own build of
+  the staged closure reproducing the
+  standing binary sha256 exactly and its
+  re-run of the argument-layer driver
+  whole at 10 of 10 with its own
+  adversarial case agreeing on both
+  arms. A fully clean round at every
+  owner hand, and nothing rides into
+  this round as a repair charge. Round
+  26's Minor stands discharged in both
+  its halves: WW-164 states PR 45's step
+  0 in its full final form in one line,
+  and PR 47's body carries a step 0
+  record for its own round, as this
+  round's body again does under the
+  standing charge. Round 27's survival
+  check stands discharged: main fetched
+  fresh at 424310e8, tree 65c0d0e6 over
+  22 blobs, unmoved under the round, and
+  the staged closure tree differing from
+  it in exactly CONTRACT.md and
+  README.md. WW-167's surface stands as
+  measured: the argument layer itself at
+  10 of 10 cells, C01 and A01 to A09, on
+  its first run under no amendment,
+  gated start 2026-11-26T08:24:31Z, help
+  at every level and its firing order
+  against scan errors, requireds, and
+  extras, abbreviation unique and
+  ambiguous, glued and equals values
+  split at the first equals, repetition
+  with the last value standing and the
+  append flag accumulating, the
+  separator and the dash-shaped tokens,
+  and the body boundary past a
+  successful parse. Round 27's gates
+  stand as WW-166 records them: the base
+  gate run 1 under its start line
+  2026-11-26T08:18:00Z and the head gate
+  run 1 under 2026-11-26T15:03:34Z, each
+  passed whole at its first run, the
+  registry configuration figure at 76
+  bytes on each run's own log line, 31
+  tests at each tree, and the binary at
+  2,018,560 bytes with sha256
+  bef8abf56364ae6bda6a406ad1bbbca1f2ce0543e27a3641831ebd54128bbe77
+  at both trees. The round's weather
+  stands as its items state it: chain A
+  launch 1 died queued before any stage
+  when its launching session was torn
+  down, its launch log standing empty,
+  and launch 2 queued about 106 minutes
+  behind other lanes' slot holders and
+  ran the base gate and the differential
+  whole; chain B ran whole at its first
+  launch, its stages under their start
+  lines 2026-11-26T06:12:52Z, 06:18:26Z,
+  and 06:20:26Z, each at exit 0; the
+  gated launch ran whole at its first
+  launch, and a second gated launch made
+  in error at 2026-11-26T10:34Z against
+  a stale lane summary counts nowhere
+  and stands accounted in full in
+  WW-166; the head gate chain stood at
+  four launches, launches 1 to 3 dead
+  queued, one on its launching session's
+  teardown and two in the day's restart
+  waves, their empty launch logs
+  standing as their status evidence, and
+  launch 4 acquiring the slot at once in
+  a post-restart lull and running the
+  head gate whole; the staging stood at
+  two runs; no POST failed in the round.
+
+- WW-170. The standing regression
+  re-derived whole. The differential
+  runner, run directly from its own
+  directory in the Round 10 harness
+  form, re-derived its standing
+  expectation exactly: 98 cases, 591
+  steps, 0 failures, DIFFERENTIAL_EXIT
+  0, its runner start line reading
+  2026-11-26T20:37:37Z and its close
+  2026-11-26T20:46:44Z. The battery
+  stands at 58 in its stated split, 24
+  and 11 and 11 and 12. The grading
+  cells passed 24 of 24 under their
+  gated start line 2026-11-26T20:50:14Z,
+  grading-08b among them by name, the
+  offset spellings landing on the same
+  UTC date as the Z spelling. The draw
+  and chain cells passed 22 of 22 under
+  their gated start line
+  2026-11-26T20:50:42Z, draw 11 and
+  chains 11. The pins stand at 12, the
+  ten application programming interface
+  cells across the two pin trees plus
+  the two cargo pin tests by name in the
+  base gate's test list,
+  the_digest_is_pinned_to_the_family_golden
+  and
+  the_onrecord_minted_fixture_loads_sound
+  standing in that list and passing.
+  Chain B ran whole at its first launch:
+  the pins capture under its start line
+  2026-11-26T20:27:35Z verified
+  flighttape at tree afd4d7d1, 50 blobs,
+  every blob id recomputed and matching,
+  the planted mutation of
+  .github/workflows/ci.yml from 19340a1e
+  to 09340a1e convicted by the pin
+  check, and both restore cells
+  standing; and onrecord at tree
+  1ea53c3d, 20 blobs, on the same five
+  cells, tree, count, identity,
+  mutation, and restore, all true on
+  both trees. The independent second
+  capture, under its start line
+  2026-11-26T20:38:01Z, matched the bank
+  before the gate, SECOND CAPTURE
+  MATCHES BANK, VERIFY_PINS28_EXIT 0.
+  The oracle re-verified under its start
+  line 2026-11-26T20:41:54Z: the
+  snapshot at commit e0244e88, tree
+  1d765b77, 30 blobs with none truncated
+  and every blob's identity recomputed
+  and asserted; the staged oracle at
+  ww-oracle matching the snapshot blob
+  for blob across its five files; and
+  the renamed copy differing from the
+  snapshot in exactly four files at two
+  changed lines each, eight changed
+  lines in total, its wall.py identical,
+  ORACLE28_EXIT 0.
+
+- WW-171. The gate at both trees, under
+  the retention rule, every stage's
+  output banked under its own
+  launch-named file at launch time in
+  the Round 28 scratch. The base gate
+  run 1, on the extracted base tree at
+  tetlock-r28, passed whole at its first
+  run: its own log's start line reads
+  gate base run1 start
+  2026-11-26T20:35:28Z, the registry
+  configuration figure stands at 76
+  bytes on that run's own log line, fmt
+  and clippy at exit 0, 31 tests in the
+  standing split of 3 library and 28
+  integration, and the binary at
+  2,018,560 bytes with sha256
+  bef8abf56364ae6bda6a406ad1bbbca1f2ce0543e27a3641831ebd54128bbe77.
+  The head gate run 1, on staging run
+  1's closure tree at stage_closure in
+  the Round 28 scratch, passed whole at
+  its first run: its own log's start
+  line reads gate head run1 start
+  2026-11-26T21:10:57Z, the registry
+  configuration figure stands at 76
+  bytes on that run's own log line, fmt
+  and clippy at exit 0, the same 31
+  tests in the same split, and the
+  binary at 2,018,560 bytes with the
+  same sha256
+  bef8abf56364ae6bda6a406ad1bbbca1f2ce0543e27a3641831ebd54128bbe77,
+  byte-identical at both trees. The head
+  gate chain ran whole at its first
+  launch, its chain start line reading
+  2026-11-26T21:10:35Z and the gate done
+  2026-11-26T21:14:20Z. The round's
+  complete launch accounting stands here
+  with no deferral. Chain A ran whole at
+  its first launch: launched under the
+  build slot beside chain B, it queued
+  about eight minutes behind other
+  lanes' slot holders, its chain start
+  line reading 2026-11-26T20:35:06Z, the
+  base gate done 2026-11-26T20:37:36Z,
+  the differential done
+  2026-11-26T20:46:44Z, and the chain
+  end 2026-11-26T20:46:44Z. Chain B ran
+  whole at its first launch, its stages
+  under their start lines
+  2026-11-26T20:27:35Z, 20:38:01Z, and
+  20:41:54Z, each at exit 0. The gated
+  launches stand at four. Launch 1
+  carried the three stages under the
+  build slot in one sitting: the battery
+  under its start line
+  2026-11-26T20:50:14Z and battery2
+  under 2026-11-26T20:50:42Z, each at
+  exit 0, and the pathpostures surface's
+  first run under its gated start line
+  2026-11-26T20:51:21Z at exit 1, 9 of
+  11 cells, the two failures standing on
+  this lane's own pinned postures with
+  the twins in agreement on every
+  compared byte, as WW-172 records.
+  Launch 2, the amended surface alone,
+  died in a service restart before its
+  stage wrote anything: its launch log
+  stands empty at gated28_launch2.log as
+  its status evidence, and it counts
+  nowhere. Launch 3, the amended surface
+  alone, exited 1 on the driver's own
+  fault, its cell directories still
+  holding the first run's state, C01
+  reading stale claims and P05 stopping
+  on the standing symlink's
+  FileExistsError; its partial output
+  stands banked under its own name at
+  pathpostures28_amended_partial.log,
+  split from the stage log the gated
+  runner appends to after the first
+  run's bytes were verified as that
+  log's prefix, the first run's bank
+  standing whole at
+  pathpostures28_first.log. Launch 4,
+  the driver repaired to clear each
+  cell's directories before its steps,
+  ran the amended surface whole at 11 of
+  11 under its gated start line
+  2026-11-26T21:04:22Z, exit 0, and its
+  bank stands at pathpostures28.log. The
+  staging stands at two runs, all at
+  stage_slice and stage_closure in the
+  Round 28 scratch: run 1 staged the
+  slice and closure trees with this
+  item's head-gate tail in placeholder
+  form; run 2, staged after the head
+  gate ran, differs from run 1 in the
+  WW-171 section of CONTRACT.md alone on
+  both trees, verified section by
+  section at this hand. The codepoint
+  scan reads the base tree and both
+  staged trees at 0 em dashes and 0 en
+  dashes under a planted control reading
+  1 and 1. The gate banks the round
+  leaves on disk stand named here:
+  gate_base28_run1.log,
+  gate_head28_run1.log,
+  differential28.log, battery28.log,
+  battery2_28.log, pathpostures28.log,
+  pathpostures28_first.log,
+  pathpostures28_amended_partial.log,
+  pins28.log, verify_pins28.log, and
+  oracle28.log, beside the chain logs
+  chain28a.log, chainb28_launch1.log,
+  and chain28head.log, and the gated
+  launch logs gated28_launch1.log
+  through gated28_launch4.log.
+
+- WW-172. One further fresh twin
+  surface, proposed in the lane record
+  before any run and measured here for
+  the first time: the record path's
+  filesystem postures under the whole
+  command layer. Rounds 15 to 27
+  measured the record's contents, the
+  commands' arguments, the read path's
+  data, and the argument layer; none
+  celled the record path itself standing
+  in odd filesystem states. The postures
+  were read at this hand in both
+  implementations before the driver was
+  written: the oracle's store returns no
+  claims and no defects when the path
+  does not exist under pathlib's law, so
+  a missing record, a record in a
+  missing directory, and a dangling or
+  looping symlink all read as the empty
+  record; a standing path it cannot read
+  becomes the single defect cannot read
+  the record, raised as the record has
+  defects; and an append failure is
+  wrapped as cannot append to the record
+  with the operating system's reason.
+  The port's exists check follows
+  metadata and answers false on the
+  missing, not-a-directory,
+  bad-descriptor, and loop errors, its
+  load mirrors those roads, and its
+  append wraps its failures in the same
+  sentence. Permission-bit postures
+  stand excluded by name: both arms run
+  under the same user on this box, whose
+  privilege makes mode bits non-binding,
+  so they would measure the box and not
+  the implementations. The driver
+  pathpostures28.py ran eleven cells,
+  C01 and P01 to P10, each a scripted
+  sequence on both implementations in
+  twin fresh directories, every step
+  comparing exit, stdout, and stderr
+  byte for byte and the whole directory
+  state, files' bytes, directories, and
+  symlink targets, after every step,
+  refused steps asserting the refusal's
+  naming text and a byte-unchanged
+  directory tree. The surface stands at
+  11 of 11 under one recorded amendment.
+  Its first run, gated start
+  2026-11-26T20:51:21Z, passed 9 of 11,
+  the two failing cells failing on this
+  lane's own pinned postures with the
+  twins in agreement on every compared
+  byte: P04's confess aimed at a
+  directory refuses at the load both
+  write commands perform first, naming
+  cannot read the record, not at the
+  append; and P08's trailing slash is
+  transparent in both implementations,
+  on reads and writes alike, both path
+  layers normalizing it away before the
+  filesystem is reached, so the slash
+  spelling renders and appends to the
+  record itself, verified at this hand
+  in the first run's own directories,
+  both arms' records standing
+  byte-identical holding the two
+  confessions. The amendment re-celled
+  those two cells to the measured
+  postures, the first run's bank
+  standing unoverwritten as the
+  finding's evidence at
+  pathpostures28_first.log, and the
+  amended run passed 11 of 11 whole,
+  gated start 2026-11-26T21:04:22Z; its
+  re-run accounting stands in WW-171.
+  C01, the control, confessed and graded
+  on a plain path in a plain directory,
+  the first claim's id standing at the
+  derived id. P01 read a record path
+  that does not exist under all three
+  views, the empty rendering on both
+  arms and no file standing created by a
+  read. P02 refused a confess inside a
+  directory that does not exist, naming
+  the append failure, and the views on
+  that path read the empty record. P03
+  refused all three views on a record
+  path that is a directory, each naming
+  the read failure at the load. P04
+  refused a confess, a grade, and a view
+  on that directory path, the writes
+  refusing at the load they perform
+  first. P05 wrote and read through a
+  symlink to the real record: a grade
+  through the link landing on the
+  target, the views through the link and
+  through the real path rendering one
+  record, and a second confess through
+  the link appending to the target, the
+  link itself standing untouched. P06
+  read through a symlink whose target
+  does not exist, the empty rendering,
+  then a confess through the link
+  creating the target with the claim
+  standing in it. P07 reached the same
+  record by a relative spelling from the
+  arm's directory and by its absolute
+  spelling, a confess by one and a grade
+  by the other, the views by both, one
+  record standing. P08 read and wrote
+  through a trailing slash, the views
+  rendering the record itself and the
+  slash-spelled confess appending to it,
+  two claims standing in the real file
+  after. P09 confessed and read through
+  a symlinked directory, the record
+  standing in the real directory and the
+  link untouched. P10 read a record path
+  that is a symlink loop naming itself,
+  the empty rendering under all three
+  views, and refused a confess on it
+  naming the append failure, the loop
+  standing as the directory's only entry
+  after.
