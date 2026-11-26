@@ -7862,3 +7862,464 @@ reviews, before the repair code).
   this round's base. The README rounds
   line moves to 26 of 100 in this
   closure commit only.
+
+
+- WW-164. PR 45 read back whole at this
+  hand. Its body stands at 21,386
+  characters at this hand, the owner
+  completion record included; the lane's
+  opened body stood at 18,925
+  characters, CodeRabbit's own appended
+  release-notes block of 513 characters
+  stands in the live body beyond it, and
+  the owner completion record closes it.
+  The chain stands at two commits: the
+  slice 57640887 on tree 0afa46eb
+  carrying CONTRACT.md alone, and the
+  closure and head ae44e075 on tree
+  65c0d0e6 carrying CONTRACT.md and
+  README.md; both messages carry the
+  sign-off trailer. The squash 424310e8
+  stands on main with the single parent
+  ef4c2e07 and tree 65c0d0e6, the head
+  tree itself, so the landed tree is
+  byte-identical to the reviewed head
+  tree, and the README on main reads 26
+  of 100. The census at this hand stands
+  at four issue comments, no reviews,
+  and no review comments: the Trunk seed
+  7181456949 at 113 characters, created
+  2026-11-26T03:10:08Z and updated
+  03:25:48Z in its merged form; the
+  shell 7181459587 standing at 10,996
+  characters at this hand, created
+  2026-11-26T03:10:19Z and last edited
+  2026-11-26T03:12:23Z; the merge
+  comment 7181584721 at 12 characters;
+  and the landing comment 7183850492 at
+  3,474 characters, posted
+  2026-11-26T05:50:18Z, which carries
+  this round's charges. The hosted
+  checks on the head ae44e075 read live
+  at this hand stand at eight check
+  runs, all completed success: the gate
+  twice, CodeQL, the three Analyze runs
+  for actions, python, and rust,
+  CodeRabbit, and the Trunk Merge Queue
+  run from 2026-11-26T03:18:13Z to
+  03:25:48Z. Step 0 stands in its full
+  form: the shell banked whole in the
+  Round 26 scratch at two readings,
+  5,202 characters in progress and
+  10,996 characters completed, edited
+  2026-11-26T03:12:23Z and re-read
+  identical at that lane's hand, and the
+  live shell stands at that same form at
+  this hand with no drift past the
+  banked completed reading; it generated
+  no actionable comments, no review
+  object and no review comments stand,
+  four pre-merge checks passed, the
+  merge risk stood Minimal, and one
+  dismissal stands with its reason in
+  the Round 26 lane record, the title
+  check's commentary that the title is
+  long and partially related, the check
+  itself passed and the title following
+  the standing fleet form. The three
+  reviews ran as a post-landing re-audit
+  over the landed tree: spec fidelity
+  APPROVE with no findings; the red team
+  APPROVE with no findings and no
+  carried limitation, its own build of
+  the staged closure reproducing the
+  standing binary sha256 exactly and its
+  re-run of the unterminated driver
+  whole at 10 of 10 with its own
+  adversarial case passing; and
+  standards APPROVE with one Minor, a
+  body-form point: the body carries no
+  step 0 record for its own round, the
+  shell cited nowhere in it and no
+  hosted-checks line for the head
+  standing in it, the step 0 account
+  standing in the lane record alone. The
+  correction stands in one line: PR 45's
+  body carries no step 0 record for its
+  own round, its shell and hosted checks
+  standing in the lane record alone; it
+  is charged to this read-back here, and
+  this round's body carries a step 0
+  record for its own round under the
+  same charge. Round 26's survival check
+  stands discharged: main fetched fresh
+  at ef4c2e07, tree 86ddbc8e over 22
+  blobs, unmoved under the round, and
+  the staged closure tree differing from
+  it in exactly CONTRACT.md and
+  README.md. WW-162's surface stands as
+  measured: the unterminated record
+  under the whole command layer at 10 of
+  10 cells, C01 and U01 to U09, on its
+  first run under no amendment, a sound
+  unterminated final line loading as a
+  claim standing with no defect naming
+  the missing terminator, a write
+  appending after inserting exactly one
+  newline with the completed line's
+  other bytes untouched, a refused write
+  inserting nothing, a second write
+  paying no completion again, and U06's
+  open question resolved by measurement,
+  an unterminated line carrying two
+  trailing spaces loading standing on
+  both arms with a confess completing
+  it. Round 26's gates stand as WW-161
+  records them: the base gate run 1
+  under its start line
+  2026-11-26T02:40:43Z and the head gate
+  run 1 under 2026-11-26T03:03:16Z, each
+  passed whole at its first run, the
+  registry configuration figure at 76
+  bytes on each run's own log line, 31
+  tests at each tree, and the binary at
+  2,018,560 bytes with sha256
+  bef8abf56364ae6bda6a406ad1bbbca1f2ce0543e27a3641831ebd54128bbe77
+  at both trees. The round's weather
+  stands as its items state it: chain B
+  launch 1 died during its onrecord
+  capture, standing on its named status
+  evidence, and chain B launch 2 ran the
+  pins, the second capture, and the
+  oracle whole; the head gate chain's
+  first launch exited at once on its
+  missing run tag, a launch error at
+  that hand, and the relaunched chain
+  ran the head gate whole; the staging
+  stood at three runs, the third
+  carrying WW-161's own correction of
+  the staging account; no POST failed in
+  the round.
+
+- WW-165. The standing regression
+  re-derived whole. The differential
+  runner, run directly from its own
+  directory in the Round 10 harness
+  form, re-derived its standing
+  expectation exactly: 98 cases, 591
+  steps, 0 failures, DIFFERENTIAL_EXIT
+  0, its runner start line reading
+  2026-11-26T08:18:23Z and its close
+  2026-11-26T08:19:53Z. The battery
+  stands at 58 in its stated split, 24
+  and 11 and 11 and 12. The grading
+  cells passed 24 of 24 under their
+  gated start line 2026-11-26T08:24:17Z,
+  grading-08b among them by name, the
+  offset spellings landing on the same
+  UTC date as the Z spelling. The draw
+  and chain cells passed 22 of 22 under
+  their gated start line
+  2026-11-26T08:24:23Z, draw 11 and
+  chains 11. The pins stand at 12, the
+  ten application programming interface
+  cells across the two pin trees plus
+  the two cargo pin tests by name in the
+  base gate's test list,
+  the_digest_is_pinned_to_the_family_golden
+  and
+  the_onrecord_minted_fixture_loads_sound
+  standing in that list and passing.
+  Chain B ran whole at its first launch:
+  the pins capture under its start line
+  2026-11-26T06:12:52Z verified
+  flighttape at tree afd4d7d1, 50 blobs,
+  every blob id recomputed and matching,
+  the planted mutation of
+  .github/workflows/ci.yml from 19340a1e
+  to 09340a1e convicted by the pin
+  check, and both restore cells
+  standing; and onrecord at tree
+  1ea53c3d, 20 blobs, on the same five
+  cells, tree, count, identity,
+  mutation, and restore, all true on
+  both trees. The independent second
+  capture, under its start line
+  2026-11-26T06:18:26Z, matched the bank
+  before the gate, SECOND CAPTURE
+  MATCHES BANK, VERIFY_PINS27_EXIT 0.
+  The oracle re-verified under its start
+  line 2026-11-26T06:20:26Z: the
+  snapshot at commit e0244e88, tree
+  1d765b77, 30 blobs with none truncated
+  and every blob's identity recomputed
+  and asserted; the staged oracle at
+  ww-oracle matching the snapshot blob
+  for blob across its five files; and
+  the renamed copy differing from the
+  snapshot in exactly four files at two
+  changed lines each, eight changed
+  lines in total, its wall.py identical,
+  ORACLE27_EXIT 0.
+
+- WW-166. The gate at both trees, under
+  the retention rule, every stage's
+  output banked under its own
+  launch-named file at launch time in
+  the Round 27 scratch. The base gate
+  run 1, on the extracted base tree at
+  tetlock-r27, passed whole at its first
+  run: its own log's start line reads
+  gate base run1 start
+  2026-11-26T08:18:00Z, the registry
+  configuration figure stands at 76
+  bytes on that run's own log line, fmt
+  and clippy at exit 0, 31 tests in the
+  standing split of 3 library and 28
+  integration, and the binary at
+  2,018,560 bytes with sha256
+  bef8abf56364ae6bda6a406ad1bbbca1f2ce0543e27a3641831ebd54128bbe77.
+  The head gate run 1, on staging run
+  1's closure tree at stage_closure in
+  the Round 27 scratch, passed whole at
+  its first run: its own log's start
+  line reads gate head run1 start
+  2026-11-26T15:03:34Z, the registry
+  configuration figure stands at 76
+  bytes on that run's own log line, fmt
+  and clippy at exit 0, the same 31
+  tests in the same split, and the
+  binary at 2,018,560 bytes with the
+  same sha256
+  bef8abf56364ae6bda6a406ad1bbbca1f2ce0543e27a3641831ebd54128bbe77,
+  byte-identical at both trees. The
+  round's complete launch accounting
+  stands here with no deferral. Chain A
+  launch 1, launched 2026-11-26T06:12Z
+  under the build slot, died queued
+  before any stage when its launching
+  session was torn down: no chain log
+  was ever created, its launch log
+  stands empty at chain27a_launch.log as
+  its status evidence, and it counts
+  nowhere. Chain A launch 2, relaunched
+  detached at 2026-11-26T06:31Z, queued
+  behind other lanes' slot holders, an
+  onrecord lane's harness stalled in a
+  retry loop at a few seconds of
+  processor time in over an hour among
+  them, acquired the slot at
+  2026-11-26T08:17:40Z, and ran the base
+  gate and the differential whole,
+  ending 2026-11-26T08:19:53Z. Chain B
+  ran whole at its first launch, its
+  stages under their start lines
+  2026-11-26T06:12:52Z, 06:18:26Z, and
+  06:20:26Z, each at exit 0. The gated
+  launch ran whole at its first launch
+  and carried its three stages under the
+  build slot in one sitting, the battery
+  under its start line
+  2026-11-26T08:24:17Z, battery2 under
+  08:24:23Z, and the argument-layer
+  surface under 08:24:31Z, each at exit
+  0 at its first run. A second gated
+  launch, made in error at
+  2026-11-26T10:34Z against a stale lane
+  summary that reported the first launch
+  unrun, counts nowhere and stands
+  accounted here so the banks read
+  whole: the battery re-ran clean at 24
+  of 24, battery2 exited 1 on the first
+  run's stale chains-01 symlink in its
+  work root, and the argument-layer
+  re-run failed cells on its dirty work
+  root before the lane stopped its own
+  processes; every gated bank carries
+  both launches' segments under their
+  own gated start lines, and every
+  figure in WW-165 and WW-167 rests on
+  the first launch's segments alone. The
+  head gate chain stands at four
+  launches: launch 1, at
+  2026-11-26T08:27Z, died queued when
+  its launching session was torn down,
+  its launch log standing empty; launch
+  2, at 10:36Z, queued about two hours
+  twenty minutes behind another lane's
+  realistic battery and died queued in a
+  restart wave; launch 3, at 12:58Z,
+  queued about two hours and died queued
+  in the next restart wave; each of the
+  three counts nowhere, no chain log or
+  gate log ever created by any of them,
+  their empty launch logs standing as
+  their status evidence; and launch 4,
+  at 15:03Z in the post-restart lull
+  with the slot standing free, acquired
+  the slot at once and ran the head gate
+  whole, its chain start
+  2026-11-26T15:03:14Z and the gate done
+  15:04:03Z. The staging stands at two
+  runs, all at stage_slice and
+  stage_closure in the Round 27 scratch:
+  run 1 staged the slice and closure
+  trees with WW-166's head-gate tail and
+  WW-168's gate account in placeholder
+  form; run 2, the trees pushed, differs
+  from run 1 in the WW-166 and WW-168
+  sections of CONTRACT.md alone,
+  verified section by section at this
+  hand. The gate banks the round leaves
+  on disk stand named here:
+  gate_base27_run1.log,
+  gate_head27_run1.log,
+  differential27.log, battery27.log,
+  battery2_27.log, arglayer27.log,
+  pins27.log, verify_pins27.log, and
+  oracle27.log, beside the chain logs
+  chain27a.log, chainb27_launch1.log,
+  and chain27head.log. The codepoint
+  scan reads the base tree and both
+  staged trees at 0 em dashes and 0 en
+  dashes under a planted control reading
+  1 and 1.
+
+- WW-167. One further fresh twin
+  surface, proposed in the lane record
+  before any run and measured here for
+  the first time: the argument layer
+  itself, the invocations the parser
+  resolves before any store is touched,
+  and the parse forms carried through
+  the boundary into the body. Rounds 15
+  to 26 measured the record's bytes, the
+  body's refusals, and the views; none
+  measured how a command line is
+  resolved into an invocation. The
+  postures were read at this hand in
+  both implementations before the run:
+  help at any level prints that level's
+  text to stdout and exits 0, firing at
+  the end of the token that carries it,
+  and a help flag carrying a value is
+  refused; a parse failure prints the
+  level's usage and the error line to
+  stderr and exits 2; a scan error fires
+  when its token is processed and
+  outranks a pending help, while an
+  unknown token defers as an extra;
+  unrecognized extras are reported only
+  after the required-arguments check,
+  under the top level's usage and
+  program name, where the required error
+  itself carries the subcommand's own
+  usage and program name; a long option
+  may stand abbreviated to any
+  unambiguous prefix, an exact match
+  always wins, and an ambiguous prefix
+  names its candidates in declaration
+  order; a value may stand glued behind
+  its long name with an equals sign,
+  split at the first equals, or glued
+  behind a short option letter; a
+  repeated single-value flag takes its
+  last value, and grade's evidence flag
+  accumulates in order; the double-dash
+  separator ends option processing, a
+  negative-number-shaped token is a
+  value and never an option, and a
+  separated value may not stand
+  option-shaped. The driver
+  arglayer27.py ran ten cells, C01 and
+  A01 to A09, each a scripted sequence
+  on both implementations in twin fresh
+  directories, every step comparing
+  exit, stdout, and stderr byte for byte
+  and the whole directory state after
+  every step, refused steps asserting
+  the refusal's naming text and a
+  byte-unchanged directory. The surface
+  passed 10 of 10 cells on its first run
+  under no amendment, gated start
+  2026-11-26T08:24:31Z. C01, the
+  control, confessed and graded in the
+  full separated form, resolving graded.
+  A01 walked help at every level: no
+  arguments refused for the missing
+  command, the top help and each
+  subcommand's help printing their own
+  texts, a help flag mid-parse firing
+  where it stood, and a help flag
+  carrying a value refused as an ignored
+  explicit argument. A02 walked the
+  unknown and the invalid: an invalid
+  command choice, an unknown long flag
+  on a complete confess and an unknown
+  short flag on ledger each reported
+  unrecognized under the top usage, and
+  an extra positional on tally likewise.
+  A03 walked the missing requireds: a
+  bare confess naming all seven in
+  declaration order, a confess missing
+  only its approval naming that one,
+  ledger missing its instant, and grade
+  missing its record. A04 walked
+  abbreviation: a confess spelled in
+  unique prefixes landing at position 0,
+  the single letter prefix refused
+  ambiguous on confess naming four
+  candidates and on grade naming three,
+  a grade spelled in unique prefixes
+  landing and resolving, and ledger's
+  instant flag taken by its unique
+  prefix. A05 walked the glued and
+  equals forms: a confess in equals form
+  landing, an approval value carrying
+  its own equals sign standing whole
+  past the first split, ledger's views
+  written through the short flag glued,
+  the short flag with equals, and the
+  long flag separated, byte for byte
+  identical, and an empty glued sentence
+  refused by the body past the parse.
+  A06 walked repetition: a twice-given
+  sentence standing in its last value,
+  the evidence flag accumulating both
+  values in order, a twice-given
+  supersedes standing in its last on a
+  correction grade, and a second record
+  positional reported unrecognized. A07
+  walked the separator and the
+  dash-shaped tokens: a confess behind
+  the separator landing in a record
+  whose name begins with a dash, the
+  views reading it from behind the
+  separator, a bare dash naming a record
+  in its own right, a
+  negative-number-shaped sentence
+  reaching the body's own refusal, and
+  an option-shaped token and the
+  separator itself each starving the
+  flag before them. A08 walked the
+  firing order: an unknown flag before a
+  help flag giving help, an ambiguous
+  prefix and a starved flag each
+  outranking the help behind them, an
+  extra positional beside missing
+  requireds giving the required error,
+  an unknown flag alone giving the
+  required-command error, and an unknown
+  flag held at the top level before a
+  complete ledger reported unrecognized
+  only after the required check passed.
+  A09 walked the boundary into the body:
+  an empty separated sentence and an
+  empty glued action each refused by the
+  body's own rules past a successful
+  parse, a grade whose happened text
+  carries spaces and punctuation landing
+  under no sentence rule, and an instant
+  spelled as a flag refused by the
+  body's timestamp parse naming the
+  token.
