@@ -9117,30 +9117,40 @@ reviews, before the repair code).
   amendment, its window and gated start
   lines reading 2026-11-27T02:34:45Z,
   the surface whole at 21 of 21. The
-  staging runs stand at two, counted
+  staging runs stand at three, counted
   here in this item's own text, their
   trees staged under stage_slice and
-  stage_closure in the lane record. The
-  head gate's launches stand at two. The
-  first queued on the build slot and
-  died queued in the second runtime
-  restart of the sitting before its gate
-  stage wrote anything: its launch log
-  stands empty in the lane record as its
-  status evidence, no head gate log
-  stands from it, and it counts nowhere.
-  The second ran the head gate whole at
-  its first run: its banked log's start
-  line reads 2026-11-27T03:25:02Z, its
-  registry configuration stands at 76
-  bytes on that run's own log line,
-  format, clippy, test, and build each
-  exit 0, the suite stands at 31 tests,
-  3 library and 28 integration, and the
+  stage_closure in the lane record. Run
+  3, staged after the pushes as the step
+  0 repair's re-staging, differs from
+  run 2 in this item's section alone on
+  both trees. The head gate's launches
+  stand at two. The first queued on the
+  build slot and died queued in the
+  second runtime restart of the sitting
+  before its gate stage wrote anything:
+  its launch log stands empty in the
+  lane record as its status evidence, no
+  head gate log stands from it, and it
+  counts nowhere. The second ran the
+  head gate whole at its first run: its
+  banked log's start line reads
+  2026-11-27T03:25:02Z, its registry
+  configuration stands at 76 bytes on
+  that run's own log line, format,
+  clippy, test, and build each exit 0,
+  the suite stands at 31 tests, 3
+  library and 28 integration, and the
   binary stands byte-identical to the
   base tree's, at 2,018,560 bytes and
   the same sha256. The survival check
-  stands discharged in WW-174.
+  stands discharged at this hand: main
+  fetched fresh at b7f673c7, tree
+  6fdf6436 over 22 blobs, unmoved under
+  the round, and the staged closure tree
+  differing from it in exactly
+  CONTRACT.md and README.md, with no
+  local extras.
 
 - WW-177. A fresh twin surface the
   earlier rounds did not measure: the
