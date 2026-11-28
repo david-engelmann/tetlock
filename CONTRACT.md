@@ -11817,28 +11817,34 @@ reviews, before the repair code).
   2026-11-28T08:02:06Z, its bank
   standing as the second section of
   dueforms33.log. The staging runs stand
-  at two, counted here in this item's
+  at three, counted here in this item's
   own text, their trees staged under
   stage_slice and stage_closure in the
   lane record: run 1, the items as first
-  drafted; and run 2, this gate
-  accounting's completion, differing
-  from run 1 in this item's staging,
-  head gate, and survival sentences
-  alone on the slice tree and in this
-  item's sentences and WW-198's weather
-  sentence alone on the closure tree.
-  The head gate stands at one launch at
-  this hand, launched in-sitting and
-  running its gate run whole: launched
-  2026-11-28T08:08:34Z by its launch log
-  chain33head_launch1.log, its window
-  opening after two probes at
+  drafted; run 2, this gate accounting's
+  completion, differing from run 1 in
+  this item's staging, head gate, and
+  survival sentences alone on the slice
+  tree and in this item's sentences and
+  WW-198's weather sentence alone on the
+  closure tree; and run 3, the step 0
+  completion's restaging, differing from
+  run 2 in this item's staging and head
+  gate sentences alone on the slice tree
+  and in this item's sentences and
+  WW-198's pushes, weather, and step 0
+  sentences alone on the closure tree.
+  The head gate stands at two launches,
+  each launched in-sitting and each
+  running its gate run whole. The first,
+  launched 2026-11-28T08:08:34Z by its
+  launch log chain33head_launch1.log,
+  its window opening after two probes at
   2026-11-28T08:08:55Z, the build slot
-  standing effectively open, and running
-  the gate whole at its first run on
-  staging run 1's closure tree, its
-  banked log's start line reading
+  standing effectively open, ran the
+  gate whole at its first run on staging
+  run 1's closure tree, its banked log's
+  start line reading
   2026-11-28T08:08:55Z, its registry
   configuration standing at 76 bytes on
   that run's own log line, format,
@@ -11847,9 +11853,30 @@ reviews, before the repair code).
   library and 28 integration, and the
   binary standing byte-identical to the
   base tree's, at 2,018,560 bytes and
-  the same sha256; its second launch
-  stands to run on staging run 2's
-  amended closure tree. The survival
+  the same sha256. The second, launched
+  2026-11-28T08:14:19Z by its launch log
+  chain33head_launch2.log, its window
+  opening after two probes at
+  2026-11-28T08:14:40Z, the build slot
+  standing effectively open, ran the
+  gate whole at its second run on
+  staging run 2's amended closure tree,
+  its banked log's start line reading
+  2026-11-28T08:14:40Z, its registry
+  configuration standing at 76 bytes on
+  that run's own log line, format,
+  clippy, test, and build each exit 0,
+  the suite standing at 31 tests, 3
+  library and 28 integration, and the
+  binary standing byte-identical to the
+  base tree's; the second run stands on
+  the step 0 finding's repair, recorded
+  in WW-198, and the completion commit
+  recording it changes CONTRACT.md's
+  accounting sentences alone, a file
+  none of the gate's stages reads, so
+  the pushed head's code stands gated
+  whole at the second run. The survival
   check stands discharged fresh before
   the pushes on staging run 1's closure:
   recursive diff of that staged tree
@@ -12081,15 +12108,90 @@ reviews, before the repair code).
   re-contracted to their measured
   posture; the build slot stood
   effectively open at chain A's gate;
-  the head gate stood at one launch at
-  this hand, launched in-sitting and
-  running whole on the first staging's
+  the head gate stood at two launches,
+  each launched in-sitting and running
+  whole, the first on the first
+  staging's closure tree and the second
+  on the second staging's amended
   closure tree; the survival check stood
   discharged fresh before the pushes,
   main unmoved at 8b2d12c9, the staged
   closure differing in exactly
   CONTRACT.md and README.md; and no POST
   has failed in the round at this hand.
-  The pushes stand to come at this hand,
-  and step 0 stands to come at this
-  hand.
+  The pushes stand at two commits on
+  refine/ww-round33 over the base
+  8b2d12c9 at this hand: the slice
+  1980c0a4, CONTRACT.md alone, its tree
+  21c664ec verified equal to staging run
+  2's slice tree blob for blob over 22
+  entries on branch-ref and commit-chain
+  read-back; and the closure 8364c431,
+  CONTRACT.md and README.md, its tree
+  e53829ae verified equal to staging run
+  2's closure tree blob for blob over
+  the 22 repo paths on the same
+  read-backs. Step 0 at this hand: the
+  CodeRabbit shell 7236514526 stands on
+  this pull request, banked whole in the
+  lane record at 8,680 characters at its
+  settled reading, last edited
+  2026-11-28T08:23:02Z, its review
+  6096746492 standing COMMENTED at
+  2026-11-28T08:22:58Z; one actionable
+  finding stands on it, a Minor in
+  review comment 4726190127, that the
+  record planned a second head gate
+  launch on staging run 2's amended
+  closure tree while the closure at this
+  item recorded only one head gate
+  launch, on the first staging's closure
+  tree, with no gate on the amended tree
+  recorded; the finding is valid as a
+  defect of the record's wording, the
+  second launch standing in fact,
+  launched 2026-11-28T08:14:19Z and
+  running the gate whole on staging run
+  2's amended closure tree,
+  gate_head33_run2.log start line
+  2026-11-28T08:14:40Z, registry
+  configuration 76 bytes, format,
+  clippy, test, and build each exit 0,
+  31 tests, the binary byte-identical to
+  the base tree's, and it stands
+  repaired by that run's recording in
+  WW-196 and here, this completion
+  commit changing CONTRACT.md's
+  accounting sentences alone, a file
+  none of the gate's stages reads, so
+  the pushed head's code stands gated
+  whole at that run. The shell's
+  pre-merge checks stand at four passed,
+  the title check among them at passed,
+  its commentary noting the title is
+  long standing as a passed check's
+  explanation. Three further comments
+  stand on the pull request at this
+  hand: the Trunk bot's note 7236512756
+  at 403 characters, the standing
+  merge-queue guidance carrying no
+  finding on the round's substance,
+  noted here and dismissed on that
+  ground; the lane's own trigger comment
+  7236515228, which requested a manual
+  review the shell's auto-reply then
+  declined as already reviewed; and
+  CodeRabbit's auto-reply 7236560502 at
+  573 characters, created
+  2026-11-28T08:24:16Z, reading in
+  substance that the action was not
+  completed because the last commit
+  already stood reviewed, carrying no
+  finding. The hosted checks on the
+  closure head 8364c431 stand at seven
+  check runs, each completed at success,
+  the gate standing twice among them and
+  CodeRabbit among them at success. This
+  item's completion stands in this
+  completion commit on top of the
+  closure.
