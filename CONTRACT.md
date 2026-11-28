@@ -10260,12 +10260,21 @@ reviews, before the repair code).
   record as its status evidence, no
   stage log stands from it, and it
   counts nowhere. The second, launched
-  2026-11-27T23:30:42Z as the first
-  build lane's last act, stood queued
-  detached on the build slot after that
-  lane's session died in a runtime
-  transport failure and died queued in
-  the runtime restart wave of
+  as the first build lane's last act,
+  its launch log's own stamp reading
+  2026-11-27T23:30:42Z for the detached
+  process's start under the slot, stood
+  queued detached on the build slot
+  after that lane's session died in a
+  runtime transport failure, that
+  failure standing recorded at
+  2026-11-27T23:29:41Z in the runtime's
+  handoff, a minute earlier by the clock
+  than the detached process's own start
+  stamp, the launch command the lane's
+  final issued act before the failure
+  reached it, and died queued in the
+  runtime restart wave of
   2026-11-28T01:21Z after about one
   hundred ten minutes, before any stage
   wrote anything: its launch log
@@ -10283,7 +10292,7 @@ reviews, before the repair code).
   2026-11-28T01:45:34Z,
   2026-11-28T01:45:51Z, and
   2026-11-28T01:46:16Z. The staging runs
-  stand at three, counted here in this
+  stand at four, counted here in this
   item's own text, their trees staged
   under stage_slice and stage_closure in
   the lane record: run 1, the items as
@@ -10293,15 +10302,21 @@ reviews, before the repair code).
   gate sentences alone on the slice tree
   and in this item's sentences and
   WW-188's head gate sentence alone on
-  the closure tree; and run 3, this
-  completion's restaging, differing from
-  run 2 in this item's staging and head
-  gate sentences alone on the slice tree
-  and in this item's sentences and
+  the closure tree; run 3, the
+  accounting's completion, differing
+  from run 2 in this item's staging and
+  head gate sentences alone on the slice
+  tree and in this item's sentences and
   WW-188's head gate sentence alone on
-  the closure tree. The head gate's
-  launches stand at two. The first,
-  launched in-sitting at
+  the closure tree; and run 4, the step
+  0 repair's restaging, differing from
+  run 3 in this item's gated launch and
+  staging sentences alone on the slice
+  tree and in this item's sentences and
+  WW-188's gated, staging, and closing
+  sentences alone on the closure tree.
+  The head gate's launches stand at two.
+  The first, launched in-sitting at
   2026-11-28T02:23:33Z on staging run
   1's closure tree, opened its window
   after two probes and ran the head gate
@@ -10500,11 +10515,17 @@ reviews, before the repair code).
   first dying queued in a runtime
   restart after about ninety-nine
   minutes and counted nowhere, the
-  second standing queued detached after
+  second launched as that lane's last
+  act, its launch log's stamp reading
+  2026-11-27T23:30:42Z for the detached
+  process's start against the failure's
+  recorded 2026-11-27T23:29:41Z in the
+  runtime's handoff, the launch command
+  issued before the failure reached the
+  lane, standing queued detached after
   the first build lane's session died in
-  a runtime transport failure at
-  2026-11-27T23:29Z and dying queued in
-  the runtime restart wave of
+  that failure and dying queued in the
+  runtime restart wave of
   2026-11-28T01:21Z after about one
   hundred ten minutes, counted nowhere,
   the round taken up from its banked
@@ -10522,6 +10543,56 @@ reviews, before the repair code).
   build slot queued long behind the
   fleet's tenants at every stage, and no
   POST has failed in the round at this
-  hand. This item's completion, with the
-  pushes and step 0, stands in a repair
+  hand. The pushes stand at two commits
+  on refine/ww-round31 over the base
+  d575d127: the slice 77e057d8,
+  CONTRACT.md alone, its tree aff3af52
+  verified equal to staging run 3's
+  slice tree blob for blob over 22
+  entries on branch-ref and commit-chain
+  read-back; and the closure 1955a79f,
+  CONTRACT.md and README.md, its tree
+  891fc802 verified equal to staging run
+  3's closure tree blob for blob over 22
+  entries on the same read-backs. Step 0
+  at this hand: the CodeRabbit shell
+  7232953055 stands on this pull
+  request, banked whole in the lane
+  record at 5,202 characters in its
+  in-progress form and at 8,653
+  characters at its settled reading,
+  last edited 2026-11-28T03:20:38Z, its
+  review 6095398865 standing COMMENTED
+  at 2026-11-28T03:20:32Z; one
+  actionable finding stands on it, a
+  Minor in review comment 4725225683,
+  that the second gated launch's stamp
+  cannot stand as the first build lane's
+  last act a minute after that lane's
+  session death; the finding is valid as
+  a defect of the record's wording, the
+  two stamps standing in different
+  records, the launch log's own start
+  stamp for the detached process against
+  the runtime handoff's failure stamp
+  for the session, and it is repaired in
+  this commit, confined to the gated
+  launch sentences of WW-186 and this
+  item and to the two items' staging and
+  closing sentences, by naming each
+  stamp's record, neither banked figure
+  changed. Two further comments stand on
+  the pull request at this hand: the
+  Trunk bot's note 7232950690, the
+  standing merge-queue guidance carrying
+  no finding on the round's substance,
+  noted here and dismissed on that
+  ground; and the lane's own trigger
+  comment 7232961670, which requested
+  the manual review the shell then
+  completed. The shell's reading at this
+  repair head stands stated in the pull
+  request body, the shell editing the
+  one comment across heads. This item's
+  completion stands in this repair
   commit on top of the closure.
