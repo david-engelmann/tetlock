@@ -10999,7 +10999,7 @@ reviews, before the repair code).
   2026-11-28T05:35:56Z,
   2026-11-28T05:36:08Z, and
   2026-11-28T05:36:20Z. The staging runs
-  stand at three, counted here in this
+  stand at four, counted here in this
   item's own text, their trees staged
   under stage_slice and stage_closure in
   the lane record: run 1, the items as
@@ -11009,17 +11009,24 @@ reviews, before the repair code).
   gate sentences alone on the slice tree
   and in this item's sentences and
   WW-193's head gate sentence alone on
-  the closure tree; and run 3, the gate
+  the closure tree; run 3, the gate
   accounting's completion, differing
   from run 2 in this item's staging,
   head gate, and survival sentences and
   its chain queue sentences alone on the
   slice tree and in this item's
   sentences and WW-193's head gate
-  sentence alone on the closure tree.
-  The head gate stands at two launches,
-  each launched in-sitting and each
-  running its gate run whole. The first,
+  sentence alone on the closure tree;
+  and run 4, the step 0 completion's
+  restaging, differing from run 3 in
+  this item's staging and head gate
+  sentences alone on the slice tree and
+  in this item's sentences and WW-193's
+  pushes, weather, and step 0 sentences
+  alone on the closure tree. The head
+  gate stands at three launches, each
+  launched in-sitting and each running
+  its gate run whole. The first,
   launched 2026-11-28T05:40:54Z by its
   launch log chain32head_launch1.log,
   queued on the build slot for about six
@@ -11053,9 +11060,33 @@ reviews, before the repair code).
   exit 0, the suite standing at 31
   tests, 3 library and 28 integration,
   and the binary standing byte-identical
-  to the base tree's. The survival check
-  stands discharged fresh before the
-  pushes on staging run 3's closure:
+  to the base tree's. The third,
+  launched 2026-11-28T06:08:34Z by its
+  launch log chain32head_launch3.log,
+  queued on the build slot for about
+  twenty-nine minutes, the chain
+  starting 2026-11-28T06:37:15Z, opened
+  its window after two probes and ran
+  the gate whole at its third run on
+  staging run 3's final closure tree,
+  its banked log's start line reading
+  2026-11-28T06:37:36Z, its registry
+  configuration standing at 76 bytes on
+  that run's own log line, format,
+  clippy, test, and build each exit 0,
+  the suite standing at 31 tests, 3
+  library and 28 integration, and the
+  binary standing byte-identical to the
+  base tree's; the third run stands on
+  the step 0 finding's repair, recorded
+  in WW-193, and the completion commit
+  recording it changes CONTRACT.md's
+  accounting sentences alone, a file
+  none of the gate's stages reads, so
+  the pushed head's code stands gated
+  whole at the third run. The survival
+  check stands discharged fresh before
+  the pushes on staging run 3's closure:
   recursive diff of that staged tree
   against main at 6d0e6b7c, tree
   ee73437d, 22 blobs, the staged closure
@@ -11222,14 +11253,81 @@ reviews, before the repair code).
   whole; chain B stood at one launch and
   ran whole; the gated chain stood at
   one launch and ran whole; the head
-  gate stood at two launches, each
+  gate stood at three launches, each
   launched in-sitting and running whole,
   the first on the first staging's
-  closure tree and the second on the
-  second staging's amended closure tree,
-  its accounting standing in WW-191; the
-  build slot queued behind the fleet's
-  tenants at the chain stages, and no
-  POST has failed in the round at this
-  hand. The pushes and step 0 complete
-  this item at the final staging.
+  closure tree, the second on the second
+  staging's amended closure tree, and
+  the third on the third staging's final
+  closure tree on the step 0 finding's
+  repair, its accounting standing in
+  WW-191; the build slot queued behind
+  the fleet's tenants at the chain
+  stages, and no POST has failed in the
+  round at this hand. The pushes stand
+  at two commits on refine/ww-round32
+  over the base 6d0e6b7c at this hand:
+  the slice 42f58fa4, CONTRACT.md alone,
+  its tree 62a13ea6 verified equal to
+  staging run 3's slice tree blob for
+  blob over 22 entries on branch-ref and
+  commit-chain read-back; and the
+  closure b0489cf0, CONTRACT.md and
+  README.md, its tree 8097185a verified
+  equal to staging run 3's closure tree
+  blob for blob over 22 entries on the
+  same read-backs. Step 0 at this hand:
+  the CodeRabbit shell 7235065026 stands
+  on this pull request, banked whole in
+  the lane record at 10,742 characters
+  at its settled reading, last edited
+  2026-11-28T06:07:17Z, and at 10,530
+  characters at its later reading, last
+  edited 2026-11-28T06:08:54Z, its
+  review 6096210769 standing COMMENTED
+  at 2026-11-28T06:07:14Z; one
+  actionable finding stands on it, a
+  Minor in review comment 4725782319,
+  that the second head gate ran on
+  staging run 2's closure tree and
+  staging run 3 then changed the closure
+  tree with no gate recorded for it; the
+  finding is valid as stated, and it
+  stands repaired by the head gate's
+  third run on staging run 3's final
+  closure tree, recorded in WW-191, this
+  completion commit changing
+  CONTRACT.md's accounting sentences
+  alone, a file none of the gate's
+  stages reads, so the pushed head's
+  code stands gated whole at that run.
+  The shell's pre-merge checks stand at
+  three passed and one inconclusive, the
+  title check's commentary that the
+  title is long and dense standing
+  dismissed in one line in the lane
+  record, the title following the
+  standing fleet form. Three further
+  comments stand on the pull request at
+  this hand: the Trunk bot's note
+  7235063241, the standing merge-queue
+  guidance carrying no finding on the
+  round's substance, noted here and
+  dismissed on that ground; the lane's
+  own trigger comment 7235067965, which
+  requested the manual review the shell
+  then completed; and CodeRabbit's
+  auto-reply 7235109351 at 573
+  characters, created
+  2026-11-28T06:08:48Z, reading in
+  substance that the action was not
+  completed because the last commit
+  already stood reviewed, carrying no
+  finding. The hosted checks on the
+  closure head b0489cf0 stand at seven
+  check runs, each completed at success,
+  the gate standing twice among them and
+  CodeRabbit among them at success. This
+  item's completion stands in this
+  completion commit on top of the
+  closure.
