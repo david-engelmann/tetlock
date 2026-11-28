@@ -11331,3 +11331,867 @@ reviews, before the repair code).
   item's completion stands in this
   completion commit on top of the
   closure.
+
+
+- WW-194. PR 57 read back whole at this
+  hand. Its body stands at 38,473
+  characters at this hand, the owner
+  completion record included; the lane's
+  body stood at 35,116 characters, and
+  the step 0 section and the owner
+  completion record close it. The chain
+  stands at three commits: the slice
+  42f58fa4 on tree 62a13ea6 carrying
+  CONTRACT.md alone, the closure
+  b0489cf0 on tree 8097185a carrying
+  CONTRACT.md and README.md, and the
+  completion and head bca795b8 on tree
+  7e818bed carrying CONTRACT.md alone,
+  confined to WW-191's staging and head
+  gate sentences and WW-193's pushes,
+  weather, and step 0 sentences; each
+  message carries the sign-off trailer.
+  The squash 8b2d12c9 stands on main
+  with the single parent 6d0e6b7c and
+  tree 7e818bed, the head tree itself,
+  so the landed tree is byte-identical
+  to the reviewed head tree, and the
+  README on main reads 32 of 100. The
+  census at this hand stands at six
+  issue comments, one review, and one
+  review comment: the Trunk note
+  7235063241 at 113 characters, created
+  2026-11-28T06:04:30Z and updated
+  2026-11-28T06:52:08Z in its merged
+  form; the shell 7235065026 standing at
+  8,827 characters at this hand, created
+  2026-11-28T06:04:40Z and last edited
+  2026-11-28T06:44:37Z, banked whole in
+  the Round 32 scratch at 10,742
+  characters in its settled reading at
+  the closure head, last edited
+  2026-11-28T06:07:17Z, at 10,530
+  characters in its later reading at
+  that head, last edited
+  2026-11-28T06:08:54Z, and at 13,232
+  characters at the final head, last
+  edited 2026-11-28T06:40:50Z, the live
+  form's later reading standing as
+  furniture drift; the trigger comment
+  7235067965 at 20 characters, posted
+  2026-11-28T06:04:56Z, which requested
+  the manual review; CodeRabbit's
+  auto-generated reply 7235109351 at 573
+  characters, created
+  2026-11-28T06:08:48Z and updated
+  2026-11-28T06:08:56Z; the merge
+  comment 7235492812 at 12 characters,
+  posted 2026-11-28T06:44:54Z; and the
+  landing comment 7235735087 at 4,225
+  characters, posted
+  2026-11-28T07:07:50Z, which carries
+  this round's charges. The hosted
+  checks on the head bca795b8 read live
+  at this hand stand at eight check
+  runs, all completed: the gate twice at
+  success, CodeQL at success, the three
+  Analyze runs for actions, python, and
+  rust at success, CodeRabbit at
+  neutral, and the Trunk Merge Queue at
+  success; the body's step 0 record read
+  seven on the exact head before the
+  queue's own run stood. Step 0 of Round
+  32 stands in its full form: the shell
+  banked whole at each head under
+  distinct filenames; it generated one
+  actionable comment, standing in the
+  review 6096210769 (COMMENTED,
+  submitted 2026-11-28T06:07:14Z) and
+  the review comment 4725782319 on
+  CONTRACT.md, a Minor: the second head
+  gate ran on staging run 2's closure
+  tree and staging run 3 then changed
+  the closure tree, with no gate
+  recorded for that tree; the finding
+  stood valid as stated and stands
+  repaired by the head gate's third run
+  on staging run 3's final closure tree,
+  gate_head32_run3.log start line
+  2026-11-28T06:37:36Z, recorded in the
+  completion commit bca795b8, which
+  changes CONTRACT.md's accounting
+  sentences alone, a file none of the
+  gate's stages reads, so the pushed
+  head's code stands gated whole at that
+  run; the shell's pre-merge checks
+  stand at three passed and one
+  inconclusive, the title check's
+  commentary that the title is long and
+  dense standing dismissed in one line
+  in the lane record, the title
+  following the standing fleet form; the
+  Trunk bot's note 7235063241, the
+  standing merge-queue guidance, carries
+  no finding on the round's substance
+  and stands dismissed on that ground in
+  the lane record; and the hosted checks
+  on the closure head b0489cf0 stood at
+  seven check runs, each completed at
+  success, the gate standing twice among
+  them and CodeRabbit among them at
+  success. The three reviews ran as a
+  post-landing re-audit over the landed
+  tree: spec fidelity APPROVE with no
+  findings; standards APPROVE with no
+  findings; and the red team APPROVE
+  with no findings and one carried
+  limitation, no cargo build of its own
+  standing, its re-runs standing on the
+  lane's binary re-hashed at its hand
+  against five banked gate logs, on its
+  second seating, the first red team
+  lane's report standing as a skeleton
+  with its claims listed, its wrong-tree
+  hunt expressly discharged, every
+  WW-190 figure traced to a bank other
+  than the wrong-tree run, and its five
+  adversarial asserted_at cells agreeing
+  on both arms. No correction rides into
+  this round. Round 32's survival check
+  stands discharged: main fetched fresh
+  at 6d0e6b7c, tree ee73437d over 22
+  blobs, unmoved under the round, and
+  the staged closure tree differing from
+  it in exactly CONTRACT.md and
+  README.md, with no local extras.
+  WW-190's regression stands as
+  measured: the differential at 98
+  cases, 591 steps, and 0 failures under
+  its runner start line
+  2026-11-28T05:25:24Z and its close
+  2026-11-28T05:31:15Z, the battery at
+  58 in its split of 24 and 11 and 11
+  and 12, the grading cells at 24 of 24
+  with grading-08b among them, the draw
+  and chain cells at 22 of 22, and the
+  pins at 12, the ten application
+  programming interface cells across the
+  two pin trees plus the two cargo pin
+  tests by name,
+  the_digest_is_pinned_to_the_family_golden
+  and
+  the_onrecord_minted_fixture_loads_sound
+  standing in the base gate's test list
+  and passing. WW-192's surface stands
+  as measured: the asserted_at field's
+  own forms under the whole command
+  layer at 23 of 23 cells at its first
+  run with no amendment, under its gated
+  start 2026-11-28T05:36:20Z, its bank
+  standing in the Round 32 scratch; the
+  ten spellings defective at load, the
+  thirteenth month, the thirtieth of
+  February, the twenty-fourth hour, the
+  sixtieth minute, the leap second, an
+  offset of a full day, asserted_at as a
+  number, asserted_at as the empty
+  string, the fifty-fourth week, and the
+  year zero, refusing every command with
+  the record has defects wording and
+  byte-unchanged directories, and the
+  remaining spellings, the positive
+  offset, the negative offset,
+  fractional seconds, the reduced time
+  without seconds, the naive spelling
+  with no offset, the basic form, the
+  week date for the same day, the space
+  separator, the comma fraction, the
+  date alone with no time, an offset
+  carrying seconds, and a fraction past
+  six digits, each standing in the claim
+  as stored with its id derived over it,
+  taking both writes and standing whole
+  under every view, the twins in
+  agreement on every byte, no divergence
+  standing anywhere on the surface.
+  Round 32's gates stand as WW-191
+  records them: chain A at two launches,
+  the first launched
+  2026-11-28T04:17:47Z, queueing about
+  forty-nine minutes on the build slot,
+  the chain starting
+  2026-11-28T05:07:36Z, its window
+  opening after two probes at
+  2026-11-28T05:07:57Z, running its base
+  gate whole at its first run, start
+  line 2026-11-28T05:07:57Z, on the
+  Round 31 base extraction at
+  tetlock-r31, the lane's chain script
+  carrying its tree argument over from
+  Round 31's script unadvanced, a lane
+  scripting error found at this hand on
+  the gate log's own start line, the run
+  counting nowhere as that round's base
+  gate, the two base trees differing
+  only in CONTRACT.md and README.md so
+  its code figures stand real, its bank
+  gate_base32_run1.log standing
+  unoverwritten, and its differential
+  stage launching under its runner start
+  line 2026-11-28T05:10:08Z, its window
+  opening after two probes at
+  2026-11-28T05:10:29Z, and dying by
+  SIGTERM in a runtime restart wave at
+  about 2026-11-28T05:12Z, mid-run, no
+  DIFFERENTIAL_EXIT line standing from
+  it, counted nowhere; the second
+  launched 2026-11-28T05:16:07Z,
+  queueing about nine minutes, the chain
+  starting 2026-11-28T05:24:58Z, its
+  window opening after two probes at
+  2026-11-28T05:25:19Z, and running
+  whole, the base gate at its second run
+  on the verified base extraction at
+  tetlock-r32, start line
+  2026-11-28T05:25:19Z, and the
+  differential whole at exit 0; chain B
+  at one launch, launched
+  2026-11-28T04:12:31Z, the build slot
+  standing open at its launch, its
+  window opening after two probes at
+  2026-11-28T04:12:37Z, and running
+  whole, the pins under their start line
+  2026-11-28T04:12:37Z at exit 0,
+  flighttape at tree afd4d7d1, 50 blobs,
+  the planted mutation of
+  .github/workflows/ci.yml from 19340a1e
+  to 09340a1e convicted by the pin check
+  on both trees, and onrecord at tree
+  1ea53c3d, 20 blobs, the independent
+  second capture matched before the gate
+  under its start line
+  2026-11-28T04:18:59Z, and the oracle
+  re-verified under its start line
+  2026-11-28T04:20:56Z, the snapshot at
+  commit e0244e88, tree 1d765b77, 30
+  blobs, the staged oracle at ww-oracle
+  matching the snapshot blob for blob
+  across its five files, and the renamed
+  copy differing from the snapshot in
+  exactly four files at two changed
+  lines each, eight changed lines in
+  total, its wall.py identical; the
+  gated chain at one launch, launched
+  2026-11-28T05:31:57Z, queueing about
+  four minutes, its window opening after
+  two probes at 2026-11-28T05:35:56Z,
+  and running the battery, battery2, and
+  fresh surface stages whole, each at
+  exit 0, their gated start lines
+  reading 2026-11-28T05:35:56Z,
+  2026-11-28T05:36:08Z, and
+  2026-11-28T05:36:20Z; the staging runs
+  at four, run 1 the items as first
+  drafted, run 2 the gate accounting's
+  restaging, differing from run 1 in
+  WW-191's staging and head gate
+  sentences alone on the slice tree and
+  in those sentences and WW-193's head
+  gate sentence alone on the closure
+  tree, run 3 the gate accounting's
+  completion, differing from run 2 in
+  WW-191's staging, head gate, and
+  survival sentences and its chain queue
+  sentences alone on the slice tree and
+  in WW-191's sentences and WW-193's
+  head gate sentence alone on the
+  closure tree, and run 4 the step 0
+  completion's restaging, differing from
+  run 3 in WW-191's staging and head
+  gate sentences alone on the slice tree
+  and in WW-191's sentences and WW-193's
+  pushes, weather, and step 0 sentences
+  alone on the closure tree; and the
+  head gate at three launches, each
+  launched in-sitting and each running
+  its gate run whole, the first launched
+  2026-11-28T05:40:54Z, queueing about
+  six minutes, the chain starting
+  2026-11-28T05:46:45Z, its start line
+  reading 2026-11-28T05:47:06Z on
+  staging run 1's closure tree, the
+  second launched 2026-11-28T05:51:25Z,
+  queueing about four minutes, the chain
+  starting 2026-11-28T05:54:57Z, its
+  start line reading
+  2026-11-28T05:55:19Z on staging run
+  2's amended closure tree, and the
+  third launched 2026-11-28T06:08:34Z,
+  queueing about twenty-nine minutes,
+  the chain starting
+  2026-11-28T06:37:15Z, its start line
+  reading 2026-11-28T06:37:36Z on
+  staging run 3's final closure tree on
+  the step 0 finding's repair, each
+  run's registry configuration standing
+  at 76 bytes on that run's own log
+  line, the suite standing at 31 tests,
+  3 library and 28 integration, and the
+  binary standing at 2,018,560 bytes,
+  sha256
+  bef8abf56364ae6bda6a406ad1bbbca1f2ce0543e27a3641831ebd54128bbe77,
+  byte-identical at both trees. The
+  round's weather stands as its items
+  state it: chain A stood at two
+  launches as above, chain B at one
+  launch and whole, the gated chain at
+  one launch and whole, the head gate at
+  three launches, each launched
+  in-sitting and running whole, the
+  build slot queueing behind the fleet's
+  tenants at the chain stages, and no
+  POST failing in the round.
+
+- WW-195. The standing regression
+  re-derived whole. The differential
+  runner, run directly from its own
+  directory in the Round 10 harness
+  form, re-derived its standing
+  expectation exactly: 98 cases, 591
+  steps, 0 failures, DIFFERENTIAL_EXIT
+  0, its runner start line reading
+  2026-11-28T07:47:12Z and its exit line
+  stamped 2026-11-28T07:55:25Z. The
+  battery stands at 58 in its stated
+  split, 24 and 11 and 11 and 12. The
+  grading cells passed 24 of 24 under
+  their gated start line
+  2026-11-28T07:57:06Z, grading-08b
+  among them by name, the offset
+  spellings landing on the same UTC date
+  as the Z spelling. The draw and chain
+  cells passed 22 of 22 under their
+  gated start line 2026-11-28T07:57:26Z,
+  draw 11 and chains 11. The pins stand
+  at 12, the ten application programming
+  interface cells across the two pin
+  trees plus the two cargo pin tests by
+  name in the base gate's test list,
+  the_digest_is_pinned_to_the_family_golden
+  and
+  the_onrecord_minted_fixture_loads_sound
+  standing in that list and passing.
+  Chain B ran whole at its second
+  launch, its first launch stalled
+  inside the pins stage and counted
+  nowhere, its accounting standing in
+  WW-196: the pins capture under its
+  start line 2026-11-28T07:41:10Z,
+  standing as the second section of
+  pins33.log, verified flighttape at
+  tree afd4d7d1, 50 blobs, every blob id
+  recomputed and matching, the planted
+  mutation of .github/workflows/ci.yml
+  from 19340a1e to 09340a1e convicted by
+  the pin check, and both restore cells
+  standing; and onrecord at tree
+  1ea53c3d, 20 blobs, on the same five
+  cells, tree, count, identity,
+  mutation, and restore, all true on
+  both trees. The independent second
+  capture, under its start line
+  2026-11-28T07:46:50Z, matched the bank
+  before the gate, SECOND CAPTURE
+  MATCHES BANK, VERIFY_PINS33_EXIT 0.
+  The oracle re-verified under its start
+  line 2026-11-28T07:48:42Z: the
+  snapshot at commit e0244e88, tree
+  1d765b77, 30 blobs with none truncated
+  and every blob's identity recomputed
+  and asserted; the staged oracle at
+  ww-oracle matching the snapshot blob
+  for blob across its five files; and
+  the renamed copy differing from the
+  snapshot in exactly four files at two
+  changed lines each, eight changed
+  lines in total, its wall.py identical,
+  ORACLE33_EXIT 0.
+
+- WW-196. The gate at both trees, under
+  the standing retention rule: every
+  run's stage output stands banked under
+  its own launch-named file in the lane
+  record. Chain A stands at one launch,
+  launched in-sitting: its chain start
+  line reading 2026-11-28T07:45:00Z in
+  chain33a.log, its window opening after
+  two probes at 2026-11-28T07:45:21Z,
+  the build slot standing effectively
+  open, the gate's start line standing
+  at the window's own instant, and the
+  chain running whole. The base tree
+  passed whole at its first run on the
+  verified base extraction at
+  tetlock-r33, its banked log's start
+  line reading 2026-11-28T07:45:21Z, its
+  registry configuration standing at 76
+  bytes on that run's own log line,
+  format, clippy, test, and build each
+  exit 0, the suite standing at 31
+  tests, 3 library and 28 integration,
+  and the binary standing at 2,018,560
+  bytes, sha256
+  bef8abf56364ae6bda6a406ad1bbbca1f2ce0543e27a3641831ebd54128bbe77,
+  byte-identical to the standing binary
+  the earlier rounds measured; and the
+  differential stage ran whole at exit 0
+  under its runner start line
+  2026-11-28T07:47:12Z, its window
+  opening after two probes at
+  2026-11-28T07:47:34Z, its exit line
+  stamped 2026-11-28T07:55:25Z, its
+  accounting standing in WW-195. Chain B
+  stands at two launches. The first,
+  launched 2026-11-28T07:35:54Z by its
+  launch log chainb33_launch1.log,
+  opened its window after two probes at
+  2026-11-28T07:36:00Z and stalled
+  inside its pins stage: the pins start
+  line reading 2026-11-28T07:36:00Z,
+  flighttape's tree, count, identity,
+  and mutation cells completed and
+  standing in the bank, and the onrecord
+  fetch then hanging on a stalled socket
+  read for over an hour, the rate pool
+  standing healthy throughout at 3,937
+  remaining at this hand's check, no
+  exit line standing; the lane stopped
+  its own chain's processes at this
+  hand, and the launch counts nowhere,
+  its pins stage's partial bank
+  preserved at
+  pins33_launch1_partial.log and
+  standing as the first section of
+  pins33.log. A runtime completion
+  notice for that launch, claiming the
+  chain whole at stamps no bank carries,
+  was checked against the disk and the
+  process table at this hand, found
+  false, and stands disregarded, no
+  figure in this record resting on it.
+  The second, launched
+  2026-11-28T07:41:05Z by its launch log
+  chainb33_launch2.log, opened its
+  window after two probes at
+  2026-11-28T07:41:10Z and ran whole:
+  the pins at exit 0 under their start
+  line 2026-11-28T07:41:10Z, standing as
+  the second section of pins33.log, the
+  independent second capture matched
+  before the gate under
+  2026-11-28T07:46:50Z, and the oracle
+  re-verified under
+  2026-11-28T07:48:42Z, their accounting
+  standing in WW-195. The gated chain
+  stands at two launches. The first,
+  launched 2026-11-28T07:56:59Z by its
+  launch log gated33_launch1.log, opened
+  its window after two probes at
+  2026-11-28T07:57:06Z and ran the
+  battery and battery2 stages whole,
+  each at exit 0, and the fresh surface
+  stage at 18 of 20 cells at exit 1,
+  their gated start lines reading
+  2026-11-28T07:57:06Z,
+  2026-11-28T07:57:26Z, and
+  2026-11-28T07:57:56Z, the surface's
+  two failing cells re-contracted to
+  their measured posture as WW-197
+  records. The second, launched
+  2026-11-28T08:02:01Z by its launch log
+  gated33_launch2.log, opened its window
+  after two probes at
+  2026-11-28T08:02:06Z and ran the fresh
+  surface stage whole at 20 of 20 cells
+  at exit 0 under its gated start line
+  2026-11-28T08:02:06Z, its bank
+  standing as the second section of
+  dueforms33.log. The staging runs stand
+  at three, counted here in this item's
+  own text, their trees staged under
+  stage_slice and stage_closure in the
+  lane record: run 1, the items as first
+  drafted; run 2, this gate accounting's
+  completion, differing from run 1 in
+  this item's staging, head gate, and
+  survival sentences alone on the slice
+  tree and in this item's sentences and
+  WW-198's weather sentence alone on the
+  closure tree; and run 3, the step 0
+  completion's restaging, differing from
+  run 2 in this item's staging and head
+  gate sentences alone on the slice tree
+  and in this item's sentences and
+  WW-198's pushes, weather, and step 0
+  sentences alone on the closure tree.
+  The head gate stands at two launches,
+  each launched in-sitting and each
+  running its gate run whole. The first,
+  launched 2026-11-28T08:08:34Z by its
+  launch log chain33head_launch1.log,
+  its window opening after two probes at
+  2026-11-28T08:08:55Z, the build slot
+  standing effectively open, ran the
+  gate whole at its first run on staging
+  run 1's closure tree, its banked log's
+  start line reading
+  2026-11-28T08:08:55Z, its registry
+  configuration standing at 76 bytes on
+  that run's own log line, format,
+  clippy, test, and build each exit 0,
+  the suite standing at 31 tests, 3
+  library and 28 integration, and the
+  binary standing byte-identical to the
+  base tree's, at 2,018,560 bytes and
+  the same sha256. The second, launched
+  2026-11-28T08:14:19Z by its launch log
+  chain33head_launch2.log, its window
+  opening after two probes at
+  2026-11-28T08:14:40Z, the build slot
+  standing effectively open, ran the
+  gate whole at its second run on
+  staging run 2's amended closure tree,
+  its banked log's start line reading
+  2026-11-28T08:14:40Z, its registry
+  configuration standing at 76 bytes on
+  that run's own log line, format,
+  clippy, test, and build each exit 0,
+  the suite standing at 31 tests, 3
+  library and 28 integration, and the
+  binary standing byte-identical to the
+  base tree's; the second run stands on
+  the step 0 finding's repair, recorded
+  in WW-198, and the completion commit
+  recording it changes CONTRACT.md's
+  accounting sentences alone, a file
+  none of the gate's stages reads, so
+  the pushed head's code stands gated
+  whole at the second run. The survival
+  check stands discharged fresh before
+  the pushes on staging run 1's closure:
+  recursive diff of that staged tree
+  against main at 8b2d12c9, tree
+  7e818bed over 22 blobs, fetched fresh
+  at this hand, the staged closure
+  differing from main in exactly
+  CONTRACT.md and README.md, with no
+  staged file standing as a local extra,
+  and main's head standing unmoved at
+  the head this lane verified.
+
+- WW-197. A fresh twin surface the
+  earlier rounds did not measure: the
+  due field's own forms under the whole
+  command layer. Rounds 15 to 32
+  measured the six adjacent malformed
+  shapes as a WW-106 extension,
+  contested and time-shifted outcomes,
+  forked supersession on the read path,
+  boundary instants, the thirteenth case
+  extension and the postures battery,
+  the eleventh postures case and the
+  file-order battery, supersession
+  chains and cross-links on the read
+  path with the eleventh file-order
+  case, the grade command under
+  supersession, the confess command
+  under repetition and identity, the
+  write commands at the store layer,
+  refusal precedence across the command
+  layer, the unterminated record under
+  the whole command layer, the argument
+  layer itself, the record path's
+  filesystem postures, the malformed and
+  edge-shaped record families under the
+  write commands and the remaining
+  views, the evidence array's own forms,
+  the stored id's own forms, and the
+  asserted_at field's own forms; none of
+  them varied the due spelling a stored
+  claim carries. The due field is the
+  record's one remaining unvaried field
+  with a grammar of its own, an optional
+  date validated at load when present
+  and non-null by both twins, and the
+  two grammars part on it: the oracle's
+  record.py reads a due through
+  date.fromisoformat, and the Rust
+  onrecord store's is_iso_date_text,
+  OR-13a, admits exactly YYYY-MM-DD, ten
+  units, ASCII digits, dashes at
+  positions 4 and 7, a real calendar day
+  with the century leap rules, the year
+  nonzero. The surface stands proposed
+  in the lane record before its first
+  run, the oracle's validator exercised
+  over every celled spelling there.
+  Twenty cells stand in the WW-111
+  manner as Rounds 30 to 32 ran it: the
+  control cell standing on an empty
+  directory, and nineteen families,
+  every claim minted sound by the
+  oracle's derive_id over the claim as
+  stored, the family's due spelling
+  standing in the claim before minting,
+  so the named spelling is what its cell
+  measures. Each refuse-all cell plants
+  its record and runs the tally and the
+  wall, a confess, a grade aimed at the
+  family's standing confession, and the
+  ledger, tally, and wall, every step
+  refusing; each sound cell runs the
+  tally and the wall on the standing
+  record, a confess of the standing new
+  claim, a grade aimed at the family's
+  standing confession, and the ledger,
+  tally, and wall at the close, the
+  writes landing; the twins are compared
+  on exit, stdout, and stderr and the
+  whole directory state after every
+  step, and a refused step stands only
+  where the named winner stands in its
+  stderr and its directory stands
+  byte-unchanged. Each divergence cell
+  runs the same sequence per arm against
+  its own contracted posture, the Rust
+  arm refusing every step with the due
+  defect standing in its stderr and its
+  directory byte-unchanged, the Python
+  arm running the sound sequence whole
+  with its writes landing. The surface
+  passed 18 of 20 at its first run,
+  under its gated start
+  2026-11-28T07:57:56Z: the two failing
+  cells, due null and due absent, failed
+  only their closing count, both arms
+  agreeing at every step, the grade
+  aimed at such a confession landing on
+  neither arm; probed at this hand on
+  the banked work directories, both arms
+  refuse that grade in identical words,
+  the confession not a confession under
+  WW-5 for want of a due date, and the
+  two cells stand re-contracted in that
+  measured posture, sound at the load,
+  under the views, and under the confess
+  write, the grade refusing on both arms
+  naming the want of a due date, the
+  record closing at two claims. The
+  surface then passed 20 of 20 at its
+  second run, under its gated start
+  2026-11-28T08:02:06Z, its bank
+  standing as the second section of
+  dueforms33.log. The postures as
+  measured: the eleven spellings
+  defective at load under both grammars,
+  the thirtieth of February, February
+  the twenty-ninth in a non-leap year,
+  February the twenty-ninth in a century
+  year not divisible by 400, the
+  thirteenth month, April the
+  thirty-first, the year zero, a
+  timestamp standing in the date field,
+  due as a number, due as the empty
+  string, the unpadded month, and
+  slashes, refuse every command, the
+  views and both writes, with the record
+  has defects wording and byte-unchanged
+  directories; the leap day in a leap
+  year, the leap day in a 400-divisible
+  century year, the largest date, and
+  the smallest date, each standing in
+  the claim as stored with its id
+  derived over it, take both writes and
+  stand whole under every view, the
+  twins in agreement on every byte; due
+  null and due absent stand sound at the
+  load, under the views, and under the
+  confess write, and a grade aimed at
+  such a confession refuses on both arms
+  in identical words, the confession not
+  a confession under WW-5 for want of a
+  due date; and on exactly two spellings
+  the twins part: the basic form
+  20260910 and the week date 2026-W37-4,
+  each standing for 2026-09-10, the day
+  the standing extended spelling names,
+  stand sound under the oracle's
+  grammar, running the whole sequence
+  with their writes landing, and
+  defective under the Rust store's
+  grammar, refusing every command with
+  the due is not an ISO date defect and
+  byte-unchanged directories. That
+  parting is the surface's measured
+  result: the twins' date grammars agree
+  on every celled spelling but those
+  two.
+
+
+- WW-198. Round 33 closes. WW-194
+  contracts PR 57 whole, its three
+  verdicts standing APPROVE with no
+  findings as a post-landing re-audit,
+  the red team with one carried
+  limitation, and no correction riding
+  into this round. WW-195 re-derives the
+  standing regression whole, the
+  differential at 98 cases, 591 steps,
+  and 0 failures, the battery at 58 in
+  its split, the pins matched by their
+  independent second capture before the
+  gate, and the oracle re-verified.
+  WW-196 gates both trees, its launch
+  accounting standing in its own text.
+  WW-197 measures one further fresh twin
+  surface, the due field's own forms
+  under the whole command layer, at 20
+  of 20 cells at its second run, its
+  first run standing at 18 of 20 with
+  the null and absent cells
+  re-contracted to their measured
+  posture, the twins parting on exactly
+  two spellings, the basic form and the
+  week date for the same day. Storefront
+  item 3 stands PASSING, verified again
+  at this hand in its three homes: the
+  repository description read through
+  the application programming interface,
+  line 3 of the README, and the
+  description field of Cargo.toml at 133
+  bytes, each carrying the standing
+  sentence byte for byte, Before
+  anything irreversible runs, the agent
+  states in writing what it believes is
+  about to happen. Then reality grades
+  the sentence. WW-62 stands carried by
+  name in its standing form: its ground,
+  the field's absence, closed on the
+  base ef4c2e07 and again on 424310e8,
+  and it is carried by name again on
+  this round's base 8b2d12c9. The README
+  rounds line moves to 33 of 100 in this
+  closure commit only. The round's
+  weather stands here in full at this
+  hand: chain B stood at two launches,
+  its first launching
+  2026-11-28T07:35:54Z, opening its
+  window at 2026-11-28T07:36:00Z, and
+  stalling inside its pins stage on a
+  stalled socket read for over an hour
+  before the lane stopped its own
+  processes, counted nowhere, a runtime
+  completion notice claiming that launch
+  whole checked against the disk and the
+  process table and found false and
+  disregarded, and its second launching
+  2026-11-28T07:41:05Z and running
+  whole; chain A stood at one launch and
+  ran whole, its base gate on the
+  verified base extraction at its first
+  run; the gated chain stood at two
+  launches, the first running the
+  battery and battery2 stages whole and
+  the fresh surface at 18 of 20, the
+  second running the fresh surface whole
+  at 20 of 20 after its two cells were
+  re-contracted to their measured
+  posture; the build slot stood
+  effectively open at chain A's gate;
+  the head gate stood at two launches,
+  each launched in-sitting and running
+  whole, the first on the first
+  staging's closure tree and the second
+  on the second staging's amended
+  closure tree; the survival check stood
+  discharged fresh before the pushes,
+  main unmoved at 8b2d12c9, the staged
+  closure differing in exactly
+  CONTRACT.md and README.md; and no POST
+  has failed in the round at this hand.
+  The pushes stand at two commits on
+  refine/ww-round33 over the base
+  8b2d12c9 at this hand: the slice
+  1980c0a4, CONTRACT.md alone, its tree
+  21c664ec verified equal to staging run
+  2's slice tree blob for blob over 22
+  entries on branch-ref and commit-chain
+  read-back; and the closure 8364c431,
+  CONTRACT.md and README.md, its tree
+  e53829ae verified equal to staging run
+  2's closure tree blob for blob over
+  the 22 repo paths on the same
+  read-backs. Step 0 at this hand: the
+  CodeRabbit shell 7236514526 stands on
+  this pull request, banked whole in the
+  lane record at 8,680 characters at its
+  settled reading, last edited
+  2026-11-28T08:23:02Z, its review
+  6096746492 standing COMMENTED at
+  2026-11-28T08:22:58Z; one actionable
+  finding stands on it, a Minor in
+  review comment 4726190127, that the
+  record planned a second head gate
+  launch on staging run 2's amended
+  closure tree while the closure at this
+  item recorded only one head gate
+  launch, on the first staging's closure
+  tree, with no gate on the amended tree
+  recorded; the finding is valid as a
+  defect of the record's wording, the
+  second launch standing in fact,
+  launched 2026-11-28T08:14:19Z and
+  running the gate whole on staging run
+  2's amended closure tree,
+  gate_head33_run2.log start line
+  2026-11-28T08:14:40Z, registry
+  configuration 76 bytes, format,
+  clippy, test, and build each exit 0,
+  31 tests, the binary byte-identical to
+  the base tree's, and it stands
+  repaired by that run's recording in
+  WW-196 and here, this completion
+  commit changing CONTRACT.md's
+  accounting sentences alone, a file
+  none of the gate's stages reads, so
+  the pushed head's code stands gated
+  whole at that run. The shell's
+  pre-merge checks stand at four passed,
+  the title check among them at passed,
+  its commentary noting the title is
+  long standing as a passed check's
+  explanation. Three further comments
+  stand on the pull request at this
+  hand: the Trunk bot's note 7236512756
+  at 403 characters, the standing
+  merge-queue guidance carrying no
+  finding on the round's substance,
+  noted here and dismissed on that
+  ground; the lane's own trigger comment
+  7236515228, which requested a manual
+  review the shell's auto-reply then
+  declined as already reviewed; and
+  CodeRabbit's auto-reply 7236560502 at
+  573 characters, created
+  2026-11-28T08:24:16Z, reading in
+  substance that the action was not
+  completed because the last commit
+  already stood reviewed, carrying no
+  finding. The hosted checks on the
+  closure head 8364c431 stand at seven
+  check runs, each completed at success,
+  the gate standing twice among them and
+  CodeRabbit among them at success. This
+  item's completion stands in this
+  completion commit on top of the
+  closure.
